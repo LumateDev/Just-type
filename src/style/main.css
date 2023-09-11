@@ -1,0 +1,29 @@
+@import './reset.css';
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@700&family=Poppins:wght@400;500;700&display=swap');
+
+html,
+body {
+	min-height: 100vh;
+
+	font-family: 'Poppins', sans-serif;
+	letter-spacing: -0.5px;
+}
+
+#root {
+	min-height: 100vh;
+}
+
+.App {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* General */
+
+/* Нам необходима ширина контейнера 1170 пикселей, 1200 пикселей - 15 отступ слева - 15 отступ справа = 1170 пикселей*/
+.container {
+	margin: 0 auto;
+	padding: 0 15px;
+	max-width: 1240px;
+}
