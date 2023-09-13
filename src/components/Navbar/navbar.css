@@ -1,0 +1,19 @@
+.header-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-list__item {
+  list-style-type: none;
+}
+.nav-list__item:hover {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+  padding: 20px 0;
+}

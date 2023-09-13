@@ -1,0 +1,12 @@
+.header {
+  background-color: #363636;
+  min-height: 120px;
+}
+
+.header-row {
+  display: flex;
+  flex-direction: row;
+  padding: 20px 0;
+  justify-content: space-between;
+  align-items: center;
+}
