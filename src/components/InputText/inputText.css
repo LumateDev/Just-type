@@ -1,4 +1,24 @@
 .inputText-wrapper {
-  height: 600px;
-  background-color: #4b4b4b;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-width: 1040px;
+}
+
+.inputText-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputText-section {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.typingLetter {
+  color: #858585;
+  font-family: "Roboto";
+  font-size: 20px;
 }
