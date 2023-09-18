@@ -13,13 +13,13 @@ const Char = (props) => {
   const ref = useRef();
   // Автофокус на начало
   useEffect(() => {
-    console.log(ref);
+    //console.log(ref);
     if (i === 0) {
       ref.current.focus();
     }
     if (char === " ") {
       setState({ cls: "typingLetter-space" });
-      console.log("space");
+      //console.log("space");
     }
   }, [char, i]);
 
@@ -27,7 +27,7 @@ const Char = (props) => {
     const element = event.target;
     const nextSibling = element.nextElementSibling;
     const prevSibling = element.previousElementSibling;
-    console.log(event.key);
+    // console.log(event.key);
 
     if (event.keyCode === 32) {
       nextSibling ? nextSibling.focus() : element.blur();
@@ -36,9 +36,12 @@ const Char = (props) => {
       if (char === " ") {
         prevSibling ? prevSibling.focus() : element.blur();
       }
-      setState({ cls: "typingLetter" });
-      prevSibling ? prevSibling.focus() : element.blur();
-      console.log("Backspace!!!");
+      else{
+        setState({ cls: "typingLetter" });
+        prevSibling ? prevSibling.focus() : element.blur();
+        //console.log("Backspace!!!");
+      }
+      
     } else {
       if (event.key === char && state.cls !== "typingLetter-space") {
         setState({ cls: "typingLetter-correct" });

@@ -5,7 +5,21 @@ import Char from "./Char";
 import { letters } from "./data.js";
 
 const InputText = () => {
-  letters.map((letter, index) => console.log(letter.char, index));
+  const chars = [{}];
+  let words = [ 'hello', 'world', 'js'];
+  let str = words.join([' ']);
+  console.log(str);
+  console.log(str.length);
+
+  for (let i = 1; i <= str.length; i++) {
+    chars[i].id += i;
+    chars[i].char += str[i];
+  }
+  
+  console.log(chars);
+
+
+  //letters.map((letter, index) => console.log(letter.char, index));
 
   const listItems = letters.map((letter, index) => (
     <Char key={index} char={letter.char} i={index}></Char>
