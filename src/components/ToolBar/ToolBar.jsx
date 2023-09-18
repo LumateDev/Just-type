@@ -1,6 +1,7 @@
 import React from "react";
 import "./toolBar.css";
-import ToolButton from "../ToolButton/ToolButton";
+import RestartButton from "../ToolButton/RestartButton";
+import LanguageButton from "../ToolButton/LanguageButton";
 import settingsIcon from "./../../img/toolbar/settings.svg";
 import restartIcon from "./../../img/toolbar/restart.svg";
 
@@ -10,8 +11,8 @@ const ToolBar = () => {
       <div className="container">
         <div className="toolbar-wrapper">
           <div className="toolCard">
-            <ToolButton img = {restartIcon}/>
-            <ToolButton text = "english"/>
+            <RestartButton img={restartIcon} />
+            <LanguageButton text="english" />
           </div>
           <div className="toolCard">
             <div className="toolCard__button">words</div>

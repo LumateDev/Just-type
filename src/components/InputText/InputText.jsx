@@ -1,24 +1,20 @@
 import React from "react";
 import "./inputText.css";
 
+import Char from "./Char";
+import { letters } from "./data.js";
+
 const InputText = () => {
+  letters.map((letter, index) => console.log(letter.char, index));
+
+  const listItems = letters.map((letter, index) => (
+    <Char key={index} char={letter.char} i={index}></Char>
+  ));
+
   return (
     <section className="inputText-section">
       <div className="container">
-        <div className="inputText-wrapper">
-          <div className="inputText-row">
-            <div className="typingText">
-              <p className="typingLetter">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-                commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-                penatibus et magnis dis parturient montes, nascetur ridiculus
-                mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                quis, sem. Nulla consequat massa quis enim. Donec pede justo,
-                fringilla vel, aliquet nec, vulputate
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="typingText-wrapper">{listItems}</div>
       </div>
     </section>
   );
