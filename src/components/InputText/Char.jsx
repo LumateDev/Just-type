@@ -23,26 +23,38 @@ const Char = (props) => {
     }
   }, [char, i]);
 
+  
+
   const handleKeyDown = (event) => {
+    
     const element = event.target;
     const nextSibling = element.nextElementSibling;
     const prevSibling = element.previousElementSibling;
+    const isSpace = element.textContent === " ";
     // console.log(event.key);
 
     if (event.keyCode === 32) {
       nextSibling ? nextSibling.focus() : element.blur();
     }
-    if (event.keyCode === 8) {
-      if (char === " ") {
-        prevSibling ? prevSibling.focus() : element.blur();
-      }
-      else{
-        setState({ cls: "typingLetter" });
-        prevSibling ? prevSibling.focus() : element.blur();
-        //console.log("Backspace!!!");
-      }
+  
+    if (event.key === "Alt" ) {
+      console.log("Alt");
       
+    }
+    if (event.keyCode === 8) {
+    if (isSpace) {
+      prevSibling ? prevSibling.focus() : element.blur();
     } else {
+      prevSibling ? prevSibling.focus() : element.blur();
+      if (prevSibling) {
+        prevSibling.className = "typingLetter";
+        if (prevSibling.textContent === " ") {
+          // Добавляем класс для пробела
+          prevSibling.classList.add("typingLetter-space");
+        }
+      }
+    }
+  }  else {
       if (event.key === char && state.cls !== "typingLetter-space") {
         setState({ cls: "typingLetter-correct" });
         console.log("correct");
@@ -54,14 +66,17 @@ const Char = (props) => {
       }
     }
   };
+  
 
   return (
     <span
-      className={state.cls}
-      key={i}
-      tabIndex={-1}
-      onKeyDown={handleKeyDown}
-      ref={ref}
+    className={state.cls}
+    key={i}
+    tabIndex={-1}
+    onKeyDown={handleKeyDown}
+    ref={ref}
+    id={`char-${i}`} // добавьте атрибут id здесь
+    
     >
       {char}
     </span>

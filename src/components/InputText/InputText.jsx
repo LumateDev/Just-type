@@ -14,7 +14,10 @@ const InputText = () => {
   return (
     <section className="inputText-section">
       <div className="container">
-        <div className="typingText-wrapper">{listItems}</div>
+        
+        <div className="typingText-wrapper">
+       
+          {listItems}</div>
       </div>
     </section>
   );

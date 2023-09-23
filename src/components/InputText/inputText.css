@@ -6,9 +6,23 @@
   max-width: 1040px;
 }
 
+
 .typingText-wrapper {
   display: flex;
   flex-direction: row;
+  z-index: 0;
+}
+
+.typingText-wrapper :focus-visible {
+ 
+  outline: none;
+  
+  border-left: 2px solid;
+  border-color: rgba(199, 184, 3, 0.7);
+  
+ 
+
+  animation: cursor-blink 0.9s infinite;
 }
 
 .inputText-section {
@@ -16,4 +30,11 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+
+@keyframes cursor-blink {
+  0% {
+    border-color: rgba(199, 184, 3, 0);
+  }
 }
