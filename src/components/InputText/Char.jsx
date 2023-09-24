@@ -1,10 +1,19 @@
 import React from "react";
 import "./char.css";
 
-const ignoreKeys = new Set(["F12", "CapsLock", "Alt", "Shift", "ArrowUp", "ArrowLeft", "ArrowRight", "ArrowDown", "Tab"]);
+const ignoreKeys = new Set([
+  "F12",
+  "CapsLock",
+  "Alt",
+  "Shift",
+  "ArrowUp",
+  "ArrowLeft",
+  "ArrowRight",
+  "ArrowDown",
+  "Tab",
+]);
 
-const Char = React.forwardRef(({ char, word}, ref) => {
-
+const Char = React.forwardRef(({ char }, ref) => {
   const showNotification = () => {
     alert("Вы ввели все символы!");
   };
@@ -20,49 +29,53 @@ const Char = React.forwardRef(({ char, word}, ref) => {
     }
 
     if (event.key === "Backspace") {
-      if (prevSibling) {        
-        // Удаляем неверно введённый символ (если он есть) после конца слова
-        if(prevSibling.id === ("typingLetter-incorrect__add")){
+      if (prevSibling) {
+        if (prevSibling.id === "typingLetter-incorrect__add") {
           prevSibling.remove();
         }
-        console.log(prevSibling);
+
         prevSibling.focus();
         prevSibling.className = "typingLetter";
       } else {
         const parentElement = element.parentElement;
         const prevWord = parentElement.previousElementSibling;
-        
+
         if (prevWord) {
           const prevWordLastChar = prevWord.lastElementChild;
-          const prevWordPrevToLastChar = prevWordLastChar ? prevWordLastChar.previousElementSibling : null;
+          const prevWordPrevToLastChar = prevWordLastChar
+            ? prevWordLastChar.previousElementSibling
+            : null;
 
-        
-          if (prevWordPrevToLastChar ) {
+          // Добавлено условие для удаления неверных символов после конца слова
+          const incorrectChars = document.querySelectorAll(
+            "#typingLetter-incorrect__add"
+          );
+          if (incorrectChars.length !== 0) {
+            const lastIncorrectChar = incorrectChars[incorrectChars.length - 1];
+            lastIncorrectChar.remove();
+          }
+
+          if (prevWordPrevToLastChar) {
             prevWordPrevToLastChar.focus();
             prevWordPrevToLastChar.className = "typingLetter";
-          }
-         
-          else if (prevWordLastChar) {
+          } else if (prevWordLastChar) {
             prevWordLastChar.focus();
             prevWordLastChar.className = "typingLetter";
           }
         } else {
           element.blur();
-          
         }
       }
     } else if (event.key === char) {
       element.className = "typingLetter-correct";
-      console.log("correct");
- 
+
       if (nextSibling) {
         nextSibling.focus();
       } else {
         const parentElement = element.parentElement;
         const nextWord = parentElement.nextElementSibling;
-        
+
         if (nextWord) {
-          
           const nextWordFirstChar = nextWord.firstElementChild;
           if (nextWordFirstChar) {
             nextWordFirstChar.focus();
@@ -73,23 +86,19 @@ const Char = React.forwardRef(({ char, word}, ref) => {
         }
       }
     } else if (event.key !== char) {
-      
-      if(!nextSibling){
-        //добавление символов после конца слова
-        const newCharElement = document.createElement('span');
+      if (!nextSibling) {
+        const newCharElement = document.createElement("span");
         newCharElement.textContent = event.key;
-        newCharElement.className = 'typingLetter-incorrect__add';
-        newCharElement.id = 'typingLetter-incorrect__add';
+        newCharElement.className = "typingLetter-incorrect__add";
+        newCharElement.id = "typingLetter-incorrect__add";
         newCharElement.tabIndex = -1;
-        
+
         const nextChar = element;
-        
+
         element.insertAdjacentElement("beforebegin", newCharElement);
         nextChar.focus();
-        console.log("Зашли в элсе");
-      }else{
+      } else {
         element.className = "typingLetter-incorrect";
-        console.log("incorrect");
         nextSibling ? nextSibling.focus() : element.blur();
       }
     }
@@ -101,6 +110,7 @@ const Char = React.forwardRef(({ char, word}, ref) => {
       tabIndex={-1}
       onKeyDown={handleKeyDown}
       onMouseDown={(event) => event.preventDefault()}
+      onMouseUp={(event) => event.preventDefault()}
       ref={ref}
     >
       {char}
