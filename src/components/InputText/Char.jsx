@@ -1,86 +1,111 @@
-import React, { useState } from "react";
+import React from "react";
 import "./char.css";
-import { useRef, useEffect } from "react";
 
-const Char = (props) => {
-  const [state, setState] = useState({
-    cls: "typingLetter",
-  });
+const ignoreKeys = new Set(["F12", "CapsLock", "Alt", "Shift", "ArrowUp", "ArrowLeft", "ArrowRight", "ArrowDown", "Tab"]);
 
-  var i = props.i;
-  var char = props.char;
+const Char = React.forwardRef(({ char, word}, ref) => {
 
-  const ref = useRef();
-  // Автофокус на начало
-  useEffect(() => {
-    //console.log(ref);
-    if (i === 0) {
-      ref.current.focus();
-    }
-    if (char === " ") {
-      setState({ cls: "typingLetter-space" });
-      //console.log("space");
-    }
-  }, [char, i]);
-
-  
+  const showNotification = () => {
+    alert("Вы ввели все символы!");
+  };
 
   const handleKeyDown = (event) => {
-    
     const element = event.target;
     const nextSibling = element.nextElementSibling;
     const prevSibling = element.previousElementSibling;
-    const isSpace = element.textContent === " ";
-    // console.log(event.key);
 
-    if (event.keyCode === 32) {
-      nextSibling ? nextSibling.focus() : element.blur();
+    if (ignoreKeys.has(event.key)) {
+      event.preventDefault();
+      return;
     }
-  
-    if (event.key === "Alt" ) {
-      console.log("Alt");
-      
-    }
-    if (event.keyCode === 8) {
-    if (isSpace) {
-      prevSibling ? prevSibling.focus() : element.blur();
-    } else {
-      prevSibling ? prevSibling.focus() : element.blur();
-      if (prevSibling) {
+
+    if (event.key === "Backspace") {
+      if (prevSibling) {        
+        // Удаляем неверно введённый символ (если он есть) после конца слова
+        if(prevSibling.id === ("typingLetter-incorrect__add")){
+          prevSibling.remove();
+        }
+        console.log(prevSibling);
+        prevSibling.focus();
         prevSibling.className = "typingLetter";
-        if (prevSibling.textContent === " ") {
-          // Добавляем класс для пробела
-          prevSibling.classList.add("typingLetter-space");
+      } else {
+        const parentElement = element.parentElement;
+        const prevWord = parentElement.previousElementSibling;
+        
+        if (prevWord) {
+          const prevWordLastChar = prevWord.lastElementChild;
+          const prevWordPrevToLastChar = prevWordLastChar ? prevWordLastChar.previousElementSibling : null;
+
+        
+          if (prevWordPrevToLastChar ) {
+            prevWordPrevToLastChar.focus();
+            prevWordPrevToLastChar.className = "typingLetter";
+          }
+         
+          else if (prevWordLastChar) {
+            prevWordLastChar.focus();
+            prevWordLastChar.className = "typingLetter";
+          }
+        } else {
+          element.blur();
+          
         }
       }
-    }
-  }  else {
-      if (event.key === char && state.cls !== "typingLetter-space") {
-        setState({ cls: "typingLetter-correct" });
-        console.log("correct");
-        nextSibling ? nextSibling.focus() : element.blur();
-      } else if (event.key !== char && state.cls !== "typingLetter-space") {
-        setState({ cls: "typingLetter-incorrect" });
+    } else if (event.key === char) {
+      element.className = "typingLetter-correct";
+      console.log("correct");
+ 
+      if (nextSibling) {
+        nextSibling.focus();
+      } else {
+        const parentElement = element.parentElement;
+        const nextWord = parentElement.nextElementSibling;
+        
+        if (nextWord) {
+          
+          const nextWordFirstChar = nextWord.firstElementChild;
+          if (nextWordFirstChar) {
+            nextWordFirstChar.focus();
+          }
+        } else {
+          element.blur();
+          showNotification();
+        }
+      }
+    } else if (event.key !== char) {
+      
+      if(!nextSibling){
+        //добавление символов после конца слова
+        const newCharElement = document.createElement('span');
+        newCharElement.textContent = event.key;
+        newCharElement.className = 'typingLetter-incorrect__add';
+        newCharElement.id = 'typingLetter-incorrect__add';
+        newCharElement.tabIndex = -1;
+        
+        const nextChar = element;
+        
+        element.insertAdjacentElement("beforebegin", newCharElement);
+        nextChar.focus();
+        console.log("Зашли в элсе");
+      }else{
+        element.className = "typingLetter-incorrect";
         console.log("incorrect");
         nextSibling ? nextSibling.focus() : element.blur();
       }
     }
   };
-  
 
   return (
     <span
-    className={state.cls}
-    key={i}
-    tabIndex={-1}
-    onKeyDown={handleKeyDown}
-    ref={ref}
-    id={`char-${i}`} // добавьте атрибут id здесь
-    
+      className={"typingLetter"}
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+      onMouseDown={(event) => event.preventDefault()}
+      ref={ref}
     >
       {char}
     </span>
   );
-};
+});
 
 export default Char;

@@ -1,16 +1,20 @@
-.inputText-wrapper {
+.inputText-section {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  max-width: 1040px;
+  
+
 }
 
 
 .typingText-wrapper {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
   z-index: 0;
+  max-width: 900px;
 }
 
 .typingText-wrapper :focus-visible {
@@ -30,6 +34,10 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.word{
+  margin-right: 3px;
 }
 
 
