@@ -1,12 +1,9 @@
 import React , {useRef,useEffect} from "react";
 import "./inputText.css";
 
-// import Char from "./Char";
-// import { letters } from "./data.js";
-
 import Word from "./Word";
 let words = [
-  "delete",
+"delete",
 "hello",
 "world",
 "js",
@@ -37,7 +34,7 @@ let words = [
 //  ""
 // ];
 
-const InputText = () => {
+const InputText = ({ setActiveKey }) => {
 
   const inputRef = useRef(null);
   
@@ -51,7 +48,7 @@ const InputText = () => {
 
 
   const wordItems = words.map((word, index) => (
-    <Word key={index} word={word} ref={inputRef} len = {words.length} i = {index}
+    <Word key={index} word={word} ref={inputRef} len = {words.length} i = {index}  setActiveKey={setActiveKey}
     ></Word>
   ));
 
