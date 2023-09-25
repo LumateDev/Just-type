@@ -2,7 +2,7 @@ import React from "react";
 import "./word.css";
 import Char from "./Char";
 
-const Word = React.forwardRef(({ word, i, len}, ref) => {
+const Word = React.forwardRef(({ word, i, len,  setActiveKey}, ref) => {
     let w = word.split("");
 
     if (i + 1 !== len){
@@ -18,7 +18,7 @@ const Word = React.forwardRef(({ word, i, len}, ref) => {
           char={char}
           word={word}
           ref={ref}
-          
+          setActiveKey={setActiveKey}
           
         ></Char>
       ));

@@ -1,0 +1,33 @@
+.keyboard {
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .keyboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .row {
+    display: flex;
+    justify-content: center;
+  }
+  .key img {
+    height: 3rem;
+    width: 3rem;
+    fill: red;
+  }
+.activeKey path {
+    fill: #f6f6f6;
+    transition: fill 0.1s ease-in;
+  }
+
+  
