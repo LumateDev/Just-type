@@ -1,0 +1,24 @@
+.toolCard__button {
+  display: flex;
+  align-items: center;
+  color: #c2c2c1;
+
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.toolCard__button__active {
+  display: flex;
+  align-items: center;
+  color: #c7a900;
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.toolCard__button:hover,
+.toolCard__button__active:hover {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in;
+}

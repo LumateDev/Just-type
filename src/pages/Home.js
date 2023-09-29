@@ -5,9 +5,7 @@ import Keyboard from "../components/Keyboard/Keyboard";
 
 import { useState } from "react";
 
-
 const Home = () => {
-
   const [activeKey, setActiveKey] = useState("");
   return (
     <>
