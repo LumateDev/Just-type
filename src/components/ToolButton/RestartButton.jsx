@@ -4,7 +4,9 @@ import React from "react";
 function RestartButton(props) {
   
   const handleClick = () => {
-    window.location.reload();
+   
+      window.location.reload();
+  
   };
 
   return (

@@ -15,7 +15,8 @@
   font-family: "Roboto";
   font-size: 22px;
 }
-.typingLetter-incorrect__add{
+#typingLetter-incorrect__add{
+  opacity: 0.7;
   color: red;
   font-family: "Roboto";
   font-size: 22px;

@@ -1,11 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
 import "./toolBar.css";
 import RestartButton from "../ToolButton/RestartButton";
 import LanguageButton from "../ToolButton/LanguageButton";
 import settingsIcon from "./../../img/toolbar/settings.svg";
 import restartIcon from "./../../img/toolbar/restart.svg";
+import WTQButton from "../../components/ToolButton/WTQButton"
 
 const ToolBar = () => {
+
+
+  const [activeWTQButton, setActiveWTQButton] = useState("words");
+
+  const handleClick = (buttonName) => {
+      setActiveWTQButton(buttonName);
+  }
+
+
   return (
     <section className="toolbar">
       <div className="container">
@@ -15,9 +25,11 @@ const ToolBar = () => {
             <LanguageButton text="english" />
           </div>
           <div className="toolCard">
-            <div className="toolCard__button">words</div>
-            <div className="toolCard__button">time</div>
-            <div className="toolCard__button">quotes</div>
+
+          <WTQButton text = "words" active={activeWTQButton === "words"} handleClick={() => handleClick("words")}/>
+            <WTQButton text = "time" active={activeWTQButton === "time"} handleClick={() => handleClick("time")}/>
+            <WTQButton text = "quote" active={activeWTQButton === "quote"} handleClick={() => handleClick("quote")}/>
+            
           </div>
 
           <div className="toolCard">

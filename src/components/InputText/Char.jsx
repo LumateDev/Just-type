@@ -56,13 +56,12 @@ const Char = React.forwardRef(({ char, setActiveKey }, ref) => {
         if (prevWord) {
           const prevWordLastChar = prevWord.lastElementChild;
   
-          // Вставьте новый код:
+
           const prevWordPrevToLastChar =
             prevWordLastChar && prevWordLastChar.innerHTML !== " "
               ? prevWordLastChar.previousElementSibling
               : prevWordLastChar;
   
-          // Добавлено условие для удаления неверных символов после конца слова
           const incorrectChars = document.querySelectorAll(
             "#typingLetter-incorrect__add"
           );
@@ -98,15 +97,18 @@ const Char = React.forwardRef(({ char, setActiveKey }, ref) => {
             nextWordFirstChar.focus();
           }
         } else {
+         
+
           element.blur();
           showNotification();
         }
       }
     } else if (event.key !== char) {
-      if (!nextSibling) {
+      if (!nextSibling && event.key !== " ") {
+        console.log("Нет некста символа и нажат не пробел")
         const newCharElement = document.createElement("span");
         newCharElement.textContent = event.key;
-        newCharElement.className = "typingLetter-incorrect__add";
+        newCharElement.className = "typingLetter-incorrect";
         newCharElement.id = "typingLetter-incorrect__add";
         newCharElement.tabIndex = -1;
   
@@ -114,6 +116,9 @@ const Char = React.forwardRef(({ char, setActiveKey }, ref) => {
   
         element.insertAdjacentElement("beforebegin", newCharElement);
         nextChar.focus();
+      }
+      else if(!nextSibling && event.key !== " "){
+        event.preventDefault();
       } else {
         element.className = "typingLetter-incorrect";
         nextSibling ? nextSibling.focus() : element.blur();
