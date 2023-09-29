@@ -2,28 +2,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
-
 .keyboard-wrapper {
-display: flex;
-flex-direction: column;
-row-gap: 15px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
 }
 
 .row {
   display: flex;
- flex-direction: row;
- column-gap: 10px;
- justify-content: center;
- align-items: center;
+  flex-direction: row;
+  column-gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .key {
   height: 50px;
   width: 50px;
-
   padding: 6px 12px;
   border-radius: 3px;
   justify-self: center;
@@ -40,19 +38,18 @@ row-gap: 15px;
   font-size: 16px;
 }
 
-
 .defaultKey {
   background-color: #333232;
   opacity: 0.7;
   color: #fff;
-  /* box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px; */
-  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px; */
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .activeKey {
-  background-color: #4285f4;
-  opacity: 0.8;
+  background-color: #c7a900;
+  opacity: 0.9;
   color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }

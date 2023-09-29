@@ -1,37 +1,35 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import "./inputText.css";
 import Word from "./Word";
-
-import  wordsEn  from "./data";
-
+import wordsEn from "./data";
 
 const InputText = ({ setActiveKey }) => {
-
   const inputRef = useRef(null);
-  
-
-  
-  
-  // Задаем начальный фокус на первый символ первого слова
   useEffect(() => {
     if (inputRef.current) {
       const firstChar = inputRef.current.querySelector(".typingLetter");
       firstChar.focus();
     }
   }, []);
- 
+
   const wordItems = wordsEn.map((word, index) => (
-    <Word key={index} word={word} ref={inputRef} len = {wordsEn.length} i = {index}  setActiveKey={setActiveKey}
+    <Word
+      key={index}
+      word={word}
+      ref={inputRef}
+      len={wordsEn.length}
+      i={index}
+      setActiveKey={setActiveKey}
     ></Word>
   ));
 
   return (
     <section className="inputText-section">
       <div className="container">
-        <div className="typingText-wrapper" ref={inputRef}>{wordItems}</div>
+        <div className="typingText-wrapper" ref={inputRef}>
+          {wordItems}
+        </div>
       </div>
-
-      
     </section>
   );
 };

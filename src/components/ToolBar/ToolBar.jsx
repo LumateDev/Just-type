@@ -1,20 +1,50 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "./toolBar.css";
 import RestartButton from "../ToolButton/RestartButton";
-import LanguageButton from "../ToolButton/LanguageButton";
-import settingsIcon from "./../../img/toolbar/settings.svg";
 import restartIcon from "./../../img/toolbar/restart.svg";
-import WTQButton from "../../components/ToolButton/WTQButton"
+import Button from "../ToolButton/Button";
 
 const ToolBar = () => {
+  const [activeModeButton, setActiveModeButton] = useState("words");
+  const [activeCountButton, setActiveCountButton] = useState(25);
+  const [activeTimeButton, setActiveTimeButton] = useState("15s");
+  const [activeLanguageButton, setActiveLanguageButton] = useState("english");
+  const [activeNumbersButton, setActiveNumbersButton] = useState(false);
+  const [activePunctuationButton, setActivePunctuationButton] = useState(false);
 
+  const handleClickMode = (buttonName) => {
+    setActiveModeButton(buttonName);
+  };
+  const handleClickCount = (buttonName) => {
+    setActiveCountButton(buttonName);
+  };
+  const handleClickTime = (buttonName) => {
+    setActiveTimeButton(buttonName);
+  };
+  const handleClickLanguage = (buttonName) => {
+    setActiveLanguageButton(buttonName);
+  };
+  const handleClickNumbers = () => {
+    setActiveNumbersButton((prev) => !prev);
+  };
+  const handleClickPunctuation = () => {
+    setActivePunctuationButton((prev) => !prev);
+  };
 
-  const [activeWTQButton, setActiveWTQButton] = useState("words");
-
-  const handleClick = (buttonName) => {
-      setActiveWTQButton(buttonName);
+  let countButtons;
+  switch (activeModeButton) {
+    case "words":
+      countButtons = [10, 25, 50, 75, 100];
+      break;
+    case "time":
+      countButtons = ["15s", "30s", "1m", "3m", "5m"];
+      break;
+    case "quote":
+      countButtons = [];
+      break;
+    default:
+      countButtons = [];
   }
-
 
   return (
     <section className="toolbar">
@@ -22,33 +52,69 @@ const ToolBar = () => {
         <div className="toolbar-wrapper">
           <div className="toolCard">
             <RestartButton img={restartIcon} />
-            <LanguageButton text="english" />
+            <Button
+              text="english"
+              active={activeLanguageButton === "english"}
+              handleClick={() => handleClickLanguage("english")}
+            />
+            <Button
+              text="russian"
+              active={activeLanguageButton === "russian"}
+              handleClick={() => handleClickLanguage("russian")}
+            />
           </div>
           <div className="toolCard">
-
-          <WTQButton text = "words" active={activeWTQButton === "words"} handleClick={() => handleClick("words")}/>
-            <WTQButton text = "time" active={activeWTQButton === "time"} handleClick={() => handleClick("time")}/>
-            <WTQButton text = "quote" active={activeWTQButton === "quote"} handleClick={() => handleClick("quote")}/>
-            
+            <Button
+              text="words"
+              active={activeModeButton === "words"}
+              handleClick={() => handleClickMode("words")}
+            />
+            <Button
+              text="time"
+              active={activeModeButton === "time"}
+              handleClick={() => handleClickMode("time")}
+            />
+            <Button
+              text="quote"
+              active={activeModeButton === "quote"}
+              handleClick={() => handleClickMode("quote")}
+            />
           </div>
 
-          <div className="toolCard">
-            <div className="toolCard__button">10</div>
-            <div className="toolCard__button">25</div>
-            <div className="toolCard__button">50</div>
-            <div className="toolCard__button">100</div>
-            <div className="toolCard__button">
-              <img
-                src={settingsIcon}
-                alt="settingsIcon"
-                width="20px"
-                height="20px"
-              />
+          {activeModeButton !== "quote" && (
+            <div className="toolCard">
+              {countButtons.map((button) => (
+                <Button
+                  key={button.toString()}
+                  text={button.toString()}
+                  active={
+                    activeModeButton === "time"
+                      ? activeTimeButton === button
+                      : activeCountButton === button
+                  }
+                  handleClick={() => {
+                    if (activeModeButton === "time") {
+                      handleClickTime(button);
+                    } else {
+                      handleClickCount(button);
+                    }
+                  }}
+                />
+              ))}
             </div>
-          </div>
+          )}
           <div className="toolCard">
-            <div className="toolCard__button">numbers</div>
-            <div className="toolCard__button">punctuation</div>
+            <Button
+              text="Numbers"
+              active={activeNumbersButton}
+              handleClick={handleClickNumbers}
+            />
+
+            <Button
+              text="Punctuation"
+              active={activePunctuationButton}
+              handleClick={handleClickPunctuation}
+            />
           </div>
         </div>
       </div>
