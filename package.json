@@ -2,7 +2,7 @@
   "name": "just-type",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://EmelyanenkoA.github.io/Just-type/",
+  "homepage": "https://LumateDev.github.io/Just-type/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
