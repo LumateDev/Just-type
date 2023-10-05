@@ -4,16 +4,29 @@ import RestartButton from "../ToolButton/RestartButton";
 import restartIcon from "./../../img/toolbar/restart.svg";
 import Button from "../ToolButton/Button";
 
-const ToolBar = () => {
+const ToolBar = ({
+  setStatus,
+  activeNumbersButton,
+  activeCountButton,
+  activeLanguageButton,
+  activePunctuationButton,
+  activeTimeButton,
+  activeRestartButton,
+  setActiveCountButton,
+  setActiveLanguageButton,
+  setActiveTimeButton,
+  setActiveNumbersButton,
+  setActivePunctuationButton,
+  setActiveRestartButton,
+}) => {
   const [activeModeButton, setActiveModeButton] = useState("words");
-  const [activeCountButton, setActiveCountButton] = useState(25);
-  const [activeTimeButton, setActiveTimeButton] = useState("15s");
-  const [activeLanguageButton, setActiveLanguageButton] = useState("english");
-  const [activeNumbersButton, setActiveNumbersButton] = useState(false);
-  const [activePunctuationButton, setActivePunctuationButton] = useState(false);
 
   const handleClickMode = (buttonName) => {
     setActiveModeButton(buttonName);
+  };
+  const handleClickRestart = () => {
+    setActiveRestartButton(activeRestartButton + 1);
+    setStatus("print");
   };
   const handleClickCount = (buttonName) => {
     setActiveCountButton(buttonName);
@@ -51,7 +64,10 @@ const ToolBar = () => {
       <div className="container">
         <div className="toolbar-wrapper">
           <div className="toolCard">
-            <RestartButton img={restartIcon} />
+            <RestartButton
+              img={restartIcon}
+              handleClick={() => handleClickRestart()}
+            />
             <Button
               text="english"
               active={activeLanguageButton === "english"}

@@ -1,0 +1,29 @@
+.section-analysis {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+}
+.analysis-title {
+  font-size: 24px;
+  color: #c2c2c1;
+  font-family: "Roboto";
+  font-weight: 600;
+}
+.analysis-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  padding: 12px 12px 12px 12px;
+  background-color: #5d5d5d;
+  border-radius: 24px;
+  width: 900px;
+  height: 200px;
+}
+.itemValue {
+  display: flex;
+  align-items: center;
+  color: #c7a900;
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 20px;
+}
