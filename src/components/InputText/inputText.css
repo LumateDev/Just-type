@@ -14,7 +14,7 @@
   max-width: 900px;
 }
 
-.typingText-wrapper :focus-visible {
+.typingText-wrapper :focus {
   outline: none;
 
   border-left: 2px solid;

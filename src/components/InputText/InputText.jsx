@@ -36,6 +36,7 @@ const InputText = ({
     return array;
   };
   const inputRef = useRef(null);
+
   useEffect(() => {
     setStartTime(null);
     setEndTime(null);
