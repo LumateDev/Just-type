@@ -30,10 +30,6 @@
   justify-content: center;
 }
 
-.word {
-  margin-right: 3px;
-}
-
 @keyframes cursor-blink {
   0% {
     border-color: rgba(199, 184, 3, 0);

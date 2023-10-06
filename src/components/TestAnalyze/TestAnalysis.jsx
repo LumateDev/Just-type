@@ -4,13 +4,13 @@ import "./testAnalysis.css";
 const TestAnalysis = ({
   startTime,
   endTime,
-  totalMistypedCharacters,
-  totalTypedCharacters,
+  totalChars,
+
+  totalErrors,
+
   wordCount,
 }) => {
-  const accuracy =
-    ((totalTypedCharacters - totalMistypedCharacters) / totalTypedCharacters) *
-    100;
+  const accuracy = ((totalChars - totalErrors) / totalChars) * 100;
 
   const totalTime = (endTime - startTime) / 1000;
   const WPM = ((wordCount / totalTime) * 60).toFixed(2);
