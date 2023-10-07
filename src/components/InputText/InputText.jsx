@@ -1,39 +1,73 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "./inputText.css";
 import WordGroup from "./WordGroup";
-import newWords from "./data";
+
+import wordsRu from "./dataRu";
+import { shuffle } from "./shuffle";
+import wordsEn from "./dataEn";
 
 const InputText = ({
   wordCount,
   setActiveKey,
   status,
   setStatus,
-  totalChars,
+  wordTime,
+  setWordCount,
+  
   setTotalChars,
-  totalErrors,
+ 
   setTotalErrors,
   setEndTime,
   startTime,
   setStartTime,
+
+  setUserInput,
+  setIncorrectChars,
+  languageTest,
+  
+  activeModeButton,
+  setWordComplete,
+  activeRestartButton,
+  numbersInclude,
+  punctuationInclude,
 }) => {
-  const words = newWords.slice(0, wordCount);
+
+  const shuffledWords = useMemo(() => {
+    if (languageTest === 'russian') {
+      return shuffle(wordsRu).slice(0, wordCount);
+    }
+  
+    if (languageTest === 'english') {
+      return shuffle(wordsEn).slice(0, wordCount);
+    }
+    if(numbersInclude  && !punctuationInclude)
+    console.log("Используем массив с числами");
+
+    if(punctuationInclude && !numbersInclude)
+      console.log("Используем массив с пунктуацей");
+    if(numbersInclude && punctuationInclude) 
+      console.log("Используем массив со знаками и с пунктуацией");
+  
+    throw new Error('Invalid languageTest value');
+    // eslint-disable-next-line
+  }, [wordCount, languageTest, punctuationInclude, numbersInclude, activeRestartButton]);
+  
 
   // Calculate number of characters in each word (with spaces)
-  const charsInWord = words.map((word) => [...word, " "].length);
+  const charsInWord = shuffledWords.map((word) => [...word, " "].length);
 
-  const chars = words.flatMap((word, index) => [
+  const chars = shuffledWords.flatMap((word, index) => [
     ...word.split(""),
-    index !== words.length - 1 ? " " : "",
+    index !== shuffledWords.length - 1 ? " " : "",
   ]);
 
   const refs = chars.map(() => React.createRef());
 
   const [focusIndex, setFocusIndex] = useState(0);
   const [statuses, setStatuses] = useState(chars.map(() => "typingLetter"));
-  const [userInput, setUserInput] = useState([]);
-  const [incorrectChars, setIncorrectChars] = useState(new Set());
+  const [leftTime, setLeftTime] = useState(wordTime);
   const [extraInputs, setExtraInputs] = useState(
-    new Array(words.length).fill([])
+    new Array(shuffledWords.length).fill([])
   );
 
   // Calculate the index of current word
@@ -46,20 +80,62 @@ const InputText = ({
       break;
     }
   }
+  useEffect(() => {
+    
+    setStartTime(null);
+    setEndTime(null);
+    setLeftTime(wordTime);
+    setTotalChars(0);
+    setTotalErrors(0);
+    setFocusIndex(0);
+    setStatuses(chars.map(() => "typingLetter"));
+    setUserInput([]);
+  setIncorrectChars(new Set());
+
+  if(activeModeButton === "time")
+      setWordCount(wordTime * 3);
+  
+  // eslint-disable-next-line 
+  }, [
+    wordCount,activeModeButton,wordTime,activeRestartButton,languageTest
+  ]);
 
   useEffect(() => {
+    setExtraInputs(new Array(shuffledWords.length).fill([]));
+  }, [shuffledWords.length, activeModeButton]);
+
+ 
+
+  useEffect(() => {
+    
     if (refs[focusIndex]) {
       refs[focusIndex].current.focus();
     }
     if (focusIndex + 1 >= chars.length) {
       refs[focusIndex].current.blur();
     }
-    if (focusIndex + 1 >= chars.length) {
+    if ((focusIndex + 1 >= chars.length) || (leftTime <= 0 && activeModeButton === "time")) {
       setEndTime(new Date());
       setStatus("analysis");
-      console.log(status);
+      setWordComplete(wordIndex + 1);
     }
-  }, [focusIndex, chars.length, status, setStatus, setEndTime, chars, refs]);
+
+  
+    
+  }, [focusIndex, chars.length, status, setStatus, setEndTime, chars, refs, leftTime,setWordComplete, wordIndex, activeModeButton]);
+
+  useEffect(() => {
+    let timer;
+    
+    if (startTime) {
+      timer = setInterval(() => {
+        const currentLeftTime = ((wordTime * 1000 - (new Date() - startTime)) / 1000).toFixed(0);
+        setLeftTime(currentLeftTime);
+      }, 1000);
+    }
+    
+    return () => clearInterval(timer); // очистка интервала при размонтировании компонента
+  }, [wordTime, startTime]);
 
   const handleFocus = () => {
     setActiveKey(chars[focusIndex]);
@@ -67,31 +143,14 @@ const InputText = ({
 
   const handleBlur = () => {
     setActiveKey("");
+    
   };
 
   const handleKeyDown = (event) => {
     const ignoreKeys = new Set([
-      "F1",
-      "F2",
-      "F3",
-      "F4",
-      "F5",
-      "F6",
-      "F7",
-      "F8",
-      "F9",
-      "F10",
-      "F11",
-      "F12",
-      "CapsLock",
-      "Alt",
-      "Shift",
-      "ArrowUp",
-      "ArrowLeft",
-      "ArrowRight",
-      "ArrowDown",
-      "Tab",
-      "Control",
+      "F1","F2","F3","F4","F5","F6","F7","F8","F9",
+      "F10","F11","F12","CapsLock","Alt","Shift","ArrowUp",
+      "ArrowLeft","ArrowRight","ArrowDown","Tab","Control",
     ]);
 
     if (ignoreKeys.has(event.key)) return;
@@ -154,16 +213,22 @@ const InputText = ({
       }
 
       if (focusIndex > 0) {
-        setStatuses((prev_1) => {
-          const newStatuses = [...prev_1];
+        let charWasIncorrect = statuses[focusIndex - 1] === 'typingLetter-incorrect';
+
+        setStatuses((prevStatuses) => {
+          const newStatuses = [...prevStatuses];
           newStatuses[focusIndex - 1] = "typingLetter";
           return newStatuses;
         });
-        setIncorrectChars((prevSet) => {
-          const newSet = new Set(prevSet);
-          newSet.delete(chars[focusIndex - 1]);
-          return newSet;
-        });
+
+        if (!charWasIncorrect) {
+          setIncorrectChars((prevSet) => {
+            const newSet = new Set(prevSet);
+            newSet.delete(chars[focusIndex - 1]);
+            return newSet;
+          });
+        }     
+
         setUserInput((prevInput) => [...prevInput.slice(0, focusIndex - 1)]);
         setFocusIndex((prevIndex) => prevIndex - 1);
       }
@@ -182,12 +247,12 @@ const InputText = ({
       newStatuses[focusIndex] = charCorrect
         ? "typingLetter-correct"
         : "typingLetter-incorrect";
-
-      if (!charCorrect) {
-        setIncorrectChars((prevSet) => new Set(prevSet.add(chars[focusIndex])));
-      }
       return newStatuses;
     });
+
+    if (!charCorrect) {
+      setIncorrectChars((prevSet) => new Set(prevSet.add(chars[focusIndex])));
+    }
 
     setUserInput((prevInput) => [...prevInput.slice(0, focusIndex), event.key]);
 
@@ -198,8 +263,8 @@ const InputText = ({
   };
 
   let charIndex = 0;
-  const wordItems = words.map((word, index) => {
-    const charsInWord = [...word, index !== words.length - 1 ? " " : ""].length;
+  const wordItems = shuffledWords.map((word, index) => {
+    const charsInWord = [...word, index !== shuffledWords.length - 1 ? " " : ""].length;
     const refSet = refs.slice(charIndex, charIndex + charsInWord);
     const statusSet = statuses.slice(charIndex, charIndex + charsInWord);
     charIndex += charsInWord;
@@ -211,19 +276,23 @@ const InputText = ({
         statusSet={statusSet}
         handleBlur={handleBlur}
         handleFocus={handleFocus}
-        extraInputs={extraInputs[index]}
+        extraInputs={extraInputs[index] || []} // add fallback here
       />
     );
   });
 
   return (
-    <section className="inputText-section">
+    <section className="inputText-section" key={shuffledWords} >
       <div className="container">
+      
+  {activeModeButton === "time"  
+    ? <div className="count-wrapper" key={leftTime}>{leftTime}</div>
+    : <div className="count-wrapper" key={wordCount}>{wordIndex} / {wordCount}</div>
+    }
         <div
           tabIndex={-1}
           className="typingText-wrapper"
           onKeyDown={handleKeyDown}
-          key={wordCount}
         >
           {wordItems}
         </div>

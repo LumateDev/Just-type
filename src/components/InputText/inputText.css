@@ -6,12 +6,18 @@
 }
 
 .typingText-wrapper {
+  max-height: 120px; 
+  overflow-y: auto; 
+  white-space: pre-wrap; 
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   row-gap: 10px;
   z-index: 0;
   max-width: 900px;
+}
+.typingText-wrapper::-webkit-scrollbar {
+  width: 0;
 }
 
 .typingText-wrapper :focus {
@@ -22,6 +28,7 @@
 
   animation: cursor-blink 0.9s infinite;
 }
+.count-wrapper{ color: #c7a900; font-family: "Roboto"; font-weight: 600; font-size: 20px; margin-bottom: 20px; }
 
 .inputText-section {
   margin-top: 100px;

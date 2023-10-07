@@ -1,11 +1,13 @@
 .section-analysis {
-  margin-top: 100px;
+  margin-top: 60px;
   display: flex;
   justify-content: center;
 }
 .analysis-title {
+  padding-top: 20px;
+ text-align: center;
   font-size: 24px;
-  color: #c2c2c1;
+  color: #c7a900;
   font-family: "Roboto";
   font-weight: 600;
 }
@@ -16,14 +18,31 @@
   padding: 12px 12px 12px 12px;
   background-color: #5d5d5d;
   border-radius: 24px;
-  width: 900px;
-  height: 200px;
+  
+  
 }
 .itemValue {
   display: flex;
   align-items: center;
-  color: #c7a900;
+  margin-left: 20px;
+  color: #c2c2c1;
   font-family: "Roboto";
-  font-weight: 600;
+  font-weight: 400;
   font-size: 20px;
+}
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 20px 0px 20px;
+}
+
+.hint{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color : #171717;
+  font-size: 18px;
+  font-family: "Roboto";
+opacity:  0.5;  
 }

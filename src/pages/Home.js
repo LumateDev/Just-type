@@ -14,12 +14,18 @@ const Home = () => {
   const [totalErrors, setTotalErrors] = useState(0);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
-
-  const [wordTime, setWordTime] = useState("15s");
-  const [restartTest, setRestartTest] = useState(0);
+  const [activeModeButton, setActiveModeButton] = useState("words");
+  const [wordTime, setWordTime] = useState(30);
+  const [activeRestartButton, setActiveRestartButton] = useState(0);
   const [numbersInclude, setNumbersInclude] = useState(false);
   const [punctuationInclude, setPunctuationInclude] = useState(false);
   const [languageTest, setLanguageTest] = useState("english");
+
+  const [userInput, setUserInput] = useState([]);
+  const [incorrectChars, setIncorrectChars] = useState(new Set());
+  const [wordComplete, setWordComplete] = useState(0);
+
+  
 
   return (
     <>
@@ -28,43 +34,67 @@ const Home = () => {
         <>
           <InputText
             wordCount={wordCount}
+            setWordCount = {setWordCount}
             setActiveKey={setActiveKey}
             status={status}
             setStatus={setStatus}
-            totalChars={totalChars}
+
             setTotalChars={setTotalChars}
-            totalErrors={totalErrors}
+            
             setTotalErrors={setTotalErrors}
             setEndTime={setEndTime}
             startTime={startTime}
             setStartTime={setStartTime}
+            wordTime = {wordTime}
+
+            languageTest = {languageTest}
+            setUserInput = {setUserInput}
+            activeRestartButton = {activeRestartButton}
+            numbersInclude = {numbersInclude}
+            punctuationInclude = {punctuationInclude}
+            setIncorrectChars = {setIncorrectChars}
+            activeModeButton = {activeModeButton}
+            setWordComplete = {setWordComplete}
+
           />
           <Toolbar
             setStatus={setStatus}
             activeCountButton={wordCount}
-            // activeTimeButton={wordTime}
-            // activeLanguageButton={languageTest}
-            // activeNumbersButton={numbersInclude}
-            // activePunctuationButton={punctuationInclude}
-            activeRestartButton={restartTest}
+            activeTimeButton={wordTime}
+            activeLanguageButton={languageTest}
+            activeNumbersButton={numbersInclude}
+            activePunctuationButton={punctuationInclude}
+            activeRestartButton={activeRestartButton}
             setActiveCountButton={setWordCount}
-            // setActiveTimeButton={setWordTime}
-            // setActiveLanguageButton={setLanguageTest}
-            // setActiveNumbersButton={setNumbersInclude}
-            // setActivePunctuationButton={setPunctuationInclude}
-            setActiveRestartButton={setRestartTest}
+            setActiveTimeButton={setWordTime}
+            setActiveLanguageButton={setLanguageTest}
+            setActiveNumbersButton={setNumbersInclude}
+            setActivePunctuationButton={setPunctuationInclude}
+            setActiveRestartButton={setActiveRestartButton}
+            activeModeButton = {activeModeButton}
+            setActiveModeButton = {setActiveModeButton}
           />
-          <Keyboard activeKey={activeKey} />
+          <Keyboard activeKey={activeKey} status={status} languageTest={languageTest} />
+
+          {/* <div className="itemValue">UserInput : {userInput}</div>
+          <div className="itemValue">incorrectChars : {incorrectChars}</div> */}
         </>
-      )}{" "}
+      )}
       {status === "analysis" && (
         <>
           <TestAnalysis
-            wordCount={wordCount}
+           
+            wordComplete={wordComplete}
             startTime={startTime}
             endTime={endTime}
             totalChars={totalChars}
             totalErrors={totalErrors}
+            userInput = {userInput}
+            incorrectChars = {incorrectChars}
+            activeRestartButton = {activeRestartButton}
+            setActiveRestartButton= {setActiveRestartButton}
+            setStatus={setStatus}
+            languageTest={languageTest}
           />
         </>
       )}
