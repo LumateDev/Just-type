@@ -17,8 +17,9 @@
   font-family: "Roboto";
   font-size: 24px;
 }
-#typingLetter-incorrect__add {
+.typingLetter-incorrect__add {
   color: #7e0b0b;
   font-family: "Roboto";
   font-size: 24px;
+  text-decoration: underline;
 }

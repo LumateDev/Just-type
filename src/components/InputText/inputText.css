@@ -5,13 +5,39 @@
   align-items: center;
 }
 
+.capsLock-warning {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 60px;
+  padding: 10px;
+  background-color: #c7a900;
+  border-radius: 16px;
+  font-family: "Roboto";
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  z-index: 10000;
+}
+
 .typingText-wrapper {
+  max-height: 120px;
+  overflow-y: auto;
+  white-space: pre-wrap;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   row-gap: 10px;
   z-index: 0;
   max-width: 900px;
+}
+.typingText-wrapper::-webkit-scrollbar {
+  width: 0;
 }
 
 .typingText-wrapper :focus {
@@ -22,16 +48,20 @@
 
   animation: cursor-blink 0.9s infinite;
 }
+.count-wrapper {
+  color: #c7a900;
+  font-family: "Roboto";
+  font-weight: 600;
+  font-size: 20px;
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
 
 .inputText-section {
   margin-top: 100px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.word {
-  margin-right: 3px;
 }
 
 @keyframes cursor-blink {

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "./toolBar.css";
 import RestartButton from "../ToolButton/RestartButton";
-import restartIcon from "./../../img/toolbar/restart.svg";
 import Button from "../ToolButton/Button";
 
 const ToolBar = ({
@@ -18,16 +17,13 @@ const ToolBar = ({
   setActiveNumbersButton,
   setActivePunctuationButton,
   setActiveRestartButton,
+  activeModeButton,
+  setActiveModeButton,
 }) => {
-  const [activeModeButton, setActiveModeButton] = useState("words");
-
   const handleClickMode = (buttonName) => {
     setActiveModeButton(buttonName);
   };
-  const handleClickRestart = () => {
-    setActiveRestartButton(activeRestartButton + 1);
-    setStatus("print");
-  };
+
   const handleClickCount = (buttonName) => {
     setActiveCountButton(buttonName);
   };
@@ -50,7 +46,7 @@ const ToolBar = ({
       countButtons = [10, 25, 50, 75, 100];
       break;
     case "time":
-      countButtons = ["15s", "30s", "1m", "3m", "5m"];
+      countButtons = [15, 30, 60, 120, 180];
       break;
     case "quote":
       countButtons = [];
@@ -65,8 +61,9 @@ const ToolBar = ({
         <div className="toolbar-wrapper">
           <div className="toolCard">
             <RestartButton
-              img={restartIcon}
-              handleClick={() => handleClickRestart()}
+              activeRestartButton={activeRestartButton}
+              setActiveRestartButton={setActiveRestartButton}
+              setStatus={setStatus}
             />
             <Button
               text="english"
@@ -119,19 +116,21 @@ const ToolBar = ({
               ))}
             </div>
           )}
-          <div className="toolCard">
-            <Button
-              text="Numbers"
-              active={activeNumbersButton}
-              handleClick={handleClickNumbers}
-            />
+          {activeModeButton !== "quote" && (
+            <div className="toolCard">
+              <Button
+                text="Numbers"
+                active={activeNumbersButton}
+                handleClick={handleClickNumbers}
+              />
 
-            <Button
-              text="Punctuation"
-              active={activePunctuationButton}
-              handleClick={handleClickPunctuation}
-            />
-          </div>
+              <Button
+                text="Punctuation"
+                active={activePunctuationButton}
+                handleClick={handleClickPunctuation}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>
