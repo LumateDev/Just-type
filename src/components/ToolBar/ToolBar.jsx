@@ -18,14 +18,12 @@ const ToolBar = ({
   setActivePunctuationButton,
   setActiveRestartButton,
   activeModeButton,
-  setActiveModeButton
+  setActiveModeButton,
 }) => {
-  
-
   const handleClickMode = (buttonName) => {
     setActiveModeButton(buttonName);
   };
- 
+
   const handleClickCount = (buttonName) => {
     setActiveCountButton(buttonName);
   };
@@ -62,7 +60,11 @@ const ToolBar = ({
       <div className="container">
         <div className="toolbar-wrapper">
           <div className="toolCard">
-            <RestartButton activeRestartButton = {activeRestartButton} setActiveRestartButton = {setActiveRestartButton} setStatus={setStatus}/>
+            <RestartButton
+              activeRestartButton={activeRestartButton}
+              setActiveRestartButton={setActiveRestartButton}
+              setStatus={setStatus}
+            />
             <Button
               text="english"
               active={activeLanguageButton === "english"}
@@ -114,19 +116,21 @@ const ToolBar = ({
               ))}
             </div>
           )}
-          <div className="toolCard">
-            <Button
-              text="Numbers"
-              active={activeNumbersButton}
-              handleClick={handleClickNumbers}
-            />
+          {activeModeButton !== "quote" && (
+            <div className="toolCard">
+              <Button
+                text="Numbers"
+                active={activeNumbersButton}
+                handleClick={handleClickNumbers}
+              />
 
-            <Button
-              text="Punctuation"
-              active={activePunctuationButton}
-              handleClick={handleClickPunctuation}
-            />
-          </div>
+              <Button
+                text="Punctuation"
+                active={activePunctuationButton}
+                handleClick={handleClickPunctuation}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

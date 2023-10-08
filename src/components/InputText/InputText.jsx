@@ -2,9 +2,18 @@ import React, { useEffect, useState, useMemo } from "react";
 import "./inputText.css";
 import WordGroup from "./WordGroup";
 
-import wordsRu from "./dataRu";
-import { shuffle } from "./shuffle";
-import wordsEn from "./dataEn";
+import wordsRu from "./../utils/dataRu";
+import wordsEn from "./../utils/dataEn";
+import wordsEnNum from "../utils/dataEnNum";
+import wordsEnNumPunc from "../utils/dataEnNumPunc";
+import wordsRuNum from "../utils/dataRuNum";
+import wordsRuPunc from "../utils/dataRuPunc";
+import wordsRuNumPunc from "../utils/dataRuNunPunc";
+import { randomEnglishQuote } from "../utils/quoteEn";
+import { randomRussianQuote } from "../utils/quoteRu";
+import { shuffle } from "./../utils/shuffle";
+import { ignoreKeys } from "../utils/ignoreKeys";
+import wordsEnPunc from "../utils/dataEnPunc";
 
 const InputText = ({
   wordCount,
@@ -13,49 +22,79 @@ const InputText = ({
   setStatus,
   wordTime,
   setWordCount,
-  
+
   setTotalChars,
- 
+
   setTotalErrors,
   setEndTime,
   startTime,
   setStartTime,
+  setActiveRestartButton,
 
   setUserInput,
   setIncorrectChars,
   languageTest,
-  
+
   activeModeButton,
   setWordComplete,
   activeRestartButton,
   numbersInclude,
   punctuationInclude,
 }) => {
-
   const shuffledWords = useMemo(() => {
-    if (languageTest === 'russian') {
-      return shuffle(wordsRu).slice(0, wordCount);
-    }
-  
-    if (languageTest === 'english') {
-      return shuffle(wordsEn).slice(0, wordCount);
-    }
-    if(numbersInclude  && !punctuationInclude)
-    console.log("Используем массив с числами");
+    if (languageTest === "russian") {
+      if (numbersInclude && !punctuationInclude)
+        return shuffle(wordsRuNum).slice(0, wordCount);
+      if (punctuationInclude && !numbersInclude)
+        return shuffle(wordsRuPunc).slice(0, wordCount);
+      if (numbersInclude && punctuationInclude)
+        return shuffle(wordsRuNumPunc).slice(0, wordCount);
+      if (activeModeButton === "quote") {
+        let randomQuote = shuffle(randomRussianQuote());
 
-    if(punctuationInclude && !numbersInclude)
-      console.log("Используем массив с пунктуацей");
-    if(numbersInclude && punctuationInclude) 
-      console.log("Используем массив со знаками и с пунктуацией");
-  
-    throw new Error('Invalid languageTest value');
+        if (typeof randomQuote === "string") {
+          randomQuote = randomQuote.split(" ");
+        }
+
+        return randomQuote;
+      } else {
+        return shuffle(wordsRu).slice(0, wordCount);
+      }
+    }
+
+    if (languageTest === "english") {
+      if (numbersInclude && !punctuationInclude)
+        return shuffle(wordsEnNum).slice(0, wordCount);
+      if (punctuationInclude && !numbersInclude)
+        return shuffle(wordsEnPunc).slice(0, wordCount);
+      if (numbersInclude && punctuationInclude)
+        return shuffle(wordsEnNumPunc).slice(0, wordCount);
+      if (activeModeButton === "quote") {
+        let randomQuote = shuffle(randomEnglishQuote());
+
+        if (typeof randomQuote === "string") {
+          randomQuote = randomQuote.split(" ");
+        }
+
+        return randomQuote;
+      } else {
+        return shuffle(wordsEn).slice(0, wordCount);
+      }
+    }
+
+    throw new Error("Invalid languageTest value");
     // eslint-disable-next-line
-  }, [wordCount, languageTest, punctuationInclude, numbersInclude, activeRestartButton]);
-  
+  }, [
+    wordCount,
+    languageTest,
+    punctuationInclude,
+    numbersInclude,
+    activeRestartButton,
+    activeModeButton,
+  ]);
 
   // Calculate number of characters in each word (with spaces)
   const charsInWord = shuffledWords.map((word) => [...word, " "].length);
-
   const chars = shuffledWords.flatMap((word, index) => [
     ...word.split(""),
     index !== shuffledWords.length - 1 ? " " : "",
@@ -64,8 +103,10 @@ const InputText = ({
   const refs = chars.map(() => React.createRef());
 
   const [focusIndex, setFocusIndex] = useState(0);
+  const [tabPressed, setTabPressed] = useState(false);
   const [statuses, setStatuses] = useState(chars.map(() => "typingLetter"));
   const [leftTime, setLeftTime] = useState(wordTime);
+  const [capsLockOn, setCapsLockOn] = useState(false);
   const [extraInputs, setExtraInputs] = useState(
     new Array(shuffledWords.length).fill([])
   );
@@ -81,7 +122,6 @@ const InputText = ({
     }
   }
   useEffect(() => {
-    
     setStartTime(null);
     setEndTime(null);
     setLeftTime(wordTime);
@@ -90,50 +130,76 @@ const InputText = ({
     setFocusIndex(0);
     setStatuses(chars.map(() => "typingLetter"));
     setUserInput([]);
-  setIncorrectChars(new Set());
+    setIncorrectChars(new Set());
 
-  if(activeModeButton === "time")
-      setWordCount(wordTime * 3);
-  
-  // eslint-disable-next-line 
+    if (activeModeButton === "time") setWordCount(wordTime * 2);
+    else if (
+      activeModeButton === "words" &&
+      wordCount !== 10 &&
+      wordCount !== 25 &&
+      wordCount !== 50 &&
+      wordCount !== 75 &&
+      wordCount !== 100
+    ) {
+      setWordCount(25);
+    }
+    if (activeModeButton === "quote") setWordCount(shuffledWords.length);
+
+    // eslint-disable-next-line
   }, [
-    wordCount,activeModeButton,wordTime,activeRestartButton,languageTest
+    wordCount,
+    activeModeButton,
+    wordTime,
+    activeRestartButton,
+    languageTest,
   ]);
 
   useEffect(() => {
     setExtraInputs(new Array(shuffledWords.length).fill([]));
-  }, [shuffledWords.length, activeModeButton]);
-
- 
+  }, [shuffledWords.length, activeModeButton, activeRestartButton]);
 
   useEffect(() => {
-    
     if (refs[focusIndex]) {
       refs[focusIndex].current.focus();
     }
     if (focusIndex + 1 >= chars.length) {
       refs[focusIndex].current.blur();
     }
-    if ((focusIndex + 1 >= chars.length) || (leftTime <= 0 && activeModeButton === "time")) {
+    if (
+      focusIndex + 1 >= chars.length ||
+      (leftTime <= 0 && activeModeButton === "time")
+    ) {
       setEndTime(new Date());
       setStatus("analysis");
       setWordComplete(wordIndex + 1);
     }
-
-  
-    
-  }, [focusIndex, chars.length, status, setStatus, setEndTime, chars, refs, leftTime,setWordComplete, wordIndex, activeModeButton]);
+  }, [
+    focusIndex,
+    chars.length,
+    status,
+    setStatus,
+    setEndTime,
+    chars,
+    refs,
+    leftTime,
+    setWordComplete,
+    wordIndex,
+    activeModeButton,
+  ]);
 
   useEffect(() => {
     let timer;
-    
+
     if (startTime) {
       timer = setInterval(() => {
-        const currentLeftTime = ((wordTime * 1000 - (new Date() - startTime)) / 1000).toFixed(0);
+        const currentLeftTime = (
+          (wordTime * 1000 - (new Date() - startTime)) /
+          1000
+        ).toFixed(0);
         setLeftTime(currentLeftTime);
       }, 1000);
     }
-    
+
     return () => clearInterval(timer); // очистка интервала при размонтировании компонента
   }, [wordTime, startTime]);
 
@@ -143,18 +209,32 @@ const InputText = ({
 
   const handleBlur = () => {
     setActiveKey("");
-    
   };
 
   const handleKeyDown = (event) => {
-    const ignoreKeys = new Set([
-      "F1","F2","F3","F4","F5","F6","F7","F8","F9",
-      "F10","F11","F12","CapsLock","Alt","Shift","ArrowUp",
-      "ArrowLeft","ArrowRight","ArrowDown","Tab","Control",
-    ]);
-
     if (ignoreKeys.has(event.key)) return;
 
+    if (event.key === "Tab") {
+      setTabPressed(true);
+      return;
+    }
+    if (event.key === "Enter" && tabPressed) {
+      setActiveRestartButton(activeRestartButton + 1);
+      setTabPressed(false);
+      return;
+    }
+    if (event.key === "Enter" && !tabPressed) {
+      return;
+    }
+
+    if (event.key === "CapsLock") {
+      if (event.getModifierState("CapsLock")) {
+        setCapsLockOn(true);
+      } else {
+        setCapsLockOn(false);
+      }
+      return;
+    }
     if (!startTime) {
       setStartTime(new Date());
     }
@@ -213,7 +293,8 @@ const InputText = ({
       }
 
       if (focusIndex > 0) {
-        let charWasIncorrect = statuses[focusIndex - 1] === 'typingLetter-incorrect';
+        let charWasIncorrect =
+          statuses[focusIndex - 1] === "typingLetter-incorrect";
 
         setStatuses((prevStatuses) => {
           const newStatuses = [...prevStatuses];
@@ -227,7 +308,7 @@ const InputText = ({
             newSet.delete(chars[focusIndex - 1]);
             return newSet;
           });
-        }     
+        }
 
         setUserInput((prevInput) => [...prevInput.slice(0, focusIndex - 1)]);
         setFocusIndex((prevIndex) => prevIndex - 1);
@@ -264,7 +345,8 @@ const InputText = ({
 
   let charIndex = 0;
   const wordItems = shuffledWords.map((word, index) => {
-    const charsInWord = [...word, index !== shuffledWords.length - 1 ? " " : ""].length;
+    const charsInWord = [...word, index !== shuffledWords.length - 1 ? " " : ""]
+      .length;
     const refSet = refs.slice(charIndex, charIndex + charsInWord);
     const statusSet = statuses.slice(charIndex, charIndex + charsInWord);
     charIndex += charsInWord;
@@ -276,19 +358,24 @@ const InputText = ({
         statusSet={statusSet}
         handleBlur={handleBlur}
         handleFocus={handleFocus}
-        extraInputs={extraInputs[index] || []} // add fallback here
+        extraInputs={extraInputs[index] || []}
       />
     );
   });
 
   return (
-    <section className="inputText-section" key={shuffledWords} >
+    <section className="inputText-section" key={shuffledWords}>
       <div className="container">
-      
-  {activeModeButton === "time"  
-    ? <div className="count-wrapper" key={leftTime}>{leftTime}</div>
-    : <div className="count-wrapper" key={wordCount}>{wordIndex} / {wordCount}</div>
-    }
+        {capsLockOn && <div className="capsLock-warning">Caps Lock is on!</div>}
+        {activeModeButton === "time" ? (
+          <div className="count-wrapper" key={leftTime}>
+            {leftTime}
+          </div>
+        ) : (
+          <div className="count-wrapper" key={wordCount}>
+            {wordIndex} / {wordCount}
+          </div>
+        )}
         <div
           tabIndex={-1}
           className="typingText-wrapper"

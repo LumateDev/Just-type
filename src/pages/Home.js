@@ -25,8 +25,6 @@ const Home = () => {
   const [incorrectChars, setIncorrectChars] = useState(new Set());
   const [wordComplete, setWordComplete] = useState(0);
 
-  
-
   return (
     <>
       <Header />
@@ -34,28 +32,25 @@ const Home = () => {
         <>
           <InputText
             wordCount={wordCount}
-            setWordCount = {setWordCount}
+            setWordCount={setWordCount}
             setActiveKey={setActiveKey}
             status={status}
             setStatus={setStatus}
-
             setTotalChars={setTotalChars}
-            
             setTotalErrors={setTotalErrors}
             setEndTime={setEndTime}
             startTime={startTime}
             setStartTime={setStartTime}
-            wordTime = {wordTime}
-
-            languageTest = {languageTest}
-            setUserInput = {setUserInput}
-            activeRestartButton = {activeRestartButton}
-            numbersInclude = {numbersInclude}
-            punctuationInclude = {punctuationInclude}
-            setIncorrectChars = {setIncorrectChars}
-            activeModeButton = {activeModeButton}
-            setWordComplete = {setWordComplete}
-
+            wordTime={wordTime}
+            languageTest={languageTest}
+            setUserInput={setUserInput}
+            activeRestartButton={activeRestartButton}
+            setActiveRestartButton={setActiveRestartButton}
+            numbersInclude={numbersInclude}
+            punctuationInclude={punctuationInclude}
+            setIncorrectChars={setIncorrectChars}
+            activeModeButton={activeModeButton}
+            setWordComplete={setWordComplete}
           />
           <Toolbar
             setStatus={setStatus}
@@ -71,10 +66,14 @@ const Home = () => {
             setActiveNumbersButton={setNumbersInclude}
             setActivePunctuationButton={setPunctuationInclude}
             setActiveRestartButton={setActiveRestartButton}
-            activeModeButton = {activeModeButton}
-            setActiveModeButton = {setActiveModeButton}
+            activeModeButton={activeModeButton}
+            setActiveModeButton={setActiveModeButton}
           />
-          <Keyboard activeKey={activeKey} status={status} languageTest={languageTest} />
+          <Keyboard
+            activeKey={activeKey}
+            status={status}
+            languageTest={languageTest}
+          />
 
           {/* <div className="itemValue">UserInput : {userInput}</div>
           <div className="itemValue">incorrectChars : {incorrectChars}</div> */}
@@ -83,16 +82,15 @@ const Home = () => {
       {status === "analysis" && (
         <>
           <TestAnalysis
-           
             wordComplete={wordComplete}
             startTime={startTime}
             endTime={endTime}
             totalChars={totalChars}
             totalErrors={totalErrors}
-            userInput = {userInput}
-            incorrectChars = {incorrectChars}
-            activeRestartButton = {activeRestartButton}
-            setActiveRestartButton= {setActiveRestartButton}
+            userInput={userInput}
+            incorrectChars={incorrectChars}
+            activeRestartButton={activeRestartButton}
+            setActiveRestartButton={setActiveRestartButton}
             setStatus={setStatus}
             languageTest={languageTest}
           />
