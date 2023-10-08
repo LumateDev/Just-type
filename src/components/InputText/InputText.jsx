@@ -41,6 +41,8 @@ const InputText = ({
   numbersInclude,
   punctuationInclude,
 }) => {
+  const [prevModeButton, setPrevModeButton] = useState();
+
   const shuffledWords = useMemo(() => {
     if (languageTest === "russian") {
       if (numbersInclude && !punctuationInclude)
@@ -50,11 +52,7 @@ const InputText = ({
       if (numbersInclude && punctuationInclude)
         return shuffle(wordsRuNumPunc).slice(0, wordCount);
       if (activeModeButton === "quote") {
-        let randomQuote = shuffle(randomRussianQuote());
-
-        if (typeof randomQuote === "string") {
-          randomQuote = randomQuote.split(" ");
-        }
+        let randomQuote = randomRussianQuote();
 
         return randomQuote;
       } else {
@@ -70,11 +68,7 @@ const InputText = ({
       if (numbersInclude && punctuationInclude)
         return shuffle(wordsEnNumPunc).slice(0, wordCount);
       if (activeModeButton === "quote") {
-        let randomQuote = shuffle(randomEnglishQuote());
-
-        if (typeof randomQuote === "string") {
-          randomQuote = randomQuote.split(" ");
-        }
+        let randomQuote = randomEnglishQuote();
 
         return randomQuote;
       } else {
@@ -122,6 +116,15 @@ const InputText = ({
     }
   }
   useEffect(() => {
+    if (activeModeButton !== prevModeButton && activeModeButton === "quote") {
+      setWordCount(shuffledWords.length);
+    }
+
+    setPrevModeButton(activeModeButton);
+    // eslint-disable-next-line
+  }, [activeModeButton, shuffledWords]);
+
+  useEffect(() => {
     setStartTime(null);
     setEndTime(null);
     setLeftTime(wordTime);
@@ -143,7 +146,6 @@ const InputText = ({
     ) {
       setWordCount(25);
     }
-    if (activeModeButton === "quote") setWordCount(shuffledWords.length);
 
     // eslint-disable-next-line
   }, [
@@ -367,11 +369,13 @@ const InputText = ({
     <section className="inputText-section" key={shuffledWords}>
       <div className="container">
         {capsLockOn && <div className="capsLock-warning">Caps Lock is on!</div>}
-        {activeModeButton === "time" ? (
+        {activeModeButton === "time" && (
           <div className="count-wrapper" key={leftTime}>
             {leftTime}
           </div>
-        ) : (
+        )}
+
+        {activeModeButton !== "quote" && activeModeButton !== "time" && (
           <div className="count-wrapper" key={wordCount}>
             {wordIndex} / {wordCount}
           </div>
