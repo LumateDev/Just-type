@@ -21,7 +21,7 @@ const Keyboard = ({ activeKey, incorrectKeys, status, languageTest }) => {
     if (incorrectKeys && incorrectKeys.has(key.toLowerCase())) {
       return "incorrectKey";
     }
-  
+
     return "defaultKey";
   };
 

@@ -1,11 +1,11 @@
 .section-analysis {
-  margin-top: 60px;
+  margin-top: 30px;
   display: flex;
   justify-content: center;
 }
 .analysis-title {
-  padding-top: 20px;
- text-align: center;
+  padding-top: 10px;
+  text-align: center;
   font-size: 24px;
   color: #c7a900;
   font-family: "Roboto";
@@ -14,35 +14,44 @@
 .analysis-wrapper {
   display: flex;
   flex-direction: column;
-  row-gap: 30px;
+  row-gap: 15px;
   padding: 12px 12px 12px 12px;
   background-color: #5d5d5d;
   border-radius: 24px;
-  
-  
 }
 .itemValue {
   display: flex;
   align-items: center;
   margin-left: 20px;
-  color: #c2c2c1;
+  min-height: 40px;
+  color: #f0bd04;
+  opacity: 0.75;
+  background-color: #333232;
+  border-radius: 8px;
+  padding: 20px 20px 20px 20px;
   font-family: "Roboto";
   font-weight: 400;
   font-size: 20px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
-.button{
+.button {
   display: flex;
+  flex-direction: row;
+  column-gap: 20px;
   justify-content: center;
   align-items: center;
   padding: 20px 20px 0px 20px;
 }
-
-.hint{
+.hint {
   display: flex;
   justify-content: center;
+
   align-items: center;
-  color : #171717;
+  color: #171717;
   font-size: 18px;
   font-family: "Roboto";
-opacity:  0.5;  
+  opacity: 0.5;
+  padding-bottom: 10px;
 }
