@@ -7,35 +7,45 @@
   padding-top: 10px;
   text-align: center;
   font-size: 24px;
-  color: #c7a900;
+  color: #8b8b8b;
   font-family: "Roboto";
   font-weight: 600;
 }
 .analysis-wrapper {
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+
+  row-gap: 10px;
   padding: 12px 12px 12px 12px;
   background-color: #5d5d5d;
   border-radius: 24px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 .itemValue {
   display: flex;
   align-items: center;
-  margin-left: 20px;
+
   min-height: 40px;
-  color: #f0bd04;
-  opacity: 0.75;
+  color: #ffcd4b;
+  opacity: 0.8;
   background-color: #333232;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 20px 20px 20px 20px;
   font-family: "Roboto";
-  font-weight: 400;
+  font-weight: 600;
   font-size: 20px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
-    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  border: #333232 solid 2px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  transition: all 0.4 ease-in-out;
 }
+
+.itemValue:hover {
+  border: #ffcd4b solid 2px;
+}
+
 .button {
   display: flex;
   flex-direction: row;
@@ -46,12 +56,9 @@
 }
 .hint {
   display: flex;
-  justify-content: center;
-
-  align-items: center;
-  color: #171717;
+  padding: 5px 5px 5px 5px;
+  color: #999999;
   font-size: 18px;
   font-family: "Roboto";
-  opacity: 0.5;
-  padding-bottom: 10px;
+  opacity: 0.8;
 }

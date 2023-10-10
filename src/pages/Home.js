@@ -1,4 +1,3 @@
-import Header from "./../components/Header/Header";
 import InputText from "../components/InputText/InputText";
 import Toolbar from "../components/ToolBar/ToolBar";
 import Keyboard from "../components/Keyboard/Keyboard";
@@ -27,7 +26,6 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       {status === "print" && (
         <>
           <InputText

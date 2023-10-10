@@ -23,17 +23,17 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li className="nav-list__item">
-              <NavLink to="/education" className="bell-link">
+              <NavLink to="/notification" className="bell-link">
                 <img src={bellIcon} alt="bellIcon" width="32px" height="32px" />
               </NavLink>
             </li>
             <li className="nav-list__item">
-              <NavLink to="/education" className="user-link">
+              <NavLink to="/profile" className="user-link">
                 <img src={userIcon} alt="userIcon" width="32px" height="32px" />
               </NavLink>
             </li>
             <li className="nav-list__item">
-              <NavLink to="/education" className="settings-link">
+              <NavLink to="/settings" className="settings-link">
                 <img
                   src={settingsIcon}
                   alt="settingsIcon"

@@ -23,3 +23,10 @@
   font-size: 28px;
   text-decoration: underline;
 }
+
+.typingLetter,
+.typingLetter-correct,
+.typingLetter-incorrect,
+.typingLetter-incorrect__add {
+  transition: color 0.05 ease-in;
+}

@@ -122,7 +122,7 @@ const InputText = ({
     setUserInput([]);
     setIncorrectChars(new Set());
 
-    if (activeModeButton === "time") setWordCount(wordTime * 2);
+    if (activeModeButton === "time") setWordCount(wordTime * 5);
     else if (
       activeModeButton === "words" &&
       wordCount !== 10 &&
@@ -356,48 +356,59 @@ const InputText = ({
   return (
     <section className="inputText-section" key={shuffledWords}>
       <div className="container">
-        <div className="hint">Нажмите tab + Enter чтобы начать сначала</div>
-        {capsLockOn && <div className="capsLock-warning">Caps Lock is on!</div>}
-        {activeModeButton === "time" && (
-          <div className="count-wrapper" key={leftTime}>
-            {leftTime}
-          </div>
-        )}
+        <div className="top-bar-row">
+          <div className="top-bar-row-row">
+            {activeModeButton === "time" && (
+              <div className="count-wrapper" key={leftTime}>
+                {leftTime}
+              </div>
+            )}
 
-        {activeModeButton === "words" && (
-          <div className="count-wrapper" key={wordCount}>
-            {wordIndex} / {wordCount}
+            {activeModeButton === "words" && (
+              <div className="count-wrapper" key={wordCount}>
+                {wordIndex} / {wordCount}
+              </div>
+            )}
+            {activeModeButton === "quote" && (
+              <div className="count-wrapper" key={wordCount}>
+                {wordIndex} / {shuffledWords.length}
+              </div>
+            )}
+            {capsLockOn && (
+              <div className="capsLock-warning">Caps Lock is on!</div>
+            )}
           </div>
-        )}
-        {activeModeButton === "quote" && (
-          <div className="count-wrapper" key={wordCount}>
-            {wordIndex} / {shuffledWords.length}
+          <div className="top-bar-col">
+            {" "}
+            <div className="restart-hint">
+              Нажмите tab + Enter чтобы начать сначала
+            </div>
           </div>
-        )}
-
-        {showButton && (
-          <button
-            className="focus-button"
-            onClick={() => refs[focusIndex].current.focus()}
+        </div>
+        <div className="focus-button-wrapper">
+          {showButton && (
+            <button
+              className="focus-button"
+              onClick={() => refs[focusIndex].current.focus()}
+            >
+              Нажмите чтобы продолжить печать
+            </button>
+          )}
+          <div
+            tabIndex={-1}
+            className={`typingText-wrapper ${isBlur ? "blur" : ""}`}
+            onKeyDown={handleKeyDown}
+            onBlur={() => {
+              setIsBlur(true);
+              setShowButton(true);
+            }}
+            onFocus={() => {
+              setIsBlur(false);
+              setShowButton(false);
+            }}
           >
-            Нажмите чтобы продолжить печать
-          </button>
-        )}
-
-        <div
-          tabIndex={-1}
-          className={`typingText-wrapper ${isBlur ? "blur" : ""}`}
-          onKeyDown={handleKeyDown}
-          onBlur={() => {
-            setIsBlur(true);
-            setShowButton(true);
-          }}
-          onFocus={() => {
-            setIsBlur(false);
-            setShowButton(false);
-          }}
-        >
-          {wordItems}
+            {wordItems}
+          </div>
         </div>
       </div>
     </section>
