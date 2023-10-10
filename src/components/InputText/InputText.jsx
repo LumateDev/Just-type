@@ -308,6 +308,7 @@ const InputText = ({
     let charCorrect = event.key === chars[focusIndex];
 
     if (event.key !== "Backspace") {
+      
       setTotalChars((prevCharTotal) => prevCharTotal + 1);
       if (!charCorrect) setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
     }
@@ -321,6 +322,7 @@ const InputText = ({
     });
 
     if (!charCorrect) {
+      setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
       setIncorrectChars((prevSet) => new Set(prevSet.add(chars[focusIndex])));
     }
 
@@ -362,9 +364,14 @@ const InputText = ({
           </div>
         )}
 
-        {activeModeButton !== "quote" && activeModeButton !== "time" && (
+        {activeModeButton  === "words" && (
           <div className="count-wrapper" key={wordCount}>
             {wordIndex} / {wordCount}
+          </div>
+        )}
+        {activeModeButton  === "quote" && (
+          <div className="count-wrapper" key={wordCount}>
+            {wordIndex} / {shuffledWords.length}
           </div>
         )}
 
