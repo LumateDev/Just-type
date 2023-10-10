@@ -22,27 +22,21 @@ const InputText = ({
   setStatus,
   wordTime,
   setWordCount,
-
   setTotalChars,
-
   setTotalErrors,
   setEndTime,
   startTime,
   setStartTime,
   setActiveRestartButton,
-
   setUserInput,
   setIncorrectChars,
   languageTest,
-
   activeModeButton,
   setWordComplete,
   activeRestartButton,
   numbersInclude,
   punctuationInclude,
 }) => {
-  const [prevModeButton, setPrevModeButton] = useState();
-
   const shuffledWords = useMemo(() => {
     if (languageTest === "russian") {
       if (numbersInclude && !punctuationInclude)
@@ -95,7 +89,8 @@ const InputText = ({
   ]);
 
   const refs = chars.map(() => React.createRef());
-
+  const [isBlur, setIsBlur] = useState(false);
+  const [showButton, setShowButton] = useState(false);
   const [focusIndex, setFocusIndex] = useState(0);
   const [tabPressed, setTabPressed] = useState(false);
   const [statuses, setStatuses] = useState(chars.map(() => "typingLetter"));
@@ -115,14 +110,6 @@ const InputText = ({
       break;
     }
   }
-  useEffect(() => {
-    if (activeModeButton !== prevModeButton && activeModeButton === "quote") {
-      setWordCount(shuffledWords.length);
-    }
-
-    setPrevModeButton(activeModeButton);
-    // eslint-disable-next-line
-  }, [activeModeButton, shuffledWords]);
 
   useEffect(() => {
     setStartTime(null);
@@ -321,6 +308,7 @@ const InputText = ({
     let charCorrect = event.key === chars[focusIndex];
 
     if (event.key !== "Backspace") {
+      
       setTotalChars((prevCharTotal) => prevCharTotal + 1);
       if (!charCorrect) setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
     }
@@ -334,6 +322,7 @@ const InputText = ({
     });
 
     if (!charCorrect) {
+      setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
       setIncorrectChars((prevSet) => new Set(prevSet.add(chars[focusIndex])));
     }
 
@@ -358,8 +347,8 @@ const InputText = ({
         word={word}
         refSet={refSet}
         statusSet={statusSet}
-        handleBlur={handleBlur}
         handleFocus={handleFocus}
+        handleBlur={handleBlur}
         extraInputs={extraInputs[index] || []}
       />
     );
@@ -375,15 +364,38 @@ const InputText = ({
           </div>
         )}
 
-        {activeModeButton !== "quote" && activeModeButton !== "time" && (
+        {activeModeButton  === "words" && (
           <div className="count-wrapper" key={wordCount}>
             {wordIndex} / {wordCount}
           </div>
         )}
+        {activeModeButton  === "quote" && (
+          <div className="count-wrapper" key={wordCount}>
+            {wordIndex} / {shuffledWords.length}
+          </div>
+        )}
+
+        {showButton && (
+          <button
+            className="focus-button"
+            onClick={() => refs[focusIndex].current.focus()}
+          >
+            Нажмите чтобы продолжить печать
+          </button>
+        )}
+
         <div
           tabIndex={-1}
-          className="typingText-wrapper"
+          className={`typingText-wrapper ${isBlur ? "blur" : ""}`}
           onKeyDown={handleKeyDown}
+          onBlur={() => {
+            setIsBlur(true);
+            setShowButton(true);
+          }}
+          onFocus={() => {
+            setIsBlur(false);
+            setShowButton(false);
+          }}
         >
           {wordItems}
         </div>
