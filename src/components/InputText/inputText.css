@@ -7,7 +7,7 @@
 
 .capsLock-warning {
   position: fixed;
-  top: 25%;
+  top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -74,7 +74,7 @@
 }
 .focus-button {
   position: fixed;
-  top: 37%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -86,4 +86,14 @@
   color: #fff;
   text-align: center;
   z-index: 10000;
+}
+.hint {
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  color: #171717;
+  font-size: 18px;
+  font-family: "Roboto";
+  opacity: 0.5;
 }

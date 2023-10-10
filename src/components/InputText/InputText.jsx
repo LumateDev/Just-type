@@ -308,7 +308,6 @@ const InputText = ({
     let charCorrect = event.key === chars[focusIndex];
 
     if (event.key !== "Backspace") {
-      
       setTotalChars((prevCharTotal) => prevCharTotal + 1);
       if (!charCorrect) setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
     }
@@ -357,6 +356,7 @@ const InputText = ({
   return (
     <section className="inputText-section" key={shuffledWords}>
       <div className="container">
+        <div className="hint">Нажмите tab + Enter чтобы начать сначала</div>
         {capsLockOn && <div className="capsLock-warning">Caps Lock is on!</div>}
         {activeModeButton === "time" && (
           <div className="count-wrapper" key={leftTime}>
@@ -364,12 +364,12 @@ const InputText = ({
           </div>
         )}
 
-        {activeModeButton  === "words" && (
+        {activeModeButton === "words" && (
           <div className="count-wrapper" key={wordCount}>
             {wordIndex} / {wordCount}
           </div>
         )}
-        {activeModeButton  === "quote" && (
+        {activeModeButton === "quote" && (
           <div className="count-wrapper" key={wordCount}>
             {wordIndex} / {shuffledWords.length}
           </div>
