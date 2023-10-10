@@ -10,7 +10,7 @@ const Header = () => {
         <div className="container">
           <div className="header-row">
             <div className="header-logo">
-              <NavLink to="/" className="header-logo">
+              <NavLink to="/Just-type/" className="header-logo">
                 <img src={defaultLogo} alt="logo" width="200px" height="60px" />
               </NavLink>
             </div>

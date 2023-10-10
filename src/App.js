@@ -14,10 +14,10 @@ function App() {
         <Header />
         {/* <!----------------------------PAGES----------------------------------------> */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/Just-type/" element={<Home />} />
+          <Route path="/Just-type/education" element={<Education />} />
+          <Route path="/Just-type/profile" element={<Profile />} />
+          <Route path="/Just-type/settings" element={<Settings />} />
         </Routes>
 
         <Footer />
