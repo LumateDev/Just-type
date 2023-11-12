@@ -143,6 +143,7 @@ const InputText = ({
     languageTest,
   ]);
 
+  //clear extraInputs
   useEffect(() => {
     setExtraInputs(new Array(shuffledWords.length).fill([]));
   }, [shuffledWords.length, activeModeButton, activeRestartButton]);
@@ -241,7 +242,7 @@ const InputText = ({
     if (event.key !== " ") {
       if (
         chars[focusIndex] === " " &&
-        extraInputs[wordIndex].length < 10 &&
+        extraInputs[wordIndex].length < 6 &&
         event.key !== "Backspace"
       ) {
         event.preventDefault();
@@ -256,7 +257,7 @@ const InputText = ({
       }
       if (
         chars[focusIndex] === " " &&
-        extraInputs[wordIndex].length >= 10 &&
+        extraInputs[wordIndex].length >= 6 &&
         event.key !== "Backspace"
       ) {
         event.preventDefault();
