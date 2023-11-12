@@ -42,7 +42,7 @@
   outline: none;
   border-left: 2px solid;
   border-color: rgba(199, 184, 3, 0.7);
-  animation: cursor-blink 0.9s infinite;
+  animation: cursor-blink 1s infinite;
 }
 .count-wrapper {
   padding-top: 10px;

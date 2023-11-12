@@ -8,9 +8,7 @@ const TestAnalysis = ({
   startTime,
   endTime,
   totalChars,
-
   totalErrors,
-
   userInput,
   incorrectChars,
   wordComplete,
