@@ -382,7 +382,7 @@ const InputText = ({
           <div className="top-bar-col">
             {" "}
             <div className="restart-hint">
-              Нажмите tab + Enter чтобы начать сначала
+              Нажмите Tab + Enter чтобы начать сначала
             </div>
           </div>
         </div>
