@@ -14,12 +14,12 @@ const Navbar = () => {
         <div className="nav-row">
           <ul className="nav-list">
             <li className="nav-list__item">
-              <NavLink to="/profile" className="user-link">
+              <NavLink to="/Just-type/profile" className="user-link">
                 <img src={userIcon} alt="userIcon" width="32px" height="32px" />
               </NavLink>
             </li>
             <li className="nav-list__item">
-              <NavLink to="/education" className="edu-link">
+              <NavLink to="/Just-type/education" className="edu-link">
                 <img
                   src={gradCapIcon}
                   alt="educationIcon"

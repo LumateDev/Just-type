@@ -26,13 +26,13 @@ function App() {
           setLogged={setLogged}
         ></RegAndLogForm>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/education" element={<Education />} />
+          <Route path="/Just-type/" element={<Home />} />
+          <Route path="/Just-type/education" element={<Education />} />
           <Route
-            path="/profile"
+            path="/Just-type/profile"
             element={<Profile setModalOpen={setModalOpen} logged={logged} />}
           />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/Just-type/settings" element={<Settings />} />
         </Routes>
 
         <Footer />
