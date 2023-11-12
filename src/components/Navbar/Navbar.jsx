@@ -1,6 +1,7 @@
 import React from "react";
 import "./navbar.css";
 import { NavLink } from "react-router-dom";
+
 import gradCapIcon from "./../../img/navbar/graduation-cap.svg";
 import userIcon from "./../../img/navbar/icon-user.svg";
 import bellIcon from "./../../img/navbar/bell.svg";
@@ -13,7 +14,12 @@ const Navbar = () => {
         <div className="nav-row">
           <ul className="nav-list">
             <li className="nav-list__item">
-              <NavLink to="/Just-type/education" className="edu-link">
+              <NavLink to="/profile" className="user-link">
+                <img src={userIcon} alt="userIcon" width="32px" height="32px" />
+              </NavLink>
+            </li>
+            <li className="nav-list__item">
+              <NavLink to="/education" className="edu-link">
                 <img
                   src={gradCapIcon}
                   alt="educationIcon"
@@ -27,11 +33,7 @@ const Navbar = () => {
                 <img src={bellIcon} alt="bellIcon" width="32px" height="32px" />
               </NavLink>
             </li>
-            <li className="nav-list__item">
-              <NavLink to="/Just-type/profile" className="user-link">
-                <img src={userIcon} alt="userIcon" width="32px" height="32px" />
-              </NavLink>
-            </li>
+
             <li className="nav-list__item">
               <NavLink to="/Just-type/settings" className="settings-link">
                 <img
