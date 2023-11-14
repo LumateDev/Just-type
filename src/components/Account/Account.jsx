@@ -1,7 +1,17 @@
 import React from "react";
 import "./account.css";
 
-const Account = ({ setModalOpen, logged }) => {
+const Account = ({ setModalOpen, logged, setFormTitle }) => {
+  const handleRegisterClick = () => {
+    setModalOpen(true);
+    setFormTitle("Регистрация");
+  };
+
+  const handleLoginClick = () => {
+    setModalOpen(true);
+    setFormTitle("Авторизация");
+  };
+
   return (
     <div className="section-auth">
       <div className="container">
@@ -15,13 +25,13 @@ const Account = ({ setModalOpen, logged }) => {
               <div className="auth-warning-buttons">
                 <button
                   className="auth-warning-btn"
-                  onClick={() => setModalOpen(true)}
+                  onClick={handleRegisterClick} // использование новых обработчиков
                 >
                   Регистрация
                 </button>
                 <button
                   className="auth-warning-btn"
-                  onClick={() => setModalOpen(true)}
+                  onClick={handleLoginClick} // использование новых обработчиков
                 >
                   Авторизация
                 </button>

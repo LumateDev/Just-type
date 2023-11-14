@@ -38,6 +38,7 @@ const InputText = ({
   punctuationInclude,
 }) => {
   const shuffledWords = useMemo(() => {
+
     if (languageTest === "russian") {
       if (numbersInclude && !punctuationInclude)
         return shuffle(wordsRuNum).slice(0, wordCount);
@@ -47,7 +48,6 @@ const InputText = ({
         return shuffle(wordsRuNumPunc).slice(0, wordCount);
       if (activeModeButton === "quote") {
         let randomQuote = randomRussianQuote();
-
         return randomQuote;
       } else {
         return shuffle(wordsRu).slice(0, wordCount);
@@ -365,12 +365,7 @@ const InputText = ({
               </div>
             )}
 
-            {activeModeButton === "words" && (
-              <div className="count-wrapper" key={wordCount}>
-                {wordIndex} / {wordCount}
-              </div>
-            )}
-            {activeModeButton === "quote" && (
+            {(activeModeButton === "words" || activeModeButton === "quote") && (
               <div className="count-wrapper" key={wordCount}>
                 {wordIndex} / {shuffledWords.length}
               </div>
