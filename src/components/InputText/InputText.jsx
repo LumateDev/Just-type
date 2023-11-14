@@ -38,7 +38,6 @@ const InputText = ({
   punctuationInclude,
 }) => {
   const shuffledWords = useMemo(() => {
-
     if (languageTest === "russian") {
       if (numbersInclude && !punctuationInclude)
         return shuffle(wordsRuNum).slice(0, wordCount);
@@ -120,7 +119,7 @@ const InputText = ({
     setFocusIndex(0);
     setStatuses(chars.map(() => "typingLetter"));
     setUserInput([]);
-    setIncorrectChars(new Set());
+    setIncorrectChars(new Map());
 
     if (activeModeButton === "time") setWordCount(wordTime * 5);
     else if (
@@ -322,8 +321,11 @@ const InputText = ({
     });
 
     if (!charCorrect) {
-      setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
-      setIncorrectChars((prevSet) => new Set(prevSet.add(chars[focusIndex])));
+      setIncorrectChars((prevMap) => {
+        const newMap = new Map(prevMap);
+        newMap.set(chars[focusIndex], (newMap.get(chars[focusIndex]) || 0) + 1);
+        return newMap;
+      });
     }
 
     setUserInput((prevInput) => [...prevInput.slice(0, focusIndex), event.key]);

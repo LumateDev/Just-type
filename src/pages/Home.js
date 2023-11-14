@@ -21,7 +21,7 @@ const Home = () => {
   const [languageTest, setLanguageTest] = useState("english");
 
   const [userInput, setUserInput] = useState([]);
-  const [incorrectChars, setIncorrectChars] = useState(new Set());
+  const [incorrectChars, setIncorrectChars] = useState({});
   const [wordComplete, setWordComplete] = useState(0);
 
   return (
