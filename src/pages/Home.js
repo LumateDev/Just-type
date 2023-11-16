@@ -20,6 +20,9 @@ const Home = () => {
   const [punctuationInclude, setPunctuationInclude] = useState(false);
   const [languageTest, setLanguageTest] = useState("english");
 
+  // if user not authorized or user game stats === null use default words from component, else use custom personalized words pack
+  const [wordType, setWordType] = useState("default");
+
   const [incorrectChars, setIncorrectChars] = useState({});
   const [wordComplete, setWordComplete] = useState(0);
 
@@ -28,6 +31,7 @@ const Home = () => {
       {status === "print" && (
         <>
           <InputText
+            wordType={wordType}
             wordCount={wordCount}
             setActiveKey={setActiveKey}
             status={status}

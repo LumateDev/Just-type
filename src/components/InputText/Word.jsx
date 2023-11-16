@@ -1,16 +1,20 @@
 import React from "react";
 import Letter from "./Letter";
-import "./wordGroup.css";
+import "./word.css";
 
-const Word = ({ word }) => {
-  const chars = [...word, " "];
-
+const Word = ({ getCharacterClass, charsWithIndexes }) => {
   return (
-    <div className="word">
-      {chars.map((char, index) => {
-        <Letter key={index} char={char} />;
-      })}
-    </div>
+    <span className="word">
+      {charsWithIndexes.map((char, index) => (
+        <Letter
+          key={index}
+          char={char.char}
+          getCharacterClass={getCharacterClass}
+          index={char.idx - 1}
+        />
+      ))}
+    </span>
   );
 };
+
 export default Word;
