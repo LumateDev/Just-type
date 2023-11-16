@@ -4,46 +4,24 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-family: "Roboto";
+  font-size: 28px;
 }
 
 .capsLock-warning {
   display: flex;
   justify-content: center;
   align-items: center;
-
   background-color: #c7a900;
-
   font-family: "Roboto";
   font-size: 16px;
   color: #fff;
   text-align: center;
   padding: 10px;
   border-radius: 16px;
-
   z-index: 10000;
 }
 
-.typingText-wrapper {
-  display: flex;
-  flex-direction: row;
-  max-height: 120px;
-  overflow-y: hidden;
-  white-space: pre-wrap;
-  flex-wrap: wrap;
-  row-gap: 10px;
-  z-index: 0;
-  max-width: 900px;
-}
-.typingText-wrapper::-webkit-scrollbar {
-  width: 0;
-}
-
-.typingText-wrapper :focus {
-  outline: none;
-  border-left: 2px solid;
-  border-color: rgba(199, 184, 3, 0.7);
-  animation: cursor-blink 1s infinite;
-}
 .count-wrapper {
   padding-top: 10px;
   color: #c7a900;
@@ -51,6 +29,7 @@
   font-weight: 600;
   font-size: 20px;
 }
+
 .top-bar-row {
   display: flex;
   flex-direction: row;
@@ -59,6 +38,7 @@
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
 .top-bar-row-row {
   display: flex;
   flex-direction: row;
@@ -69,21 +49,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   color: #999999;
   font-size: 18px;
   font-family: "Roboto";
   opacity: 0.8;
   padding-bottom: 10px;
-}
-
-@keyframes cursor-blink {
-  0% {
-    border-color: rgba(199, 184, 3, 0);
-  }
-}
-.blur {
-  filter: blur(5px);
 }
 
 .focus-button-wrapper {
@@ -100,8 +70,69 @@
   top: 0;
   bottom: 0;
   text-align: center;
-
   font-family: "Roboto";
   font-size: 20px;
   color: #fff;
+  z-index: 9999;
+}
+
+.text {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1000px;
+
+  overflow-y: auto;
+  line-height: 1.5em;
+  max-height: 4.5em;
+  word-wrap: break-word;
+}
+
+@keyframes cursor-blink {
+  0% {
+    border-color: rgba(199, 184, 3, 0);
+  }
+}
+
+.typingText-wrapper {
+  display: flex;
+  position: absolute;
+  background-color: transparent;
+  width: 1000px;
+  caret-color: transparent;
+  color: transparent;
+}
+
+.text::-webkit-scrollbar {
+  width: 0;
+}
+
+.typingLetter {
+  color: #858585;
+  opacity: 0.85;
+  transition: color 0.1s linear;
+}
+
+.typingLetterCorrect {
+  color: #f6eeee;
+  opacity: 0.85;
+  transition: color 0.1s linear;
+}
+
+.typingLetterIncorrect {
+  color: #7e0000;
+  opacity: 0.85;
+  transition: color 0.1s linear;
+}
+
+.typingLetterCaret {
+  border-left: 2px solid;
+  border-color: rgba(199, 184, 3, 0.7);
+  color: #858585;
+  opacity: 0.85;
+  animation: cursor-blink 1s infinite;
+  transition: color 0.1s linear;
+}
+
+.blur {
+  filter: blur(5px);
 }

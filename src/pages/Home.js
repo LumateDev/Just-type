@@ -20,7 +20,6 @@ const Home = () => {
   const [punctuationInclude, setPunctuationInclude] = useState(false);
   const [languageTest, setLanguageTest] = useState("english");
 
-  const [userInput, setUserInput] = useState([]);
   const [incorrectChars, setIncorrectChars] = useState({});
   const [wordComplete, setWordComplete] = useState(0);
 
@@ -30,7 +29,6 @@ const Home = () => {
         <>
           <InputText
             wordCount={wordCount}
-            setWordCount={setWordCount}
             setActiveKey={setActiveKey}
             status={status}
             setStatus={setStatus}
@@ -39,9 +37,9 @@ const Home = () => {
             setEndTime={setEndTime}
             startTime={startTime}
             setStartTime={setStartTime}
+            incorrectChars={incorrectChars}
             wordTime={wordTime}
             languageTest={languageTest}
-            setUserInput={setUserInput}
             activeRestartButton={activeRestartButton}
             setActiveRestartButton={setActiveRestartButton}
             numbersInclude={numbersInclude}
@@ -49,7 +47,9 @@ const Home = () => {
             setIncorrectChars={setIncorrectChars}
             activeModeButton={activeModeButton}
             setWordComplete={setWordComplete}
+            setWordCount={setWordCount}
           />
+
           <Toolbar
             setStatus={setStatus}
             activeCountButton={wordCount}
@@ -85,7 +85,6 @@ const Home = () => {
             endTime={endTime}
             totalChars={totalChars}
             totalErrors={totalErrors}
-            userInput={userInput}
             incorrectChars={incorrectChars}
             activeRestartButton={activeRestartButton}
             setActiveRestartButton={setActiveRestartButton}
