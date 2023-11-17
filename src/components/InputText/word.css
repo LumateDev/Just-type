@@ -1,3 +1,13 @@
 .word {
   margin-right: 7px;
 }
+.wordActive {
+  border-bottom: 1px solid greenyellow;
+}
+
+.wordWrong {
+  border-bottom: 1px solid;
+}
+
+.wordComplete {
+}

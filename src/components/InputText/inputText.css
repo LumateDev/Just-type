@@ -76,7 +76,6 @@
   z-index: 9999;
 }
 
-
 .typingText-input {
   display: flex;
   position: absolute;
@@ -89,7 +88,7 @@
 .typingText-wrapper {
   display: flex;
   flex-direction: row;
-  max-height: 120px;
+  max-height: 124px;
   overflow: clip;
   white-space: pre-wrap;
   flex-wrap: wrap;

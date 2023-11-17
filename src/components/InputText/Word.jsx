@@ -2,19 +2,28 @@ import React from "react";
 import Letter from "./Letter";
 import "./word.css";
 
-const Word = ({ getCharacterClass, charsWithIndexes }) => {
-  return (
-    <span className="word">
-      {charsWithIndexes.map((char, index) => (
-        <Letter
-          key={index}
-          char={char.char}
-          getCharacterClass={getCharacterClass}
-          index={char.idx - 1}
-        />
-      ))}
-    </span>
-  );
+const Word = ({
+  charsWithIndexes,
+  getCharacterClass,
+  getWordClass,
+  wordIdx,
+}) => {
+  if (wordIdx) {
+    return (
+      <span className={getWordClass(wordIdx)}>
+        {charsWithIndexes.map((char, index) => (
+          <Letter
+            key={index}
+            char={char.char}
+            getCharacterClass={getCharacterClass}
+            index={char.idx - 1}
+          />
+        ))}
+      </span>
+    );
+  } else {
+    return <div className="">loading</div>;
+  }
 };
 
 export default Word;

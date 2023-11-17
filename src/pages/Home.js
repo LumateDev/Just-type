@@ -21,6 +21,7 @@ const Home = () => {
   const [languageTest, setLanguageTest] = useState("english");
 
   // if user not authorized or user game stats === null use default words from component, else use custom personalized words pack
+  // eslint-disable-next-line
   const [wordType, setWordType] = useState("default");
 
   const [incorrectChars, setIncorrectChars] = useState({});
@@ -49,7 +50,6 @@ const Home = () => {
             setActiveRestartButton={setActiveRestartButton}
             numbersInclude={numbersInclude}
             punctuationInclude={punctuationInclude}
-            
             activeModeButton={activeModeButton}
             setWordComplete={setWordComplete}
             setWordCount={setWordCount}
@@ -65,6 +65,7 @@ const Home = () => {
             activeRestartButton={activeRestartButton}
             setActiveCountButton={setWordCount}
             setActiveTimeButton={setWordTime}
+            totalErrors={totalErrors}
             setActiveLanguageButton={setLanguageTest}
             setActiveNumbersButton={setNumbersInclude}
             setActivePunctuationButton={setPunctuationInclude}

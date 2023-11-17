@@ -23,6 +23,7 @@ const InputText = ({
   setWordCount,
   setTotalChars,
   setTotalErrors,
+  totalErrors,
   setEndTime,
   startTime,
   setStartTime,
@@ -45,9 +46,7 @@ const InputText = ({
   const [showButton, setShowButton] = useState(false);
   const [tabPressed, setTabPressed] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
-  const [WPM, setWPM] = useState(0);
-  const [accuracy, setAccuracy] = useState(0);
-
+  const [del, setDel] = useState(false);
 
   const inputRef = useRef();
   let charIndex = 0;
@@ -130,35 +129,14 @@ const InputText = ({
     ) {
       setEndTime(new Date());
       setStatus("analysis");
-      setWordComplete(calculateCurrentWord(inputText) + 1);
-
+      setWordComplete(getCurrentWordIndex(caretPosition));
       setTotalChars(charIndex);
-
-      const totalErrors = Array.from(incorrectChars.values()).reduce(
-        (acc, cur) => acc + cur,
-        0
-      );
-
-      setTotalErrors(totalErrors);
     }
-  }, [
-    caretPosition,
-    charIndex,
-    leftTime,
-    activeModeButton,
-    setEndTime,
-    setStatus,
-    setWordComplete,
-    inputText,
-    incorrectChars,
-    setTotalErrors,
-    setTotalChars,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [caretPosition]);
 
-  
   useEffect(() => {
     let timer;
-
     if (startTime && activeModeButton === "time") {
       timer = setInterval(() => {
         const currentLeftTime = (
@@ -176,30 +154,41 @@ const InputText = ({
     setActiveKey("");
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Tab") {
-      setTabPressed(true);
-      return;
-    }
-    if (event.key === "Enter" && tabPressed) {
-      setActiveRestartButton(activeRestartButton + 1);
-      setTabPressed(false);
-      return;
-    }
-    if (event.key === "Enter" && !tabPressed) {
-      return;
-    }
+  const handleFocus = () => {
+    if (letters[caretPosition]) setActiveKey(letters[caretPosition]);
+  };
 
-    if (event.key === "CapsLock") {
-      if (event.getModifierState("CapsLock")) {
-        setCapsLockOn(true);
-      } else {
-        setCapsLockOn(false);
-      }
+  const handleKeyDown = (event) => {
+    if (event.key === "Backspace") {
+      setDel(true);
       return;
-    }
-    if (!startTime) {
-      setStartTime(new Date());
+    } else {
+      if (event.key === "Tab") {
+        setTabPressed(true);
+        return;
+      }
+      if (event.key === "Enter" && tabPressed) {
+        setActiveRestartButton(activeRestartButton + 1);
+        setTabPressed(false);
+        return;
+      }
+      if (event.key === "Enter" && !tabPressed) {
+        return;
+      }
+
+      if (event.key === "CapsLock") {
+        if (event.getModifierState("CapsLock")) {
+          setCapsLockOn(true);
+        } else {
+          setCapsLockOn(false);
+        }
+        return;
+      }
+      if (!startTime) {
+        setStartTime(new Date());
+      }
+      setDel(false);
+      return;
     }
   };
 
@@ -207,49 +196,35 @@ const InputText = ({
     let userInput = event.target.value.split("");
     let lastUserInput = userInput.slice(-1)[0];
     let currentActiveChar = letters[userInput.length];
-    let prevActiveChar = letters[userInput.length-1];
-    
-  
-    
-
-    // console.log(lastUserInput);
-    // //console.log(userInput.length);
-    // console.log(letters[userInput.length - 1]);
-    // console.log(letters);
-    
-
-
-    
+    let prevActiveChar = letters[userInput.length - 1];
 
     //Пользователь не может допускать ошибки
     // if (lastUserInput !== letters[userInput.length - 1]) return;
 
-    //Пользователь не может допускать ошибки в пробеле
-    
-    if(lastUserInput !== prevActiveChar){
-      const newValue = incorrectChars.get(prevActiveChar) ? incorrectChars.get(prevActiveChar) + 1 : 1;
+    // Записываем каждую ошибку пользователя в Map
+    if (lastUserInput !== prevActiveChar && del === false) {
+      const newValue = incorrectChars.get(prevActiveChar)
+        ? incorrectChars.get(prevActiveChar) + 1
+        : 1;
       incorrectChars.set(prevActiveChar, newValue);
+      setTotalErrors((totalErrors) => totalErrors + 1);
     }
-
-    if (
-      lastUserInput !== prevActiveChar &&
-      prevActiveChar === " "
-    )
-      return;
+    //Пока пользователь не нажал пробел, не переходим к следующему слову
+    if (lastUserInput !== prevActiveChar && prevActiveChar === " ") return;
 
     setInputText(userInput);
     setCaretPosition(userInput.length);
-    if (userInput.length !== letters.length)
-      setActiveKey(currentActiveChar);
+    if (userInput.length !== letters.length) setActiveKey(currentActiveChar);
   };
-  //необходимо установить текущую активную букву - ready
-  //Необходимо проверить соответсвует ли символ введённый пользователем текущему, если нет, до добавить в мапу текущий, {символ: количество}
-  //Необходимо запретить переход к следующему слову или символу, если текущий символ пробел и пользователь нажал его неверно
-  // необходимо написать функцию getWordClass , которая будет определять класс слова, если слово на котором пользователь, класс актив, если слово введенно без ошибок, класс complete, если в слове есть хотя бы 1 ошибка class wrong
+
+  // необходимо написать функцию getWordClass , которая будет определять класс слова,
+  // если слово на котором пользователь, класс актив, если слово введенно без ошибок,
+  // класс complete, если в слове есть хотя бы 1 ошибка class wrong
+
   const getCharacterClass = (char, index) => {
     if (index === caretPosition) {
-      if(index ===0){
-        return "typingLetterCaretAnim"
+      if (index === 0) {
+        return "typingLetterCaretAnim";
       }
       return "typingLetterCaret";
     } else if (!inputText[index]) {
@@ -260,26 +235,69 @@ const InputText = ({
       : "typingLetterIncorrect";
   };
 
-  //неактуальная функция, нужно перерадобать
-  const calculateCurrentWord = (userInput) => {
-    return userInput
-      .join("")
-      .split(" ")
-      .filter((word) => word !== "").length;
+  const getCurrentWordIndex = (index) => {
+    let wordIndex = 0;
+    let spaceCount = 0;
+
+    for (let i = 0; i <= index; i++) {
+      if (letters[i] === " ") {
+        spaceCount += 1;
+      } else {
+        wordIndex = spaceCount + 1;
+      }
+    }
+
+    return wordIndex;
+  };
+
+  const getWordClass = (wordIndex, charsWithIndexes) => {
+    const currentWordIndex = getCurrentWordIndex(caretPosition);
+
+    console.log(wordIndex);
+    console.log(currentWordIndex);
+
+    if (wordIndex === currentWordIndex) {
+      return "wordActive";
+      // } else if (wordIndex < currentWordIndex) {
+      //   // Задаем условие, которое проверяет, встречаются ли ошибки в слове
+
+      //   // Создаем массив символов этого слова
+      //   const wordChars = charsWithIndexes.map((item) => item.char);
+
+      //   // Проверка на ошибки в этом слове
+      //   const hasMistakes = wordChars.some((char, idx) => {
+      //     const absWordIdx = charsWithIndexes[idx].idx - 1; // абсолютный индекс символа в тексте
+      //     return inputText[absWordIdx] !== char && char !== " ";
+      //   });
+
+      //   if (hasMistakes) {
+      //     // если есть ошибки, слово считается неверно введенным
+      //     return "wordWrong";
+      //   } else {
+      //     // если ошибок нет, слово считается успешно введенным
+      //     return "wordComplete";
+      //   }
+    }
+
+    // за умолчанием слова, которые еще не были достигнуты кареткой, получат класс 'word'
+    return "word";
   };
 
   const wordItems = words.map((word, index) => {
     const chars = [...word, index !== words.length - 1 ? " " : ""].map(
       (char) => {
         charIndex++;
-        return { char: char, idx: charIndex };
+        return { char: char, idx: charIndex, wordIdx: index };
       }
     );
+
     return (
       <Word
         key={index}
         charsWithIndexes={chars}
         getCharacterClass={getCharacterClass}
+        getWordClass={getWordClass}
+        wordIdx={index + 1}
       />
     );
   });
@@ -287,24 +305,16 @@ const InputText = ({
   return (
     <div className="inputText-section">
       <div className="container">
-      <div className="top-bar-row">
-            {WPM}
-          </div>
-          <div className="top-bar-row">
-            {accuracy}
-          </div>
         <div className="top-bar-row">
-          
           <div className="top-bar-row-row">
             {activeModeButton === "time" && (
               <div className="count-wrapper" key={leftTime}>
                 {leftTime}
               </div>
             )}
-
             {(activeModeButton === "words" || activeModeButton === "quote") && (
               <div className="count-wrapper" key={wordCount}>
-                {calculateCurrentWord(inputText) + 1} / {wordCount}
+                {getCurrentWordIndex(caretPosition)} / {wordCount}
               </div>
             )}
             {capsLockOn && (
@@ -345,10 +355,10 @@ const InputText = ({
               onFocus={() => {
                 setIsBlur(false);
                 setShowButton(false);
+                handleFocus();
               }}
               onKeyDown={handleKeyDown}
             />
-            
             {wordItems}
           </div>
         </div>

@@ -1,17 +1,21 @@
 .typingLetter {
   color: #858585;
+  border-left: 1px solid transparent;
   opacity: 0.85;
   transition: color 0.1s linear;
 }
 
 .typingLetterCorrect {
   color: #f6eeee;
+  border-left: 1px solid transparent;
+
   opacity: 0.85;
   transition: color 0.1s linear;
 }
 
 .typingLetterIncorrect {
-  color: #7e0000;
+  color: #ab1111;
+  border-left: 1px solid transparent;
   opacity: 0.85;
   transition: color 0.1s linear;
 }
@@ -33,7 +37,6 @@
   animation: cursor-blink 1s infinite;
   transition: color 0.1s linear;
 }
-
 
 @keyframes cursor-blink {
   0% {
