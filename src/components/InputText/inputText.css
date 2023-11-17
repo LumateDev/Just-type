@@ -76,11 +76,6 @@
   z-index: 9999;
 }
 
-@keyframes cursor-blink {
-  0% {
-    border-color: rgba(199, 184, 3, 0);
-  }
-}
 
 .typingText-input {
   display: flex;

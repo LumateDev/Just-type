@@ -42,13 +42,14 @@ const Home = () => {
             startTime={startTime}
             setStartTime={setStartTime}
             incorrectChars={incorrectChars}
+            setIncorrectChars={setIncorrectChars}
             wordTime={wordTime}
             languageTest={languageTest}
             activeRestartButton={activeRestartButton}
             setActiveRestartButton={setActiveRestartButton}
             numbersInclude={numbersInclude}
             punctuationInclude={punctuationInclude}
-            setIncorrectChars={setIncorrectChars}
+            
             activeModeButton={activeModeButton}
             setWordComplete={setWordComplete}
             setWordCount={setWordCount}

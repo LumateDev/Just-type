@@ -45,6 +45,9 @@ const InputText = ({
   const [showButton, setShowButton] = useState(false);
   const [tabPressed, setTabPressed] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
+  const [WPM, setWPM] = useState(0);
+  const [accuracy, setAccuracy] = useState(0);
+
 
   const inputRef = useRef();
   let charIndex = 0;
@@ -152,6 +155,7 @@ const InputText = ({
     setTotalChars,
   ]);
 
+  
   useEffect(() => {
     let timer;
 
@@ -202,27 +206,41 @@ const InputText = ({
   const handleChange = (event) => {
     let userInput = event.target.value.split("");
     let lastUserInput = userInput.slice(-1)[0];
-    console.log(lastUserInput);
-    //console.log(userInput.length);
-    console.log(letters[userInput.length - 1]);
-    console.log(letters);
+    let currentActiveChar = letters[userInput.length];
+    let prevActiveChar = letters[userInput.length-1];
+    
+  
+    
 
-    let newIncorrectChars = new Map(incorrectChars);
+    // console.log(lastUserInput);
+    // //console.log(userInput.length);
+    // console.log(letters[userInput.length - 1]);
+    // console.log(letters);
+    
+
+
+    
 
     //Пользователь не может допускать ошибки
     // if (lastUserInput !== letters[userInput.length - 1]) return;
 
     //Пользователь не может допускать ошибки в пробеле
+    
+    if(lastUserInput !== prevActiveChar){
+      const newValue = incorrectChars.get(prevActiveChar) ? incorrectChars.get(prevActiveChar) + 1 : 1;
+      incorrectChars.set(prevActiveChar, newValue);
+    }
+
     if (
-      lastUserInput !== letters[userInput.length - 1] &&
-      letters[userInput.length - 1] === " "
+      lastUserInput !== prevActiveChar &&
+      prevActiveChar === " "
     )
       return;
 
     setInputText(userInput);
     setCaretPosition(userInput.length);
     if (userInput.length !== letters.length)
-      setActiveKey(letters[userInput.length]);
+      setActiveKey(currentActiveChar);
   };
   //необходимо установить текущую активную букву - ready
   //Необходимо проверить соответсвует ли символ введённый пользователем текущему, если нет, до добавить в мапу текущий, {символ: количество}
@@ -230,6 +248,9 @@ const InputText = ({
   // необходимо написать функцию getWordClass , которая будет определять класс слова, если слово на котором пользователь, класс актив, если слово введенно без ошибок, класс complete, если в слове есть хотя бы 1 ошибка class wrong
   const getCharacterClass = (char, index) => {
     if (index === caretPosition) {
+      if(index ===0){
+        return "typingLetterCaretAnim"
+      }
       return "typingLetterCaret";
     } else if (!inputText[index]) {
       return "typingLetter";
@@ -266,7 +287,14 @@ const InputText = ({
   return (
     <div className="inputText-section">
       <div className="container">
+      <div className="top-bar-row">
+            {WPM}
+          </div>
+          <div className="top-bar-row">
+            {accuracy}
+          </div>
         <div className="top-bar-row">
+          
           <div className="top-bar-row-row">
             {activeModeButton === "time" && (
               <div className="count-wrapper" key={leftTime}>
@@ -320,6 +348,7 @@ const InputText = ({
               }}
               onKeyDown={handleKeyDown}
             />
+            
             {wordItems}
           </div>
         </div>
