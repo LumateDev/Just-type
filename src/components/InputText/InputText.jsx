@@ -2,17 +2,8 @@ import React, { useEffect, useState, useRef } from "react";
 import "./inputText.css";
 import Word from "./Word";
 
-import wordsRu from "./../utils/dataRu";
-import wordsEn from "./../utils/dataEn";
-import wordsEnNum from "../utils/dataEnNum";
-import wordsEnNumPunc from "../utils/dataEnNumPunc";
-import wordsRuNum from "../utils/dataRuNum";
-import wordsRuPunc from "../utils/dataRuPunc";
-import wordsRuNumPunc from "../utils/dataRuNunPunc";
-import { randomEnglishQuote } from "../utils/quoteEn";
-import { randomRussianQuote } from "../utils/quoteRu";
-import { shuffle } from "./../utils/shuffle";
-import wordsEnPunc from "../utils/dataEnPunc";
+import { getShuffledWords } from "../../utils/getShuffledWords";
+import { getCurrentWordIndex } from "../../utils/getCurrentWordIndex";
 
 const InputText = ({
   wordType,
@@ -23,7 +14,6 @@ const InputText = ({
   setWordCount,
   setTotalChars,
   setTotalErrors,
-  totalErrors,
   setEndTime,
   startTime,
   setStartTime,
@@ -49,44 +39,30 @@ const InputText = ({
   const [del, setDel] = useState(false);
 
   const inputRef = useRef();
+  const scrollContainer = useRef();
   let charIndex = 0;
 
-  const getShuffledWords = () => {
-    if (wordType === "default") {
-      if (languageTest === "russian") {
-        if (numbersInclude && !punctuationInclude)
-          return shuffle(wordsRuNum).slice(0, wordCount);
-        if (punctuationInclude && !numbersInclude)
-          return shuffle(wordsRuPunc).slice(0, wordCount);
-        if (numbersInclude && punctuationInclude)
-          return shuffle(wordsRuNumPunc).slice(0, wordCount);
-        if (activeModeButton === "quote") {
-          let randomQuote = randomRussianQuote();
-          return randomQuote;
-        } else {
-          return shuffle(wordsRu).slice(0, wordCount);
-        }
+  useEffect(() => {
+    if (caretPosition === 0) {
+      scrollContainer.current.scrollTop = 0;
+    } else {
+      let caretElem =
+        scrollContainer.current?.querySelector(".typingLetterCaret");
+      if (caretElem && caretElem.offsetTop % 96 === 0) {
+        scrollContainer.current.scrollTo(0, caretElem.offsetTop);
       }
-      if (languageTest === "english") {
-        if (numbersInclude && !punctuationInclude)
-          return shuffle(wordsEnNum).slice(0, wordCount);
-        if (punctuationInclude && !numbersInclude)
-          return shuffle(wordsEnPunc).slice(0, wordCount);
-        if (numbersInclude && punctuationInclude)
-          return shuffle(wordsEnNumPunc).slice(0, wordCount);
-        if (activeModeButton === "quote") {
-          let randomQuote = randomEnglishQuote();
-          return randomQuote;
-        } else {
-          return shuffle(wordsEn).slice(0, wordCount);
-        }
-      }
-      throw new Error("Invalid languageTest value");
     }
-  };
+  }, [caretPosition]);
 
   useEffect(() => {
-    const shuffledWords = getShuffledWords();
+    const shuffledWords = getShuffledWords(
+      wordType,
+      languageTest,
+      punctuationInclude,
+      wordCount,
+      numbersInclude,
+      activeModeButton
+    );
     setWords(shuffledWords);
     setLetters(shuffledWords.join(" ").split(""));
     setInputText(Array(shuffledWords.length).fill(""));
@@ -129,7 +105,7 @@ const InputText = ({
     ) {
       setEndTime(new Date());
       setStatus("analysis");
-      setWordComplete(getCurrentWordIndex(caretPosition));
+      setWordComplete(getCurrentWordIndex(caretPosition, letters));
       setTotalChars(charIndex);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,7 +177,6 @@ const InputText = ({
     //Пользователь не может допускать ошибки
     // if (lastUserInput !== letters[userInput.length - 1]) return;
 
-    // Записываем каждую ошибку пользователя в Map
     if (lastUserInput !== prevActiveChar && del === false) {
       const newValue = incorrectChars.get(prevActiveChar)
         ? incorrectChars.get(prevActiveChar) + 1
@@ -214,12 +189,9 @@ const InputText = ({
 
     setInputText(userInput);
     setCaretPosition(userInput.length);
+
     if (userInput.length !== letters.length) setActiveKey(currentActiveChar);
   };
-
-  // необходимо написать функцию getWordClass , которая будет определять класс слова,
-  // если слово на котором пользователь, класс актив, если слово введенно без ошибок,
-  // класс complete, если в слове есть хотя бы 1 ошибка class wrong
 
   const getCharacterClass = (char, index) => {
     if (index === caretPosition) {
@@ -235,62 +207,37 @@ const InputText = ({
       : "typingLetterIncorrect";
   };
 
-  const getCurrentWordIndex = (index) => {
-    let wordIndex = 0;
-    let spaceCount = 0;
-
-    for (let i = 0; i <= index; i++) {
-      if (letters[i] === " ") {
-        spaceCount += 1;
-      } else {
-        wordIndex = spaceCount + 1;
-      }
-    }
-
-    return wordIndex;
-  };
-
   const getWordClass = (wordIndex, charsWithIndexes) => {
-    const currentWordIndex = getCurrentWordIndex(caretPosition);
-
-    console.log(wordIndex);
-    console.log(currentWordIndex);
+    const currentWordIndex = getCurrentWordIndex(caretPosition, letters);
 
     if (wordIndex === currentWordIndex) {
       return "wordActive";
-      // } else if (wordIndex < currentWordIndex) {
-      //   // Задаем условие, которое проверяет, встречаются ли ошибки в слове
-
-      //   // Создаем массив символов этого слова
-      //   const wordChars = charsWithIndexes.map((item) => item.char);
-
-      //   // Проверка на ошибки в этом слове
-      //   const hasMistakes = wordChars.some((char, idx) => {
-      //     const absWordIdx = charsWithIndexes[idx].idx - 1; // абсолютный индекс символа в тексте
-      //     return inputText[absWordIdx] !== char && char !== " ";
-      //   });
-
-      //   if (hasMistakes) {
-      //     // если есть ошибки, слово считается неверно введенным
-      //     return "wordWrong";
-      //   } else {
-      //     // если ошибок нет, слово считается успешно введенным
-      //     return "wordComplete";
-      //   }
     }
+    if (!charsWithIndexes) {
+    }
+    if (wordIndex < currentWordIndex) {
+      const wordChars = charsWithIndexes.map((item) => item.char);
+      const hasMistakes = wordChars.some((char, idx) => {
+        const absWordIdx = charsWithIndexes[idx].idx - 1;
+        return inputText[absWordIdx] !== char && char !== "";
+      });
 
-    // за умолчанием слова, которые еще не были достигнуты кареткой, получат класс 'word'
+      if (hasMistakes) {
+        return "wordWrong";
+      } else {
+        return "wordComplete";
+      }
+    }
     return "word";
   };
 
   const wordItems = words.map((word, index) => {
-    const chars = [...word, index !== words.length - 1 ? " " : ""].map(
+    const chars = [...word, index !== words.length - 1 ? "" : ""].map(
       (char) => {
         charIndex++;
         return { char: char, idx: charIndex, wordIdx: index };
       }
     );
-
     return (
       <Word
         key={index}
@@ -314,13 +261,13 @@ const InputText = ({
             )}
             {(activeModeButton === "words" || activeModeButton === "quote") && (
               <div className="count-wrapper" key={wordCount}>
-                {getCurrentWordIndex(caretPosition)} / {wordCount}
+                {getCurrentWordIndex(caretPosition, letters)} / {wordCount}
               </div>
             )}
-            {capsLockOn && (
-              <div className="capsLock-warning">Caps Lock is on!</div>
-            )}
           </div>
+          {capsLockOn && (
+            <div className="capsLock-warning">Caps Lock is on!</div>
+          )}
           <div className="top-bar-col">
             {" "}
             <div className="restart-hint">
@@ -337,28 +284,31 @@ const InputText = ({
               Нажмите чтобы продолжить печать
             </button>
           )}
-          <div className={`typingText-wrapper ${isBlur ? "blur" : ""}`}>
-            <input
-              ref={inputRef}
-              className={"typingText-input"}
-              type="text"
-              value={inputText.join("")}
-              onChange={handleChange}
-              autoCorrect="off"
-              spellCheck="false"
-              onPaste={(e) => e.preventDefault()}
-              onBlur={() => {
-                setIsBlur(true);
-                setShowButton(true);
-                handleBlur();
-              }}
-              onFocus={() => {
-                setIsBlur(false);
-                setShowButton(false);
-                handleFocus();
-              }}
-              onKeyDown={handleKeyDown}
-            />
+          <input
+            ref={inputRef}
+            className={"typingText-input"}
+            type="text"
+            value={inputText.join("")}
+            onChange={handleChange}
+            autoCorrect="off"
+            spellCheck="false"
+            onPaste={(e) => e.preventDefault()}
+            onBlur={() => {
+              setIsBlur(true);
+              setShowButton(true);
+              handleBlur();
+            }}
+            onFocus={() => {
+              setIsBlur(false);
+              setShowButton(false);
+              handleFocus();
+            }}
+            onKeyDown={handleKeyDown}
+          />
+          <div
+            className={`typingText-wrapper ${isBlur ? "blur" : ""}`}
+            ref={scrollContainer}
+          >
             {wordItems}
           </div>
         </div>

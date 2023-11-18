@@ -10,7 +10,7 @@ const Word = ({
 }) => {
   if (wordIdx) {
     return (
-      <span className={getWordClass(wordIdx)}>
+      <span className={getWordClass(wordIdx, charsWithIndexes)}>
         {charsWithIndexes.map((char, index) => (
           <Letter
             key={index}
