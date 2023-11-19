@@ -4,46 +4,25 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  font-family: "Roboto";
+  font-size: 30px;
 }
 
 .capsLock-warning {
   display: flex;
   justify-content: center;
   align-items: center;
-
   background-color: #c7a900;
-
   font-family: "Roboto";
-  font-size: 16px;
+  font-size: 20px;
   color: #fff;
   text-align: center;
   padding: 10px;
-  border-radius: 16px;
 
+  border-radius: 12px;
   z-index: 10000;
 }
 
-.typingText-wrapper {
-  display: flex;
-  flex-direction: row;
-  max-height: 120px;
-  overflow-y: hidden;
-  white-space: pre-wrap;
-  flex-wrap: wrap;
-  row-gap: 10px;
-  z-index: 0;
-  max-width: 900px;
-}
-.typingText-wrapper::-webkit-scrollbar {
-  width: 0;
-}
-
-.typingText-wrapper :focus {
-  outline: none;
-  border-left: 2px solid;
-  border-color: rgba(199, 184, 3, 0.7);
-  animation: cursor-blink 1s infinite;
-}
 .count-wrapper {
   padding-top: 10px;
   color: #c7a900;
@@ -51,6 +30,7 @@
   font-weight: 600;
   font-size: 20px;
 }
+
 .top-bar-row {
   display: flex;
   flex-direction: row;
@@ -59,6 +39,7 @@
   justify-content: space-between;
   margin-bottom: 20px;
 }
+
 .top-bar-row-row {
   display: flex;
   flex-direction: row;
@@ -69,21 +50,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
+  text-align: center;
   color: #999999;
   font-size: 18px;
   font-family: "Roboto";
   opacity: 0.8;
-  padding-bottom: 10px;
-}
-
-@keyframes cursor-blink {
-  0% {
-    border-color: rgba(199, 184, 3, 0);
-  }
-}
-.blur {
-  filter: blur(5px);
+  padding-top: 10px;
 }
 
 .focus-button-wrapper {
@@ -100,8 +72,40 @@
   top: 0;
   bottom: 0;
   text-align: center;
-
   font-family: "Roboto";
   font-size: 20px;
   color: #fff;
+  z-index: 9999;
+}
+
+.typingText-input {
+  display: flex;
+  position: absolute;
+  background-color: transparent;
+  max-width: 1000px;
+
+  caret-color: transparent;
+  color: transparent;
+}
+
+.typingText-wrapper::-webkit-scrollbar {
+  width: 0;
+}
+
+.typingText-wrapper {
+  display: flex;
+
+  flex-direction: row;
+  height: 144px;
+  align-content: flex-start;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  scroll-behavior: smooth;
+  max-width: 1000px;
+}
+
+.blur {
+  filter: blur(5px);
 }

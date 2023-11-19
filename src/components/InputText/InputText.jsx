@@ -1,24 +1,14 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./inputText.css";
-import WordGroup from "./WordGroup";
+import Word from "./Word";
 
-import wordsRu from "./../utils/dataRu";
-import wordsEn from "./../utils/dataEn";
-import wordsEnNum from "../utils/dataEnNum";
-import wordsEnNumPunc from "../utils/dataEnNumPunc";
-import wordsRuNum from "../utils/dataRuNum";
-import wordsRuPunc from "../utils/dataRuPunc";
-import wordsRuNumPunc from "../utils/dataRuNunPunc";
-import { randomEnglishQuote } from "../utils/quoteEn";
-import { randomRussianQuote } from "../utils/quoteRu";
-import { shuffle } from "./../utils/shuffle";
-import { ignoreKeys } from "../utils/ignoreKeys";
-import wordsEnPunc from "../utils/dataEnPunc";
+import { getShuffledWords } from "../../utils/getShuffledWords";
+import { getCurrentWordIndex } from "../../utils/getCurrentWordIndex";
 
 const InputText = ({
-  wordCount,
+  wordType,
   setActiveKey,
-  status,
+  wordCount,
   setStatus,
   wordTime,
   setWordCount,
@@ -28,7 +18,7 @@ const InputText = ({
   startTime,
   setStartTime,
   setActiveRestartButton,
-  setUserInput,
+  incorrectChars,
   setIncorrectChars,
   languageTest,
   activeModeButton,
@@ -37,90 +27,54 @@ const InputText = ({
   numbersInclude,
   punctuationInclude,
 }) => {
-  const shuffledWords = useMemo(() => {
-    if (languageTest === "russian") {
-      if (numbersInclude && !punctuationInclude)
-        return shuffle(wordsRuNum).slice(0, wordCount);
-      if (punctuationInclude && !numbersInclude)
-        return shuffle(wordsRuPunc).slice(0, wordCount);
-      if (numbersInclude && punctuationInclude)
-        return shuffle(wordsRuNumPunc).slice(0, wordCount);
-      if (activeModeButton === "quote") {
-        let randomQuote = randomRussianQuote();
-
-        return randomQuote;
-      } else {
-        return shuffle(wordsRu).slice(0, wordCount);
-      }
-    }
-
-    if (languageTest === "english") {
-      if (numbersInclude && !punctuationInclude)
-        return shuffle(wordsEnNum).slice(0, wordCount);
-      if (punctuationInclude && !numbersInclude)
-        return shuffle(wordsEnPunc).slice(0, wordCount);
-      if (numbersInclude && punctuationInclude)
-        return shuffle(wordsEnNumPunc).slice(0, wordCount);
-      if (activeModeButton === "quote") {
-        let randomQuote = randomEnglishQuote();
-
-        return randomQuote;
-      } else {
-        return shuffle(wordsEn).slice(0, wordCount);
-      }
-    }
-
-    throw new Error("Invalid languageTest value");
-    // eslint-disable-next-line
-  }, [
-    wordCount,
-    languageTest,
-    punctuationInclude,
-    numbersInclude,
-    activeRestartButton,
-    activeModeButton,
-  ]);
-
-  // Calculate number of characters in each word (with spaces)
-  const charsInWord = shuffledWords.map((word) => [...word, " "].length);
-  const chars = shuffledWords.flatMap((word, index) => [
-    ...word.split(""),
-    index !== shuffledWords.length - 1 ? " " : "",
-  ]);
-
-  const refs = chars.map(() => React.createRef());
+  const [inputText, setInputText] = useState([]);
+  const [words, setWords] = useState([]);
+  const [letters, setLetters] = useState([]);
+  const [caretPosition, setCaretPosition] = useState(0);
+  const [leftTime, setLeftTime] = useState(wordTime);
   const [isBlur, setIsBlur] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [focusIndex, setFocusIndex] = useState(0);
   const [tabPressed, setTabPressed] = useState(false);
-  const [statuses, setStatuses] = useState(chars.map(() => "typingLetter"));
-  const [leftTime, setLeftTime] = useState(wordTime);
   const [capsLockOn, setCapsLockOn] = useState(false);
-  const [extraInputs, setExtraInputs] = useState(
-    new Array(shuffledWords.length).fill([])
-  );
+  const [del, setDel] = useState(false);
 
-  // Calculate the index of current word
-  let wordIndex = 0;
-  let sumChars = 0;
-  for (let i = 0; i < charsInWord.length; i++) {
-    sumChars += charsInWord[i];
-    if (sumChars > focusIndex) {
-      wordIndex = i;
-      break;
-    }
-  }
+  const inputRef = useRef();
+  const scrollContainer = useRef();
+  let charIndex = 0;
 
   useEffect(() => {
+    if (caretPosition === 0) {
+      scrollContainer.current.scrollTop = 0;
+    } else {
+      let caretElem =
+        scrollContainer.current?.querySelector(".typingLetterCaret");
+      if (caretElem && caretElem.offsetTop % 96 === 0) {
+        scrollContainer.current.scrollTo(0, caretElem.offsetTop);
+      }
+    }
+  }, [caretPosition]);
+
+  useEffect(() => {
+    const shuffledWords = getShuffledWords(
+      wordType,
+      languageTest,
+      punctuationInclude,
+      wordCount,
+      numbersInclude,
+      activeModeButton
+    );
+    setWords(shuffledWords);
+    setLetters(shuffledWords.join(" ").split(""));
+    setInputText(Array(shuffledWords.length).fill(""));
+    inputRef.current.focus();
+    setActiveKey(shuffledWords[0][0]);
+    setCaretPosition(0);
     setStartTime(null);
     setEndTime(null);
     setLeftTime(wordTime);
     setTotalChars(0);
     setTotalErrors(0);
-    setFocusIndex(0);
-    setStatuses(chars.map(() => "typingLetter"));
-    setUserInput([]);
-    setIncorrectChars(new Set());
+    setIncorrectChars(new Map());
 
     if (activeModeButton === "time") setWordCount(wordTime * 5);
     else if (
@@ -133,54 +87,33 @@ const InputText = ({
     ) {
       setWordCount(25);
     }
-
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     wordCount,
     activeModeButton,
     wordTime,
     activeRestartButton,
     languageTest,
+    numbersInclude,
+    punctuationInclude,
   ]);
 
-  //clear extraInputs
   useEffect(() => {
-    setExtraInputs(new Array(shuffledWords.length).fill([]));
-  }, [shuffledWords.length, activeModeButton, activeRestartButton]);
-
-  useEffect(() => {
-    if (refs[focusIndex]) {
-      refs[focusIndex].current.focus();
-    }
-    if (focusIndex + 1 >= chars.length) {
-      refs[focusIndex].current.blur();
-    }
     if (
-      focusIndex + 1 >= chars.length ||
+      (caretPosition >= charIndex - 1 && charIndex !== 0) ||
       (leftTime <= 0 && activeModeButton === "time")
     ) {
       setEndTime(new Date());
       setStatus("analysis");
-      setWordComplete(wordIndex + 1);
+      setWordComplete(getCurrentWordIndex(caretPosition, letters));
+      setTotalChars(charIndex);
     }
-  }, [
-    focusIndex,
-    chars.length,
-    status,
-    setStatus,
-    setEndTime,
-    chars,
-    refs,
-    leftTime,
-    setWordComplete,
-    wordIndex,
-    activeModeButton,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [caretPosition]);
 
   useEffect(() => {
     let timer;
-
-    if (startTime) {
+    if (startTime && activeModeButton === "time") {
       timer = setInterval(() => {
         const currentLeftTime = (
           (wordTime * 1000 - (new Date() - startTime)) /
@@ -190,172 +123,134 @@ const InputText = ({
       }, 1000);
     }
 
-    return () => clearInterval(timer); // очистка интервала при размонтировании компонента
-  }, [wordTime, startTime]);
-
-  const handleFocus = () => {
-    setActiveKey(chars[focusIndex]);
-  };
+    return () => clearInterval(timer);
+  }, [wordTime, startTime, activeModeButton]);
 
   const handleBlur = () => {
     setActiveKey("");
   };
 
-  const handleKeyDown = (event) => {
-    if (ignoreKeys.has(event.key)) return;
-
-    if (event.key === "Tab") {
-      setTabPressed(true);
-      return;
-    }
-    if (event.key === "Enter" && tabPressed) {
-      setActiveRestartButton(activeRestartButton + 1);
-      setTabPressed(false);
-      return;
-    }
-    if (event.key === "Enter" && !tabPressed) {
-      return;
-    }
-
-    if (event.key === "CapsLock") {
-      if (event.getModifierState("CapsLock")) {
-        setCapsLockOn(true);
-      } else {
-        setCapsLockOn(false);
-      }
-      return;
-    }
-    if (!startTime) {
-      setStartTime(new Date());
-    }
-
-    if (event.key === " ") {
-      if (chars[focusIndex] === " " && extraInputs[wordIndex].length >= 10) {
-        setFocusIndex((prevIndex) =>
-          prevIndex + 1 < refs.length ? prevIndex + 1 : prevIndex
-        );
-        event.preventDefault();
-        return;
-      }
-    }
-
-    if (event.key !== " ") {
-      if (
-        chars[focusIndex] === " " &&
-        extraInputs[wordIndex].length < 6 &&
-        event.key !== "Backspace"
-      ) {
-        event.preventDefault();
-        setExtraInputs((prev) => {
-          const newExtraInputs = [...prev];
-          newExtraInputs[wordIndex] = [...newExtraInputs[wordIndex], event.key];
-          return newExtraInputs;
-        });
-        setTotalChars((prevCharTotal) => prevCharTotal + 1);
-        setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
-        return;
-      }
-      if (
-        chars[focusIndex] === " " &&
-        extraInputs[wordIndex].length >= 6 &&
-        event.key !== "Backspace"
-      ) {
-        event.preventDefault();
-        return;
-      }
-    }
-
-    if (event.key === "Backspace") {
-      event.preventDefault();
-
-      if (chars[focusIndex] === " " && extraInputs[wordIndex].length > 0) {
-        setExtraInputs((prev) => {
-          const newExtraInputs = [...prev];
-          newExtraInputs[wordIndex] = [
-            ...newExtraInputs[wordIndex].slice(
-              0,
-              newExtraInputs[wordIndex].length - 1
-            ),
-          ];
-          return newExtraInputs;
-        });
-        return;
-      }
-
-      if (focusIndex > 0) {
-        let charWasIncorrect =
-          statuses[focusIndex - 1] === "typingLetter-incorrect";
-
-        setStatuses((prevStatuses) => {
-          const newStatuses = [...prevStatuses];
-          newStatuses[focusIndex - 1] = "typingLetter";
-          return newStatuses;
-        });
-
-        if (!charWasIncorrect) {
-          setIncorrectChars((prevSet) => {
-            const newSet = new Set(prevSet);
-            newSet.delete(chars[focusIndex - 1]);
-            return newSet;
-          });
-        }
-
-        setUserInput((prevInput) => [...prevInput.slice(0, focusIndex - 1)]);
-        setFocusIndex((prevIndex) => prevIndex - 1);
-      }
-      return;
-    }
-
-    let charCorrect = event.key === chars[focusIndex];
-
-    if (event.key !== "Backspace") {
-      setTotalChars((prevCharTotal) => prevCharTotal + 1);
-      if (!charCorrect) setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
-    }
-
-    setStatuses((prevStatuses) => {
-      const newStatuses = [...prevStatuses];
-      newStatuses[focusIndex] = charCorrect
-        ? "typingLetter-correct"
-        : "typingLetter-incorrect";
-      return newStatuses;
-    });
-
-    if (!charCorrect) {
-      setTotalErrors((prevErrorTotal) => prevErrorTotal + 1);
-      setIncorrectChars((prevSet) => new Set(prevSet.add(chars[focusIndex])));
-    }
-
-    setUserInput((prevInput) => [...prevInput.slice(0, focusIndex), event.key]);
-
-    event.preventDefault();
-    setFocusIndex((prevIndex) =>
-      prevIndex + 1 < refs.length ? prevIndex + 1 : prevIndex
-    );
+  const handleFocus = () => {
+    if (letters[caretPosition]) setActiveKey(letters[caretPosition]);
   };
 
-  let charIndex = 0;
-  const wordItems = shuffledWords.map((word, index) => {
-    const charsInWord = [...word, index !== shuffledWords.length - 1 ? " " : ""]
-      .length;
-    const refSet = refs.slice(charIndex, charIndex + charsInWord);
-    const statusSet = statuses.slice(charIndex, charIndex + charsInWord);
-    charIndex += charsInWord;
+  const handleKeyDown = (event) => {
+    if (event.key === "Backspace") {
+      setDel(true);
+      return;
+    } else {
+      if (event.key === "Tab") {
+        setTabPressed(true);
+        return;
+      }
+      if (event.key === "Enter" && tabPressed) {
+        setActiveRestartButton(activeRestartButton + 1);
+        setTabPressed(false);
+        return;
+      }
+      if (event.key === "Enter" && !tabPressed) {
+        return;
+      }
+
+      if (event.key === "CapsLock") {
+        if (event.getModifierState("CapsLock")) {
+          setCapsLockOn(true);
+        } else {
+          setCapsLockOn(false);
+        }
+        return;
+      }
+      if (!startTime) {
+        setStartTime(new Date());
+      }
+      setDel(false);
+      return;
+    }
+  };
+
+  const handleChange = (event) => {
+    let userInput = event.target.value.split("");
+    let lastUserInput = userInput.slice(-1)[0];
+    let currentActiveChar = letters[userInput.length];
+    let prevActiveChar = letters[userInput.length - 1];
+
+    //Пользователь не может допускать ошибки
+    // if (lastUserInput !== letters[userInput.length - 1]) return;
+
+    if (lastUserInput !== prevActiveChar && del === false) {
+      const newValue = incorrectChars.get(prevActiveChar)
+        ? incorrectChars.get(prevActiveChar) + 1
+        : 1;
+      incorrectChars.set(prevActiveChar, newValue);
+      setTotalErrors((totalErrors) => totalErrors + 1);
+    }
+    //Пока пользователь не нажал пробел, не переходим к следующему слову
+    if (lastUserInput !== prevActiveChar && prevActiveChar === " ") return;
+
+    setInputText(userInput);
+    setCaretPosition(userInput.length);
+
+    if (userInput.length !== letters.length) setActiveKey(currentActiveChar);
+  };
+
+  const getCharacterClass = (char, index) => {
+    if (index === caretPosition) {
+      if (index === 0) {
+        return "typingLetterCaretAnim";
+      }
+      return "typingLetterCaret";
+    } else if (!inputText[index]) {
+      return "typingLetter";
+    }
+    return inputText[index] === char
+      ? "typingLetterCorrect"
+      : "typingLetterIncorrect";
+  };
+
+  const getWordClass = (wordIndex, charsWithIndexes) => {
+    const currentWordIndex = getCurrentWordIndex(caretPosition, letters);
+
+    if (wordIndex === currentWordIndex) {
+      return "wordActive";
+    }
+    if (!charsWithIndexes) {
+    }
+    if (wordIndex < currentWordIndex) {
+      const wordChars = charsWithIndexes.map((item) => item.char);
+      const hasMistakes = wordChars.some((char, idx) => {
+        const absWordIdx = charsWithIndexes[idx].idx - 1;
+        return inputText[absWordIdx] !== char && char !== "";
+      });
+
+      if (hasMistakes) {
+        return "wordWrong";
+      } else {
+        return "wordComplete";
+      }
+    }
+    return "word";
+  };
+
+  const wordItems = words.map((word, index) => {
+    const chars = [...word, index !== words.length - 1 ? "" : ""].map(
+      (char) => {
+        charIndex++;
+        return { char: char, idx: charIndex, wordIdx: index };
+      }
+    );
     return (
-      <WordGroup
+      <Word
         key={index}
-        word={word}
-        refSet={refSet}
-        statusSet={statusSet}
-        handleFocus={handleFocus}
-        handleBlur={handleBlur}
-        extraInputs={extraInputs[index] || []}
+        charsWithIndexes={chars}
+        getCharacterClass={getCharacterClass}
+        getWordClass={getWordClass}
+        wordIdx={index + 1}
       />
     );
   });
 
   return (
-    <section className="inputText-section" key={shuffledWords}>
+    <div className="inputText-section">
       <div className="container">
         <div className="top-bar-row">
           <div className="top-bar-row-row">
@@ -364,21 +259,15 @@ const InputText = ({
                 {leftTime}
               </div>
             )}
-
-            {activeModeButton === "words" && (
+            {(activeModeButton === "words" || activeModeButton === "quote") && (
               <div className="count-wrapper" key={wordCount}>
-                {wordIndex} / {wordCount}
+                {getCurrentWordIndex(caretPosition, letters)} / {wordCount}
               </div>
-            )}
-            {activeModeButton === "quote" && (
-              <div className="count-wrapper" key={wordCount}>
-                {wordIndex} / {shuffledWords.length}
-              </div>
-            )}
-            {capsLockOn && (
-              <div className="capsLock-warning">Caps Lock is on!</div>
             )}
           </div>
+          {capsLockOn && (
+            <div className="capsLock-warning">Caps Lock is on!</div>
+          )}
           <div className="top-bar-col">
             {" "}
             <div className="restart-hint">
@@ -390,29 +279,41 @@ const InputText = ({
           {showButton && (
             <button
               className="focus-button"
-              onClick={() => refs[focusIndex].current.focus()}
+              onClick={() => inputRef.current.focus()}
             >
               Нажмите чтобы продолжить печать
             </button>
           )}
-          <div
-            tabIndex={-1}
-            className={`typingText-wrapper ${isBlur ? "blur" : ""}`}
-            onKeyDown={handleKeyDown}
+          <input
+            ref={inputRef}
+            className={"typingText-input"}
+            type="text"
+            value={inputText.join("")}
+            onChange={handleChange}
+            autoCorrect="off"
+            spellCheck="false"
+            onPaste={(e) => e.preventDefault()}
             onBlur={() => {
               setIsBlur(true);
               setShowButton(true);
+              handleBlur();
             }}
             onFocus={() => {
               setIsBlur(false);
               setShowButton(false);
+              handleFocus();
             }}
+            onKeyDown={handleKeyDown}
+          />
+          <div
+            className={`typingText-wrapper ${isBlur ? "blur" : ""}`}
+            ref={scrollContainer}
           >
             {wordItems}
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

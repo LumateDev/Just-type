@@ -20,8 +20,11 @@ const Home = () => {
   const [punctuationInclude, setPunctuationInclude] = useState(false);
   const [languageTest, setLanguageTest] = useState("english");
 
-  const [userInput, setUserInput] = useState([]);
-  const [incorrectChars, setIncorrectChars] = useState(new Set());
+  // if user not authorized or user game stats === null use default words from component, else use custom personalized words pack
+  // eslint-disable-next-line
+  const [wordType, setWordType] = useState("default");
+
+  const [incorrectChars, setIncorrectChars] = useState({});
   const [wordComplete, setWordComplete] = useState(0);
 
   return (
@@ -29,8 +32,8 @@ const Home = () => {
       {status === "print" && (
         <>
           <InputText
+            wordType={wordType}
             wordCount={wordCount}
-            setWordCount={setWordCount}
             setActiveKey={setActiveKey}
             status={status}
             setStatus={setStatus}
@@ -39,17 +42,19 @@ const Home = () => {
             setEndTime={setEndTime}
             startTime={startTime}
             setStartTime={setStartTime}
+            incorrectChars={incorrectChars}
+            setIncorrectChars={setIncorrectChars}
             wordTime={wordTime}
             languageTest={languageTest}
-            setUserInput={setUserInput}
             activeRestartButton={activeRestartButton}
             setActiveRestartButton={setActiveRestartButton}
             numbersInclude={numbersInclude}
             punctuationInclude={punctuationInclude}
-            setIncorrectChars={setIncorrectChars}
             activeModeButton={activeModeButton}
             setWordComplete={setWordComplete}
+            setWordCount={setWordCount}
           />
+
           <Toolbar
             setStatus={setStatus}
             activeCountButton={wordCount}
@@ -60,6 +65,7 @@ const Home = () => {
             activeRestartButton={activeRestartButton}
             setActiveCountButton={setWordCount}
             setActiveTimeButton={setWordTime}
+            totalErrors={totalErrors}
             setActiveLanguageButton={setLanguageTest}
             setActiveNumbersButton={setNumbersInclude}
             setActivePunctuationButton={setPunctuationInclude}
@@ -85,7 +91,6 @@ const Home = () => {
             endTime={endTime}
             totalChars={totalChars}
             totalErrors={totalErrors}
-            userInput={userInput}
             incorrectChars={incorrectChars}
             activeRestartButton={activeRestartButton}
             setActiveRestartButton={setActiveRestartButton}

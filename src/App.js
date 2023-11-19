@@ -1,8 +1,6 @@
 import { useState } from "react";
 import "./style/main.css";
 import Home from "./pages/Home";
-
-import RegAndLogForm from "./components/RegAndLogForm/RegAndLogForm";
 import Header from "./components/Header/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
@@ -20,11 +18,6 @@ function App() {
         <Header />
         {/* <!----------------------------PAGES----------------------------------------> */}
 
-        <RegAndLogForm
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
-          setLogged={setLogged}
-        ></RegAndLogForm>
         <Routes>
           <Route path="/Just-type/" element={<Home />} />
           <Route path="/Just-type/education" element={<Education />} />

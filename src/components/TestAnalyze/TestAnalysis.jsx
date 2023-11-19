@@ -9,7 +9,6 @@ const TestAnalysis = ({
   endTime,
   totalChars,
   totalErrors,
-  userInput,
   incorrectChars,
   wordComplete,
   activeRestartButton,
@@ -24,6 +23,10 @@ const TestAnalysis = ({
   const totalTime = (endTime - startTime) / 1000;
   let WPM = ((wordComplete / totalTime) * 60).toFixed(2);
 
+  console.log("Total chars: ", totalChars);
+  console.log("Total error: ", totalErrors);
+  console.log("Total time: ", totalTime);
+
   return (
     <div className="section-analysis">
       <div className="container">
@@ -33,7 +36,7 @@ const TestAnalysis = ({
           <div className="itemValue">{`Accuracy(Точность): ${accuracy.toFixed(
             0
           )}%`}</div>
-          <div className="itemValue">UserInput(Ваш ввод) : {userInput}</div>
+
           <h2 className="analysis-title">
             Вам следует обратить внимание на эти клавиши
           </h2>
