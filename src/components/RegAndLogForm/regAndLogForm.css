@@ -3,12 +3,14 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #5b5b5b;
+  background-color: #3f3f3f;
   border-radius: 12px;
-  max-width: 400px;
+  max-width: 440px;
+  font-family: "Roboto";
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
   width: 100%;
-
 }
 .overlay {
   position: fixed;
@@ -28,8 +30,7 @@
   row-gap: 20px;
 }
 
-
-.form-title-wrapper{
+.form-title-wrapper {
   width: 100%;
   height: 60px;
   margin-bottom: 20px;
@@ -37,50 +38,106 @@
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
 }
-.form-title{
+.form-title {
   margin-top: 10px;
-  
+
   text-align: center;
   justify-content: center;
   align-items: center;
-  font-family: "Roboto";
+
   font-size: 32px;
   color: #c7a900;
-
 }
 
-.form-row{
+.form-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-input {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+  width: 260px;
+
   text-align: center;
-  font-family: "Roboto";
+  opacity: 0.8;
   font-size: 20px;
+
   color: #939393;
   border: 2px solid;
   border-radius: 4px;
-  justify-content: center;
+  height: 50px;
   padding: 10px;
+
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+  transition: all 0.2s ease-in;
+}
+
+.form-input:hover {
+  opacity: 1;
 }
 
 .form-btn {
   display: flex;
-  margin-top: 20px;
   margin-bottom: 20px;
-  color: #585858;
   border-radius: 12px;
-  font-family: "Roboto";
   font-size: 24px;
   width: 180px;
   height: 60px;
-  background-color: #c7a900;
-  opacity: 1;
   width: 240px;
-  padding: 12px;
+  padding: 4px;
   justify-content: center;
+  text-align: center;
+  background-color: #c7a900;
+  opacity: 0.8;
+  color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  transition: all 0.2s ease-in;
+}
+
+.form-btn:hover {
+  opacity: 1;
+}
+
+.form-placeholder {
+  opacity: 0.8;
+  font-size: 20px;
+  color: #939393;
+  transition: all 0.2s ease-in;
+}
+
+.form-placeholder:hover {
+  opacity: 1;
+}
+
+.username-error {
+  margin-top: 10px;
+  color: #ab1111;
+  font-size: 18px;
+  text-align: center;
+}
+.email-error {
+  color: #ab1111;
+  margin-top: 10px;
+  font-size: 18px;
   text-align: center;
 }
 
-
-.form-placeholder {
-  font-family: "Roboto";
-  font-size: 20px;
-  color:#939393;
+.password-error {
+  margin-top: 10px;
+  color: #ab1111;
+  font-size: 18px;
+  text-align: center;
+}
+.repeat-password-error {
+  margin-top: 10px;
+  text-align: center;
+  color: #ab1111;
+  font-size: 18px;
 }
