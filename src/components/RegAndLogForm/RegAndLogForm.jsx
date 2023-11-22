@@ -15,10 +15,11 @@ const RegAndLogForm = ({
     formState: { errors, isValid },
     handleSubmit,
     reset,
+    watch,
   } = useForm({
     mode: "onBlur",
   });
-
+  const password = watch("password");
   const onSubmit = (data) => {
     alert(JSON.stringify(data));
 
@@ -99,9 +100,10 @@ const RegAndLogForm = ({
               <input
                 {...register("email", {
                   required: "Поле обязательно для заполнения",
-                  minLength: {
-                    value: 8,
-                    message: "Длина поля не может быть меньше 8 символов",
+
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                    message: "Почта заполнена неверно",
                   },
                 })}
                 type="email"
@@ -126,7 +128,7 @@ const RegAndLogForm = ({
                 required: "Поле обязательно для заполнения",
                 minLength: {
                   value: 8,
-                  message: "Длина пароля не может быть меньше 5 символов",
+                  message: "Длина пароля не может быть меньше 8 символов",
                 },
               })}
               type="password"
@@ -156,8 +158,10 @@ const RegAndLogForm = ({
                   required: "Поле обязательно для заполнения",
                   minLength: {
                     value: 8,
-                    message: "Длина пароля не может быть меньше 5 символов",
+                    message: "Длина пароля не может быть меньше 8 символов",
                   },
+                  validate: (value) =>
+                    value === password || "Пароли не совпадают",
                 })}
                 type="password"
                 autoComplete="current-password"
