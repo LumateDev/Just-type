@@ -36,6 +36,7 @@ const TestAnalysis = ({
           <div className="itemValue">{`Accuracy(Точность): ${accuracy.toFixed(
             0
           )}%`}</div>
+          <div className="itemValue">Ваши ошибки : {incorrectChars}</div>
 
           <h2 className="analysis-title">
             Вам следует обратить внимание на эти клавиши

@@ -1,20 +1,20 @@
 .typingLetter {
   color: #a1a1a1;
-  border-left: 1px solid transparent;
+  border-left: 1.4px solid transparent;
   transition: color 0.1s ease-in;
   width: 20px;
 }
 
 .typingLetterCorrect {
   color: #f6eeee;
-  border-left: 1px solid transparent;
+  border-left: 1.4px solid transparent;
   transition: color 0.1s linear;
   width: 20px;
 }
 
 .typingLetterIncorrect {
   color: #ab1111;
-  border-left: 1px solid transparent;
+  border-left: 1.4px solid transparent;
   transition: color 0.1s linear;
   width: 20px;
 }
