@@ -74,6 +74,10 @@ const RegAndLogForm = ({
                   value: 5,
                   message: "Длина поля не может быть меньше 5 символов",
                 },
+                maxLength: {
+                  value: 20,
+                  message: "Длина поля не может быть больше 20 символов",
+                },
               })}
               type="text"
               autoComplete="username"
@@ -100,6 +104,10 @@ const RegAndLogForm = ({
               <input
                 {...register("email", {
                   required: "Поле обязательно для заполнения",
+                  maxLength: {
+                    value: 100,
+                    message: "Длина поля не может быть больше 100 символов",
+                  },
 
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
@@ -126,6 +134,10 @@ const RegAndLogForm = ({
             <input
               {...register("password", {
                 required: "Поле обязательно для заполнения",
+                maxLength: {
+                  value: 100,
+                  message: "Длина поля не может быть больше 100 символов",
+                },
                 minLength: {
                   value: 8,
                   message: "Длина пароля не может быть меньше 8 символов",
@@ -156,6 +168,10 @@ const RegAndLogForm = ({
               <input
                 {...register("repeatPassword", {
                   required: "Поле обязательно для заполнения",
+                  maxLength: {
+                    value: 100,
+                    message: "Длина поля не может быть больше 100 символов",
+                  },
                   minLength: {
                     value: 8,
                     message: "Длина пароля не может быть меньше 8 символов",
