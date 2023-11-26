@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import "./regAndLogForm.css";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import errorSvg from "../../img/form/form-error.svg";
 
@@ -9,6 +10,8 @@ const RegAndLogForm = ({
   setModalOpen,
   formTitle,
   setFormTitle,
+  setUsername,
+  setLogged,
 }) => {
   const {
     register,
@@ -20,33 +23,70 @@ const RegAndLogForm = ({
     mode: "onBlur",
   });
   const password = watch("password");
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
 
-    reset();
-
-    switch (formTitle) {
-      case "Регистрация":
-        handleRegister();
-        break;
-      case "Восстановление":
-        handleRecover();
-        break;
-      default:
-        handleLogin();
+  const onSubmit = async (data) => {
+    try {
+      switch (formTitle) {
+        case "Регистрация":
+          await handleRegister(JSON.stringify(data));
+          break;
+        case "Восстановление":
+          await handleRecover(data);
+          break;
+        default:
+          await handleLogin(data);
+          reset();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      reset();
     }
   };
-  function handleRegister() {
-    console.log("Запуск функции handleRegister");
-  }
+  const handleRegister = async (data) => {
+    try {
+      const { username, email, password, repeat_password } = JSON.parse(data);
 
-  function handleRecover() {
-    console.log("Запуск функции handleRecover");
-  }
+      const response = await axios.post(
+        "http://localhost:8000/api/user/register",
+        {
+          username,
+          email,
+          password,
+          repeat_password,
+        }
+      );
 
-  function handleLogin() {
-    console.log("Запуск функции handleLogin");
-  }
+      console.log("Registration successful:", response.data);
+      setModalOpen(false);
+      alert("Регистрации прошла успешно, теперь вы можете авторизоваться");
+      // Handle success, redirect, or update UI accordingly
+    } catch (error) {
+      console.error("Registration failed:", error.response.data);
+      alert("Произошла ошибка регистрации");
+    }
+  };
+
+  const handleRecover = async (data) => {
+    alert("Запрос на сброс пароля принят");
+  };
+
+  const handleLogin = async (data) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/user/login",
+        {
+          ...data,
+        }
+      );
+      console.log("Login successful:", response.data);
+      setUsername(data.username);
+      setLogged(true);
+      setModalOpen(false);
+    } catch (error) {
+      console.error("Login failed:", error.response.data);
+      alert("Произошла ошибка авторизации");
+    }
+  };
 
   Modal.setAppElement("#root");
 
@@ -157,7 +197,7 @@ const RegAndLogForm = ({
         {formTitle === "Регистрация" && (
           <div className="form-col">
             <div className="form-input">
-              {errors?.repeatPassword && (
+              {errors?.repeat_password && (
                 <img
                   src={errorSvg}
                   width="32px"
@@ -166,7 +206,7 @@ const RegAndLogForm = ({
                 />
               )}
               <input
-                {...register("repeatPassword", {
+                {...register("repeat_password", {
                   required: "Поле обязательно для заполнения",
                   maxLength: {
                     value: 100,
@@ -186,8 +226,8 @@ const RegAndLogForm = ({
             </div>
 
             <div className="repeat-password-error">
-              {errors?.repeatPassword && (
-                <p>{errors?.repeatPassword?.message || "Error!"}</p>
+              {errors?.repeat_password && (
+                <p>{errors?.repeat_password?.message || "Error!"}</p>
               )}
             </div>
           </div>

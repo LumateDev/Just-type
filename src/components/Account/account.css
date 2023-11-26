@@ -39,3 +39,13 @@
 .auth-warning-btn:hover {
   opacity: 1;
 }
+
+.account-wrapper {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.welcome-text {
+  font-size: 24px;
+}

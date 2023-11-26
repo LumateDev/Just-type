@@ -7,7 +7,7 @@ import userIcon from "./../../img/navbar/icon-user.svg";
 import bellIcon from "./../../img/navbar/bell.svg";
 import settingsIcon from "./../../img/navbar/settings.svg";
 
-const Navbar = () => {
+const Navbar = ({ username }) => {
   return (
     <nav>
       <div className="nav-wrapper">
@@ -17,6 +17,7 @@ const Navbar = () => {
               <NavLink to="/profile" className="user-link">
                 <img src={userIcon} alt="userIcon" width="32px" height="32px" />
               </NavLink>
+              {username ? <div className="user-name">{username}</div> : null}
             </li>
             <li className="nav-list__item">
               <NavLink to="/education" className="edu-link">

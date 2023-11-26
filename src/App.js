@@ -9,22 +9,28 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 
 function App() {
-  
   const [logged, setLogged] = useState(false);
+  const [username, setUsername] = useState("");
 
   return (
     <div className="App">
       <Router>
-        <Header />
+        <Header logged={logged} username={username} />
         {/* <!----------------------------PAGES----------------------------------------> */}
 
-        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/education" element={<Education />} />
           <Route
             path="/profile"
-            element={<Profile logged={logged} setLogged={setLogged} />}
+            element={
+              <Profile
+                logged={logged}
+                setLogged={setLogged}
+                username={username}
+                setUsername={setUsername}
+              />
+            }
           />
           <Route path="/settings" element={<Settings />} />
         </Routes>

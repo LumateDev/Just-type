@@ -5,6 +5,10 @@
 
 .nav-list__item {
   list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .nav-list__item:hover {
   opacity: 0.6;
@@ -16,4 +20,9 @@
   flex-direction: row;
   column-gap: 30px;
   padding: 20px 0;
+}
+.user-name {
+  padding-left: 5px;
+  font-size: 20px;
+  color: #c7a900;
 }
