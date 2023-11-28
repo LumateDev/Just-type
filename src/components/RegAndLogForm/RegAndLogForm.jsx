@@ -57,9 +57,13 @@ const RegAndLogForm = ({
       );
 
       console.log("Registration successful:", response.data);
+     
       setModalOpen(false);
-      alert("Регистрации прошла успешно, теперь вы можете авторизоваться");
+      setUsername(response.data.username);
+      setLogged(true);
+      alert("Регистрации прошла успешно");
       // Handle success, redirect, or update UI accordingly
+      
     } catch (error) {
       console.error("Registration failed:", error.response.data);
       alert("Произошла ошибка регистрации");
@@ -75,11 +79,12 @@ const RegAndLogForm = ({
       const response = await axios.post(
         "http://localhost:8000/api/user/login",
         {
-          ...data,
+          username: data.username,
+          password: data.password,
         }
       );
       console.log("Login successful:", response.data);
-      setUsername(data.username);
+      setUsername(response.data.username);
       setLogged(true);
       setModalOpen(false);
     } catch (error) {
@@ -111,7 +116,7 @@ const RegAndLogForm = ({
               {...register("username", {
                 required: "Поле обязательно для заполнения",
                 minLength: {
-                  value: 5,
+                  value: 6,
                   message: "Длина поля не может быть меньше 5 символов",
                 },
                 maxLength: {

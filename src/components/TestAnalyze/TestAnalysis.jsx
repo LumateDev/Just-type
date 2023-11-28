@@ -27,6 +27,8 @@ const TestAnalysis = ({
   console.log("Total error: ", totalErrors);
   console.log("Total time: ", totalTime);
 
+  const incorrectCharsArray = Array.from(incorrectChars, ([key, value]) => `${key} : ${value}`);
+
   return (
     <div className="section-analysis">
       <div className="container">
@@ -36,7 +38,7 @@ const TestAnalysis = ({
           <div className="itemValue">{`Accuracy(Точность): ${accuracy.toFixed(
             0
           )}%`}</div>
-          <div className="itemValue">Ваши ошибки : {incorrectChars}</div>
+           <div className="itemValue">Ваши ошибки: {incorrectCharsArray.join(', ')}</div>
 
           <h2 className="analysis-title">
             Вам следует обратить внимание на эти клавиши
