@@ -1,55 +1,67 @@
-import React from "react";
-import "./navbar.css";
-import { NavLink } from "react-router-dom";
+  import React from "react";
+  import "./navbar.css";
+  import { NavLink } from "react-router-dom";
 
-import gradCapIcon from "./../../img/navbar/graduation-cap.svg";
-import userIcon from "./../../img/navbar/icon-user.svg";
-import bellIcon from "./../../img/navbar/bell.svg";
-import settingsIcon from "./../../img/navbar/settings.svg";
+  import gradCapIcon from "./../../img/navbar/graduation-cap.svg";
+  import userIcon from "./../../img/navbar/icon-user.svg";
+  import bellIcon from "./../../img/navbar/bell.svg";
+  import settingsIcon from "./../../img/navbar/settings.svg";
 
-const Navbar = ({ username }) => {
-  return (
-    <nav>
-      <div className="nav-wrapper">
-        <div className="nav-row">
-          <ul className="nav-list">
-            <li className="nav-list__item">
-              <NavLink to="/profile" className="user-link">
-                <img src={userIcon} alt="userIcon" width="32px" height="32px" />
-              </NavLink>
-              {username ? <div className="user-name">{username}</div> : null}
-            </li>
-            <li className="nav-list__item">
-              <NavLink to="/education" className="edu-link">
-                <img
-                  src={gradCapIcon}
-                  alt="educationIcon"
-                  width="32px"
-                  height="32px"
-                />
-              </NavLink>
-            </li>
-            <li className="nav-list__item">
-              <NavLink to="/notification" className="bell-link">
-                <img src={bellIcon} alt="bellIcon" width="32px" height="32px" />
-              </NavLink>
-            </li>
+  const Navbar = ({ username, setUsername, logged, segLogged }) => {
+    return (
+      <nav>
+        <div className="nav-wrapper">
+          <div className="nav-row">
+            <ul className="nav-list">
+              <li className="nav-list__item">
+                <NavLink to="/profile" className="user-link">
+                  <img src={userIcon} alt="userIcon" width="32px" height="32px" />
+                </NavLink>
+                {username ? <div className="user-name">{username}</div> : null}
+              </li>
+              <li className="nav-list__item">
+                <NavLink to="/education" className="edu-link">
+                  <img
+                    src={gradCapIcon}
+                    alt="educationIcon"
+                    width="32px"
+                    height="32px"
+                  />
+                </NavLink>
+              </li>
+              <li className="nav-list__item">
+                <NavLink to="/notification" className="bell-link">
+                  <img src={bellIcon} alt="bellIcon" width="32px" height="32px" />
+                </NavLink>
+              </li>
 
-            <li className="nav-list__item">
-              <NavLink to="/settings" className="settings-link">
-                <img
-                  src={settingsIcon}
-                  alt="settingsIcon"
-                  width="32px"
-                  height="32px"
-                />
-              </NavLink>
-            </li>
-          </ul>
+              <li className="nav-list__item">
+                <NavLink to="/settings" className="settings-link">
+                  <img
+                    src={settingsIcon}
+                    alt="settingsIcon"
+                    width="32px"
+                    height="32px"
+                  />
+                </NavLink>
+              </li>
+              {username ?  <li className="nav-list__item">
+                <div className="logout-wrapper">
+                <button className="logout-button"
+                onClick={() => {
+                  setUsername("");
+                  segLogged(false);
+                } }> выйти </button>
+                  </div>
+              
+              
+              </li>: null }
+            
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-  );
-};
+      </nav>
+    );
+  };
 
-export default Navbar;
+  export default Navbar;

@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Header logged={logged} username={username} />
+        <Header logged={logged} setLogged= {setLogged} username={username} setUsername = {setUsername} />
         {/* <!----------------------------PAGES----------------------------------------> */}
 
         <Routes>

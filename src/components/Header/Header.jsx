@@ -3,7 +3,7 @@ import React from "react";
 import defaultLogo from "./../../img/header/just-type-logo.png";
 import { NavLink } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
-const Header = ({ username }) => {
+const Header = ({ username, setUsername, logged, setLogged }) => {
   return (
     <div className="header-wrapper">
       <header className="header">
@@ -15,7 +15,7 @@ const Header = ({ username }) => {
               </NavLink>
             </div>
             <div className="header-links">
-              <Navbar username={username} />
+              <Navbar username={username} setUsername = {setUsername} logged={logged} setLogged= {setLogged} />
             </div>
           </div>
         </div>
