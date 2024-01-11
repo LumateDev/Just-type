@@ -15,10 +15,14 @@ const Keyboard = ({ activeKey, incorrectKeys, status, languageTest }) => {
   const row5 = [" "];
 
   const getKeyStyle = (key) => {
-    if (status === "print" && key.toLowerCase() === activeKey.toLowerCase()) {
+    if (
+      status === "print" &&
+      activeKey &&
+      key.toLowerCase() === activeKey.toLowerCase()
+    ) {
       return "activeKey";
     }
-    if (incorrectKeys && incorrectKeys.has(key.toLowerCase())) {
+    if (incorrectKeys && key.toLowerCase() in incorrectKeys) {
       return "incorrectKey";
     }
 

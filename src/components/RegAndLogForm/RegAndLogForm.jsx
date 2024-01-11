@@ -12,6 +12,7 @@ const RegAndLogForm = ({
   setFormTitle,
   setUsername,
   setLogged,
+  setUserId,
 }) => {
   const {
     register,
@@ -28,7 +29,8 @@ const RegAndLogForm = ({
     try {
       switch (formTitle) {
         case "Регистрация":
-          await handleRegister(JSON.stringify(data));
+          await handleRegister(data);
+
           break;
         case "Восстановление":
           await handleRecover(data);
@@ -44,28 +46,32 @@ const RegAndLogForm = ({
   };
   const handleRegister = async (data) => {
     try {
-      const { username, email, password, repeat_password } = JSON.parse(data);
-
       const response = await axios.post(
         "http://localhost:8000/api/user/register",
         {
-          username,
-          email,
-          password,
-          repeat_password,
+          username: data.username,
+          password: data.password,
+          email: data.email,
+          repeat_password: data.repeat_password,
         }
       );
 
       console.log("Registration successful:", response.data);
-     
-      setModalOpen(false);
-      setUsername(response.data.username);
+      // console("ID:", response.data.data.id);
+      // console("Username:", response.data.data.username);
+
       setLogged(true);
+      setUsername(response.data.data.username);
+
+      console.log("response.data.data.username:", response.data.data.username);
+      console.log("response.data.data.ID::::::::", response.data.data.id);
+      setUserId(response.data.data.id);
+      setModalOpen(false);
+
       alert("Регистрации прошла успешно");
       // Handle success, redirect, or update UI accordingly
-      
     } catch (error) {
-      console.error("Registration failed:", error.response.data);
+      console.error("Registration failed:", error.response);
       alert("Произошла ошибка регистрации");
     }
   };
@@ -84,7 +90,10 @@ const RegAndLogForm = ({
         }
       );
       console.log("Login successful:", response.data);
+
       setUsername(response.data.username);
+      setUserId(response.data.id);
+
       setLogged(true);
       setModalOpen(false);
     } catch (error) {

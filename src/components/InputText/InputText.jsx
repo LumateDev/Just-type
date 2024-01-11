@@ -74,7 +74,7 @@ const InputText = ({
     setLeftTime(wordTime);
     setTotalChars(0);
     setTotalErrors(0);
-    setIncorrectChars(new Map());
+    setIncorrectChars({});
 
     if (activeModeButton === "time") setWordCount(wordTime * 5);
     else if (
@@ -169,19 +169,17 @@ const InputText = ({
   };
 
   const handleChange = (event) => {
+    console.log(incorrectChars);
     let userInput = event.target.value.split("");
     let lastUserInput = userInput.slice(-1)[0];
     let currentActiveChar = letters[userInput.length];
     let prevActiveChar = letters[userInput.length - 1];
 
-    //Пользователь не может допускать ошибки
-    // if (lastUserInput !== letters[userInput.length - 1]) return;
-
-    if (lastUserInput !== prevActiveChar && del === false) {
-      const newValue = incorrectChars.get(prevActiveChar)
-        ? incorrectChars.get(prevActiveChar) + 1
+    if (lastUserInput !== prevActiveChar && prevActiveChar !== " " && !del) {
+      const newValue = incorrectChars[prevActiveChar]
+        ? incorrectChars[prevActiveChar] + 1
         : 1;
-      incorrectChars.set(prevActiveChar, newValue);
+      incorrectChars[prevActiveChar] = newValue;
       setTotalErrors((totalErrors) => totalErrors + 1);
     }
     //Пока пользователь не нажал пробел, не переходим к следующему слову

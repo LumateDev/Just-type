@@ -5,7 +5,7 @@ import TestAnalysis from "../components/TestAnalyze/TestAnalysis";
 
 import { useState } from "react";
 
-const Home = () => {
+const Home = ({ userId }) => {
   const [status, setStatus] = useState("print");
   const [activeKey, setActiveKey] = useState("");
   const [wordCount, setWordCount] = useState(25);
@@ -96,6 +96,7 @@ const Home = () => {
             setActiveRestartButton={setActiveRestartButton}
             setStatus={setStatus}
             languageTest={languageTest}
+            userId={userId}
           />
         </>
       )}

@@ -1,7 +1,7 @@
 import React from "react";
 import "./account.css";
 
-const Account = ({ setModalOpen, logged, setFormTitle, username }) => {
+const Account = ({ setModalOpen, logged, setFormTitle, username, userId }) => {
   const handleRegisterClick = () => {
     setModalOpen(true);
     setFormTitle("Регистрация");
@@ -16,7 +16,10 @@ const Account = ({ setModalOpen, logged, setFormTitle, username }) => {
     <div className="container">
       {logged ? (
         <div className="account-wrapper">
-          <div className="welcome-text">Добро пожаловать, {username}</div>
+          <div className="welcome-text">
+            <div className="text">Добро пожаловать, {username}</div>
+            <div className="text">Ваш ID: {userId}</div>
+          </div>
         </div>
       ) : (
         <div className="auth-wrapper">
