@@ -26,8 +26,11 @@
   padding: 6px 12px;
   border-radius: 3px;
   justify-self: center;
+  opacity: 0.5;
   font-size: 18px;
   font-family: "Roboto";
+  color: white;
+  text-shadow: 0 0 15px #564201;
 }
 
 .space {
@@ -37,6 +40,9 @@
   border-radius: 3px;
   justify-self: center;
   font-size: 16px;
+  background-color: #333232;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .defaultKey {

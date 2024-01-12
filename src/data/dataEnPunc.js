@@ -1,6 +1,6 @@
 import dataEn from "./dataEn";
 
-const punctuation = [".", ",", "!", "?", ";", ":", "-", "_"];
+const punctuation = [".", ",", "/", "'", ";", "[", "]"];
 const wordsEnPunc = dataEn.map(
   (word) => word + punctuation[Math.floor(Math.random() * punctuation.length)]
 );

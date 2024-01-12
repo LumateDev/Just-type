@@ -19,6 +19,8 @@ const ToolBar = ({
   setActiveRestartButton,
   activeModeButton,
   setActiveModeButton,
+  serverWords,
+  setServerWords,
 }) => {
   const handleClickMode = (buttonName) => {
     setActiveModeButton(buttonName);
@@ -64,6 +66,8 @@ const ToolBar = ({
               activeRestartButton={activeRestartButton}
               setActiveRestartButton={setActiveRestartButton}
               setStatus={setStatus}
+              setServerWords={setServerWords}
+              serverWords={serverWords}
             />
             <Button
               text="english"

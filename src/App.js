@@ -12,6 +12,8 @@ function App() {
   const [logged, setLogged] = useState(false);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
+  const [languageTest, setLanguageTest] = useState("english");
+  const [serverWords, setServerWords] = useState([]);
 
   return (
     <div className="App">
@@ -26,7 +28,18 @@ function App() {
         {/* <!----------------------------PAGES----------------------------------------> */}
 
         <Routes>
-          <Route path="/" element={<Home userId={userId} />} />
+          <Route
+            path="/"
+            element={
+              <Home
+                userId={userId}
+                languageTest={languageTest}
+                setLanguageTest={setLanguageTest}
+                setServerWords={setServerWords}
+                serverWords={serverWords}
+              />
+            }
+          />
           <Route path="/education" element={<Education />} />
           <Route
             path="/profile"
@@ -38,6 +51,8 @@ function App() {
                 setUsername={setUsername}
                 setUserId={setUserId}
                 userId={userId}
+                languageTest={languageTest}
+                setLanguageTest={setLanguageTest}
               />
             }
           />

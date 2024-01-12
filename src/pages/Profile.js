@@ -9,6 +9,8 @@ const Profile = ({
   username,
   setUserId,
   userId,
+  languageTest,
+  setLangugageTest,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [formTitle, setFormTitle] = useState("Авторизация");
@@ -31,6 +33,8 @@ const Profile = ({
         setFormTitle={setFormTitle}
         username={username}
         userId={userId}
+        languageTest={languageTest}
+        setLangugageTest={setLangugageTest}
       />
     </section>
   );

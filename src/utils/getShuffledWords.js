@@ -12,14 +12,14 @@ import { randomRussianQuote } from "../data/quoteRu";
 import { shuffle } from "../utils/shuffle";
 
 export const getShuffledWords = (
-  wordType,
+  serverWords,
   languageTest,
   punctuationInclude,
   wordCount,
   numbersInclude,
   activeModeButton
 ) => {
-  if (wordType === "default") {
+  if (!Array.isArray(serverWords) || serverWords.length === 0) {
     if (languageTest === "russian") {
       if (numbersInclude && !punctuationInclude)
         return shuffle(wordsRuNum).slice(0, wordCount);
@@ -49,5 +49,8 @@ export const getShuffledWords = (
       }
     }
     throw new Error("Invalid languageTest value");
+  } else {
+    console.log(shuffle(serverWords).slice(0, wordCount));
+    return shuffle(serverWords).slice(0, wordCount);
   }
 };

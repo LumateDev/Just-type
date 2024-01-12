@@ -57,7 +57,7 @@ const Navbar = ({ username, setUsername, logged, setLogged, setUserId }) => {
                     }}
                   >
                     {" "}
-                    выйти{" "}
+                    Выйти{" "}
                   </button>
                 </div>
               </li>

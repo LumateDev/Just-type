@@ -7,6 +7,7 @@ import Keyboard from "../Keyboard/Keyboard";
 
 const TestAnalysis = ({
   startTime,
+  wordCount,
   endTime,
   totalChars,
   totalErrors,
@@ -17,6 +18,7 @@ const TestAnalysis = ({
   setStatus,
   languageTest,
   userId,
+  setServerWords,
 }) => {
   let accuracy = 0;
 
@@ -63,6 +65,8 @@ const TestAnalysis = ({
               incorrectChars={incorrectChars}
               userId={userId}
               languageTest={languageTest}
+              wordCount={wordCount}
+              setServerWords={setServerWords}
             />
 
             <div className="hint">Запросить текст с сервера</div>

@@ -9,6 +9,8 @@ function CreateSpecialText({
   incorrectChars,
   userId,
   languageTest,
+  wordCount,
+  setServerWords,
 }) {
   const handleClickCreateSpecialText = async () => {
     if (languageTest === "english") {
@@ -16,12 +18,23 @@ function CreateSpecialText({
         const response = await axios.post("http://localhost:8000/api/errors", {
           userId: userId,
           letters: incorrectChars,
+          count_words: wordCount,
         });
+
         console.log("responce successful:", response);
+        console.log(response.data.unique_words);
+        setServerWords(response.data.unique_words);
       } catch (error) {
-        console.error("responce failed:", error.response);
-        if (error.request.status === 401) alert("Вы не авторизованы");
-        else alert("Произошла ошибка responce");
+        console.log(error);
+        console.error("responce failed:", error.request.status);
+        if (error.request.status === 401)
+          alert("Вы не авторизованы, авторизуйтесь и повторите попытку");
+        else {
+          console.log(wordCount);
+          alert(
+            "Не удалось составить уникальный тренировочный пакет слов, пожалуйста попробуйте позже"
+          );
+        }
       }
     } else {
       alert("Данная функция временно доступна для Пендоского языка, соре");

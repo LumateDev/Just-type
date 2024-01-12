@@ -6,7 +6,6 @@ import { getShuffledWords } from "../../utils/getShuffledWords";
 import { getCurrentWordIndex } from "../../utils/getCurrentWordIndex";
 
 const InputText = ({
-  wordType,
   setActiveKey,
   wordCount,
   setStatus,
@@ -26,6 +25,8 @@ const InputText = ({
   activeRestartButton,
   numbersInclude,
   punctuationInclude,
+  serverWords,
+  setServerWords,
 }) => {
   const [inputText, setInputText] = useState([]);
   const [words, setWords] = useState([]);
@@ -56,7 +57,7 @@ const InputText = ({
 
   useEffect(() => {
     const shuffledWords = getShuffledWords(
-      wordType,
+      serverWords,
       languageTest,
       punctuationInclude,
       wordCount,
@@ -107,6 +108,7 @@ const InputText = ({
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
       setTotalChars(charIndex);
+      setServerWords([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caretPosition]);

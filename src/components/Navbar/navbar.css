@@ -23,19 +23,16 @@
 }
 .user-name {
   padding-left: 5px;
-  font-size: 20px;
+  font-size: 24px;
   color: rgb(101, 101, 101);
 }
 
-
 .logout-button {
-
   border-radius: 12px;
   color: black;
 
-
   padding: 10px;
-  border-color: rgb(101, 101, 101); 
+  border-color: rgb(101, 101, 101);
   border: 2px solid rgb(101, 101, 101);
   color: rgb(101, 101, 101);
   font-size: 24px;

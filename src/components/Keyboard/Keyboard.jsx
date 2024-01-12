@@ -1,7 +1,13 @@
 import React from "react";
 import "./keyboard.css";
 
-const Keyboard = ({ activeKey, incorrectKeys, status, languageTest }) => {
+const Keyboard = ({
+  activeKey,
+  incorrectKeys,
+  status,
+  languageTest,
+  letterErrors,
+}) => {
   // Английская раскладка
   const engRow2 = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]"];
   const engRow3 = ["a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'"];
@@ -14,19 +20,41 @@ const Keyboard = ({ activeKey, incorrectKeys, status, languageTest }) => {
 
   const row5 = [" "];
 
+  function getErrorColor(errors) {
+    const maxErrors = 100; // Предел ошибок для максимального изменения цвета
+    errors = Math.min(errors, maxErrors); // Ограничиваем количество ошибок пределом
+    const weight = errors / maxErrors; // Весовой коэффициент цвета от 0 до 1
+
+    // Пересчитываем цвет от зеленого к красному
+    const red = Math.round((255 - 0) * weight + 0); // Зеленый цвет переходит к красному
+    const green = Math.round((255 - 0) * (1 - weight) + 0); // Красный цвет переходит к зеленому
+    const blue = 0; // Синий цвет отсутствует
+
+    return `rgb(${red},${green},${blue})`;
+  }
   const getKeyStyle = (key) => {
+    const baseStyle = "key "; // Общий класс для клавиши
     if (
       status === "print" &&
       activeKey &&
       key.toLowerCase() === activeKey.toLowerCase()
     ) {
-      return "activeKey";
+      return baseStyle + "activeKey";
     }
     if (incorrectKeys && key.toLowerCase() in incorrectKeys) {
-      return "incorrectKey";
+      return baseStyle + "incorrectKey";
+    }
+    if (letterErrors) {
+      const errors = letterErrors[key.toLowerCase()] || 0; // Используем 0 если нет ошибок
+      const backgroundColor = getErrorColor(errors); // Получаем цвет фона
+
+      // Возвращаем стиль с градиентом фона и белым текстом
+      return {
+        background: backgroundColor,
+      };
     }
 
-    return "defaultKey";
+    return baseStyle + "defaultKey";
   };
 
   // Выбор рядов в зависимости от языка
@@ -39,35 +67,73 @@ const Keyboard = ({ activeKey, incorrectKeys, status, languageTest }) => {
       <div className="container">
         <div className="keyboard-wrapper">
           <div className="row row2">
-            {row2.map((key) => (
-              <div className={`key ${getKeyStyle(key)}`} key={key}>
-                {key}
-              </div>
-            ))}
+            {row2.map((key) => {
+              const keyStyle = getKeyStyle(key);
+              return (
+                <div
+                  className={`key ${
+                    typeof keyStyle === "string" ? keyStyle : ""
+                  }`}
+                  style={typeof keyStyle === "object" ? keyStyle : null}
+                  key={key}
+                >
+                  {key}
+                </div>
+              );
+            })}
           </div>
 
           <div className="row row3">
-            {row3.map((key) => (
-              <div className={`key ${getKeyStyle(key)}`} key={key}>
-                {key}
-              </div>
-            ))}
+            {row3.map((key) => {
+              const keyStyle = getKeyStyle(key);
+              return (
+                <div
+                  className={`key ${
+                    typeof keyStyle === "string" ? keyStyle : ""
+                  }`}
+                  style={typeof keyStyle === "object" ? keyStyle : null}
+                  key={key}
+                >
+                  {key}
+                </div>
+              );
+            })}
           </div>
 
           <div className="row row4">
-            {row4.map((key) => (
-              <div className={`key ${getKeyStyle(key)}`} key={key}>
-                {key}
-              </div>
-            ))}
+            {row4.map((key) => {
+              const keyStyle = getKeyStyle(key);
+              return (
+                <div
+                  className={`key ${
+                    typeof keyStyle === "string" ? keyStyle : ""
+                  }`}
+                  style={typeof keyStyle === "object" ? keyStyle : null}
+                  key={key}
+                >
+                  {key}
+                </div>
+              );
+            })}
           </div>
 
           <div className="row row5">
-            {row5.map((key) => (
-              <div className={`space ${getKeyStyle(key)}`} key={key}>
-                {key}
-              </div>
-            ))}
+            {row5.map((key) => {
+              const keyStyle = getKeyStyle(key);
+              return (
+                <div
+                  className={
+                    key === " "
+                      ? "key space"
+                      : `key ${typeof keyStyle === "string" ? keyStyle : ""}`
+                  }
+                  style={typeof keyStyle === "object" ? keyStyle : null}
+                  key={key}
+                >
+                  {key}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

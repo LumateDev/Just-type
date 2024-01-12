@@ -5,7 +5,13 @@ import TestAnalysis from "../components/TestAnalyze/TestAnalysis";
 
 import { useState } from "react";
 
-const Home = ({ userId }) => {
+const Home = ({
+  userId,
+  serverWords,
+  setServerWords,
+  languageTest,
+  setLanguageTest,
+}) => {
   const [status, setStatus] = useState("print");
   const [activeKey, setActiveKey] = useState("");
   const [wordCount, setWordCount] = useState(25);
@@ -18,11 +24,9 @@ const Home = ({ userId }) => {
   const [activeRestartButton, setActiveRestartButton] = useState(0);
   const [numbersInclude, setNumbersInclude] = useState(false);
   const [punctuationInclude, setPunctuationInclude] = useState(false);
-  const [languageTest, setLanguageTest] = useState("english");
 
   // if user not authorized or user game stats === null use default words from component, else use custom personalized words pack
   // eslint-disable-next-line
-  const [wordType, setWordType] = useState("default");
 
   const [incorrectChars, setIncorrectChars] = useState({});
   const [wordComplete, setWordComplete] = useState(0);
@@ -32,7 +36,6 @@ const Home = ({ userId }) => {
       {status === "print" && (
         <>
           <InputText
-            wordType={wordType}
             wordCount={wordCount}
             setActiveKey={setActiveKey}
             status={status}
@@ -53,6 +56,8 @@ const Home = ({ userId }) => {
             activeModeButton={activeModeButton}
             setWordComplete={setWordComplete}
             setWordCount={setWordCount}
+            serverWords={serverWords}
+            setServerWords={setServerWords}
           />
 
           <Toolbar
@@ -72,6 +77,8 @@ const Home = ({ userId }) => {
             setActiveRestartButton={setActiveRestartButton}
             activeModeButton={activeModeButton}
             setActiveModeButton={setActiveModeButton}
+            serverWords={serverWords}
+            setServerWords={setServerWords}
           />
           <Keyboard
             activeKey={activeKey}
@@ -87,6 +94,7 @@ const Home = ({ userId }) => {
         <>
           <TestAnalysis
             wordComplete={wordComplete}
+            wordCount={wordCount}
             startTime={startTime}
             endTime={endTime}
             totalChars={totalChars}
@@ -97,6 +105,7 @@ const Home = ({ userId }) => {
             setStatus={setStatus}
             languageTest={languageTest}
             userId={userId}
+            setServerWords={setServerWords}
           />
         </>
       )}
