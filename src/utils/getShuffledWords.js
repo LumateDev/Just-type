@@ -30,7 +30,8 @@ export const getShuffledWords = (
       if (activeModeButton === "quote") {
         let randomQuote = randomRussianQuote();
         return randomQuote;
-      } else {
+      }
+       else {
         return shuffle(wordsRu).slice(0, wordCount);
       }
     }

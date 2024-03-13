@@ -36,6 +36,7 @@ const Home = ({
       {status === "print" && (
         <>
           <InputText
+            userId={userId}
             wordCount={wordCount}
             setActiveKey={setActiveKey}
             status={status}
@@ -105,6 +106,7 @@ const Home = ({
             setStatus={setStatus}
             languageTest={languageTest}
             userId={userId}
+            serverWords={serverWords}
             setServerWords={setServerWords}
           />
         </>

@@ -4,8 +4,10 @@ import Word from "./Word";
 
 import { getShuffledWords } from "../../utils/getShuffledWords";
 import { getCurrentWordIndex } from "../../utils/getCurrentWordIndex";
+import { sendData } from "../../utils/sendData";
 
 const InputText = ({
+  userId,
   setActiveKey,
   wordCount,
   setStatus,
@@ -108,7 +110,9 @@ const InputText = ({
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
       setTotalChars(charIndex);
-      setServerWords([]);
+      if(userId != null)
+        sendData(incorrectChars, userId, languageTest, wordCount, setServerWords);
+      //setServerWords([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caretPosition]);

@@ -91,11 +91,14 @@ const ToolBar = ({
               active={activeModeButton === "time"}
               handleClick={() => handleClickMode("time")}
             />
-            <Button
+            {!activeNumbersButton && !activePunctuationButton && (
+              <Button
               text="quote"
               active={activeModeButton === "quote"}
               handleClick={() => handleClickMode("quote")}
             />
+            )}
+            
           </div>
 
           {activeModeButton !== "quote" && (

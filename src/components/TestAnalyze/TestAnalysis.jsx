@@ -1,7 +1,7 @@
 import React from "react";
 import "./testAnalysis.css";
 
-import CreateSpecialText from "../ToolButton/CreateSpecialText";
+
 import RestartButton from "./../ToolButton/RestartButton";
 import Keyboard from "../Keyboard/Keyboard";
 
@@ -19,6 +19,7 @@ const TestAnalysis = ({
   languageTest,
   userId,
   setServerWords,
+  serverWords
 }) => {
   let accuracy = 0;
 
@@ -57,26 +58,15 @@ const TestAnalysis = ({
               languageTest={languageTest}
             />
           </div>
-          <div className="button">
-            <CreateSpecialText
-              activeRestartButton={activeRestartButton}
-              setActiveRestartButton={setActiveRestartButton}
-              setStatus={setStatus}
-              incorrectChars={incorrectChars}
-              userId={userId}
-              languageTest={languageTest}
-              wordCount={wordCount}
-              setServerWords={setServerWords}
-            />
-
-            <div className="hint">Запросить текст с сервера</div>
-          </div>
+          
           <div className="button">
             {" "}
             <RestartButton
               activeRestartButton={activeRestartButton}
               setActiveRestartButton={setActiveRestartButton}
               setStatus={setStatus}
+              setServerWords={setServerWords}
+              serverWords={serverWords}
             />
             <div className="hint">Нажмите tab + Enter чтобы начать сначала</div>
           </div>
