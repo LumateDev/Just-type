@@ -65,7 +65,8 @@ const InputText = ({
       punctuationInclude,
       wordCount,
       numbersInclude,
-      activeModeButton
+      activeModeButton,
+      recomendedMode
     );
     setWords(shuffledWords);
     setLetters(shuffledWords.join(" ").split(""));
@@ -111,7 +112,7 @@ const InputText = ({
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
       setTotalChars(charIndex);
-      if(userId != null && recomendedMode)
+      if(userId != null )
         sendData(incorrectChars, userId, languageTest, wordCount, setServerWords);
       //setServerWords([]);
     }

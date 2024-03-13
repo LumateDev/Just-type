@@ -1,6 +1,7 @@
 import React from 'react'
 import "./generalSettings.css"
-import Switch from '@mui/material/Switch';
+
+import { Switch } from 'antd';
 
 
 
@@ -9,7 +10,7 @@ const GeneralSettings = ({recomendedMode, setRecomendedMode, logged}) => {
 
     const handleChangeRec = () => {
         setRecomendedMode(!recomendedMode);
-        console.log(recomendedMode);
+       
     }
   return (
     <div className="container">
@@ -22,15 +23,15 @@ const GeneralSettings = ({recomendedMode, setRecomendedMode, logged}) => {
 
                 {logged && (
                     <>
-                    <Switch onChange={handleChangeRec}  color="default"  />
-                    <label htmlFor="">Использовать рекомендации для улучшения навыков</label>
+                    <Switch defaultChecked ={recomendedMode} onChange={handleChangeRec} />
+                    <label htmlFor="">Использовать рекомндованные слова для улучшения навыков </label>
                     </>
                     
                 )}
                 {!logged && (
                     <>
-                     <Switch  disabled  color ="default"  />
-                    Для этой опции нужна авторизация 
+                     <Switch disabled={true} defaultChecked = {false} />
+                    Для использования рекомндованных слов необходима авторизация
                     </>
                     
                 )}

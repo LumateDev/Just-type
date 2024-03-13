@@ -90,7 +90,7 @@ const RegAndLogForm = ({
         }
       );
       console.log("Login successful:", response.data);
-      alert("Авторизация прошла успешно");
+     
 
       setUsername(response.data.username);
       setUserId(response.data.id);
