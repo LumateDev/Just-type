@@ -29,6 +29,7 @@ const InputText = ({
   punctuationInclude,
   serverWords,
   setServerWords,
+  recomendedMode,
 }) => {
   const [inputText, setInputText] = useState([]);
   const [words, setWords] = useState([]);
@@ -110,7 +111,7 @@ const InputText = ({
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
       setTotalChars(charIndex);
-      if(userId != null)
+      if(userId != null && recomendedMode)
         sendData(incorrectChars, userId, languageTest, wordCount, setServerWords);
       //setServerWords([]);
     }

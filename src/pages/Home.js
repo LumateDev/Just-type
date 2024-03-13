@@ -11,6 +11,7 @@ const Home = ({
   setServerWords,
   languageTest,
   setLanguageTest,
+  recomendedMode
 }) => {
   const [status, setStatus] = useState("print");
   const [activeKey, setActiveKey] = useState("");
@@ -59,6 +60,7 @@ const Home = ({
             setWordCount={setWordCount}
             serverWords={serverWords}
             setServerWords={setServerWords}
+            recomendedMode = {recomendedMode}
           />
 
           <Toolbar
