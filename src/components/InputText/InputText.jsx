@@ -6,6 +6,7 @@ import { getShuffledWords } from "../../utils/getShuffledWords";
 import { getCurrentWordIndex } from "../../utils/getCurrentWordIndex";
 import { sendData } from "../../utils/sendData";
 
+
 const InputText = ({
   userId,
   setActiveKey,
@@ -14,6 +15,8 @@ const InputText = ({
   wordTime,
   setWordCount,
   setTotalChars,
+  totalErrors,
+  totalChars,
   setTotalErrors,
   setEndTime,
   startTime,
@@ -45,6 +48,7 @@ const InputText = ({
   const inputRef = useRef();
   const scrollContainer = useRef();
   let charIndex = 0;
+ 
 
   useEffect(() => {
     if (caretPosition === 0) {
@@ -112,8 +116,11 @@ const InputText = ({
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
       setTotalChars(charIndex);
-      if(userId != null )
-        sendData(incorrectChars, userId, languageTest, wordCount, setServerWords);
+      if(userId != null ){
+        sendData(incorrectChars, userId, languageTest, wordCount, setServerWords,totalChars,totalErrors,);
+     
+      }
+
       //setServerWords([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
