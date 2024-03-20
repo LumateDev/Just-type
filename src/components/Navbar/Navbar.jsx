@@ -2,12 +2,11 @@ import React from "react";
 import "./navbar.css";
 import { NavLink } from "react-router-dom";
 
-import gradCapIcon from "./../../img/navbar/graduation-cap.svg";
+
 import userIcon from "./../../img/navbar/icon-user.svg";
-import bellIcon from "./../../img/navbar/bell.svg";
 import settingsIcon from "./../../img/navbar/settings.svg";
 
-const Navbar = ({ username, setUsername, logged, setLogged, setUserId }) => {
+const Navbar = ({ username, setUsername, setLogged, setUserId }) => {
   return (
     <nav>
       <div className="nav-wrapper">
@@ -19,22 +18,7 @@ const Navbar = ({ username, setUsername, logged, setLogged, setUserId }) => {
               </NavLink>
               {username ? <div className="user-name">{username}</div> : null}
             </li>
-            <li className="nav-list__item">
-              <NavLink to="/education" className="edu-link">
-                <img
-                  src={gradCapIcon}
-                  alt="educationIcon"
-                  width="32px"
-                  height="32px"
-                />
-              </NavLink>
-            </li>
-            <li className="nav-list__item">
-              <NavLink to="/notification" className="bell-link">
-                <img src={bellIcon} alt="bellIcon" width="32px" height="32px" />
-              </NavLink>
-            </li>
-
+           
             <li className="nav-list__item">
               <NavLink to="/settings" className="settings-link">
                 <img

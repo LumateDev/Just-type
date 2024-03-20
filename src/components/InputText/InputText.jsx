@@ -120,8 +120,6 @@ const InputText = ({
         sendData(incorrectChars, userId, languageTest, wordCount, setServerWords,totalChars,totalErrors,);
      
       }
-
-      //setServerWords([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caretPosition]);
@@ -184,7 +182,6 @@ const InputText = ({
   };
 
   const handleChange = (event) => {
-    console.log(incorrectChars);
     let userInput = event.target.value.split("");
     let lastUserInput = userInput.slice(-1)[0];
     let currentActiveChar = letters[userInput.length];

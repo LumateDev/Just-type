@@ -82,6 +82,7 @@ const Home = ({
             setActiveModeButton={setActiveModeButton}
             serverWords={serverWords}
             setServerWords={setServerWords}
+            recomendedMode = {recomendedMode}
           />
           <Keyboard
             activeKey={activeKey}

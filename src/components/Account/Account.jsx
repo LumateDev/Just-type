@@ -11,7 +11,6 @@ const Account = ({
   username,
   userId,
   languageTest,
-  setLanguageTest,
 }) => {
   const [letterErrors, setLetterErrors] = useState({});
   useEffect(() => {

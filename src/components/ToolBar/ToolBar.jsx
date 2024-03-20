@@ -21,6 +21,7 @@ const ToolBar = ({
   setActiveModeButton,
   serverWords,
   setServerWords,
+  recomendedMode
 }) => {
   const handleClickMode = (buttonName) => {
     setActiveModeButton(buttonName);
@@ -57,7 +58,7 @@ const ToolBar = ({
       countButtons = [];
   }
 
-  return (
+  return recomendedMode ? null : (
     <section className="toolbar">
       <div className="container">
         <div className="toolbar-wrapper">
@@ -98,7 +99,6 @@ const ToolBar = ({
               handleClick={() => handleClickMode("quote")}
             />
             )}
-            
           </div>
 
           {activeModeButton !== "quote" && (

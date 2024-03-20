@@ -28,17 +28,14 @@ const GeneralSettings = ({recomendedMode, setRecomendedMode, logged}) => {
                     </>
                     
                 )}
+
                 {!logged && (
                     <>
                      <Switch disabled={true} defaultChecked = {false} />
                     Для использования рекомндованных слов необходима авторизация
-                    </>
-                    
+                    </> 
                 )}
                     
-                
-                
-                  
                 </label>
             </div>
         </div>

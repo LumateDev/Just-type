@@ -30,7 +30,6 @@ const RegAndLogForm = ({
       switch (formTitle) {
         case "Регистрация":
           await handleRegister(data);
-
           break;
         case "Восстановление":
           await handleRecover(data);
@@ -56,23 +55,13 @@ const RegAndLogForm = ({
         }
       );
 
-      console.log("Registration successful:", response.data);
-      // console("ID:", response.data.data.id);
-      // console("Username:", response.data.data.username);
-
       setLogged(true);
       setUsername(response.data.data.username);
-
-      console.log("response.data.data.username:", response.data.data.username);
-      console.log("response.data.data.ID::::::::", response.data.data.id);
       setUserId(response.data.data.id);
       setModalOpen(false);
 
-      alert("Регистрации прошла успешно");
-      // Handle success, redirect, or update UI accordingly
     } catch (error) {
       console.error("Registration failed:", error.response);
-      alert("Произошла ошибка регистрации");
     }
   };
 
@@ -89,17 +78,12 @@ const RegAndLogForm = ({
           password: data.password,
         }
       );
-      console.log("Login successful:", response.data);
-     
-
       setUsername(response.data.username);
       setUserId(response.data.id);
-
       setLogged(true);
       setModalOpen(false);
     } catch (error) {
       console.error("Login failed:", error.response.data);
-      alert("Произошла ошибка авторизации");
     }
   };
 

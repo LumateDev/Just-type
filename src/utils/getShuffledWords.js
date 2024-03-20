@@ -21,7 +21,7 @@ export const getShuffledWords = (
   recomendedMode
 ) => {
   if(recomendedMode && Array.isArray(serverWords) && serverWords.length !== 0) {
-    console.log(shuffle(serverWords).slice(0, wordCount));
+   
     return shuffle(serverWords).slice(0, wordCount);
   }
  

@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import Header from "./components/Header/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
-import Education from "./pages/Education";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 
@@ -42,7 +41,6 @@ function App() {
               />
             }
           />
-          <Route path="/education" element={<Education />} />
           <Route
             path="/profile"
             element={
@@ -54,10 +52,7 @@ function App() {
                 setUserId={setUserId}
                 userId={userId}
                 languageTest={languageTest}
-                setLanguageTest={setLanguageTest}
-              />
-            }
-          />
+              />}/>
           <Route path="/settings" element={
             <Settings 
               logged = {logged}
