@@ -12,6 +12,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");
   const [recomendedMode, setRecomendedMode] = useState(false);
+  const [useKeyboard, setUseKeyboard] = useState(true);
   const [languageTest, setLanguageTest] = useState("english");
   const [serverWords, setServerWords] = useState([]);
 
@@ -33,11 +34,12 @@ function App() {
             element={
               <Home
                 userId={userId}
-                recomendedMode = {recomendedMode}
+                recomendedMode={recomendedMode}
                 languageTest={languageTest}
                 setLanguageTest={setLanguageTest}
                 setServerWords={setServerWords}
                 serverWords={serverWords}
+                useKeyboard={useKeyboard}
               />
             }
           />
@@ -52,12 +54,21 @@ function App() {
                 setUserId={setUserId}
                 userId={userId}
                 languageTest={languageTest}
-              />}/>
-          <Route path="/settings" element={
-            <Settings 
-              logged = {logged}
-              recomendedMode={recomendedMode}
-              setRecomendedMode = {setRecomendedMode}/>} />
+              />
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <Settings
+                logged={logged}
+                recomendedMode={recomendedMode}
+                setRecomendedMode={setRecomendedMode}
+                setUseKeyboard={setUseKeyboard}
+                useKeyboard={useKeyboard}
+              />
+            }
+          />
         </Routes>
 
         <Footer />

@@ -13,6 +13,7 @@ const Account = ({
   languageTest,
 }) => {
   const [letterErrors, setLetterErrors] = useState({});
+  const [userStats, setUserStats] = useState({});
   useEffect(() => {
     const fetchErrors = async () => {
       try {
@@ -25,10 +26,24 @@ const Account = ({
         console.error(error.response ? error.response : error.message);
       }
     };
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/user/data/${userId}`
+        );
+        console.log("responce successful:", response);
+        setUserStats(response.data);
+        console.log(userStats.data);
+      } catch (error) {
+        console.error(error.response ? error.response : error.message);
+      }
+    };
 
     if (userId && logged) {
       fetchErrors();
+      fetchData();
     }
+    // eslint-disable-next-line
   }, [userId, logged]); // Зависимости useEffect: если userId или logged изменятся, выполнится запрос
 
   const handleRegisterClick = () => {
@@ -57,24 +72,38 @@ const Account = ({
 
   return (
     <div className="container">
-      {logged ? (
+      {logged && userId && Object.keys(userStats).length ? (
         <div className="account-wrapper">
           <div className="info-wrapper">
             <div className="welcome-text">
               <div className="text">Добро пожаловать, {username}</div>
-              <div className="text">Ваш ID в системе: {userId}</div>
             </div>
-            <div className="user-keyboard">
-              <h1 className="keyboard-title">Цветовая схема ваших ошибок</h1>
+            <div className="card-wrapper">
+              <div className="card">Ваш Уровень: {userStats.data.level}</div>
+              <div className="card">
+                Опыт: {userStats.data.experience.toFixed(1)}/
+                {userStats.data.threshold.toFixed(1)}
+              </div>
+              <div className="card">
+                Лучшая скорость печати: {userStats.data.best_WPM.toFixed(1)}
+              </div>
+              <div className="card">
+                Средняя скорость печати: {userStats.data.average_WPM.toFixed(1)}
+              </div>
+              <div className="card">
+                Лучшая точность: {userStats.data.best_accuracy.toFixed(1)}
+              </div>
+              <div className="card">
+                Средняя точность: {userStats.data.average_accuracy.toFixed(1)}
+              </div>
+            </div>
 
+            <div className="user-keyboard">
               <Keyboard
                 languageTest={languageTest}
                 letterErrors={letterErrors}
               />
-              <p className="hint">
-                Эта схема отображает насколько часто вы совершаете ошибку в
-                определенных буквах
-              </p>
+
               <div className="button-r">
                 <div className="hint">Сбросить ошибки</div>
                 <button type="button" onClick={handleRefreshStats}>

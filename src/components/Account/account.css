@@ -52,16 +52,6 @@
   row-gap: 30px;
   font-size: 20px;
 }
-.keyboard-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-family: "Roboto";
-  font-size: 36px;
-  max-width: 700px;
-  color: #ababab;
-}
 
 .button-r {
   font-size: 30px;
@@ -80,6 +70,7 @@
   fill: #c7a900;
 }
 .user-keyboard {
+  margin-top: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,15 +78,28 @@
   row-gap: 50px;
 }
 .welcome-text {
-  font-size: 24px;
+  font-size: 36px;
+
   display: flex;
-  flex-direction: column;
+
+  color: #ababab;
+  justify-content: center;
+  align-items: center;
 }
 .ingo-wrapper {
   font-family: "Roboto";
 }
 
-.text {
+.card {
   font-size: 28px;
   color: #ababab;
+  padding: 15px;
+  background-color: #363636;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.card-wrapper {
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
 }

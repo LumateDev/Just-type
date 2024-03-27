@@ -4,19 +4,14 @@ import Word from "./Word";
 
 import { getShuffledWords } from "../../utils/getShuffledWords";
 import { getCurrentWordIndex } from "../../utils/getCurrentWordIndex";
-import { sendData } from "../../utils/sendData";
-
 
 const InputText = ({
-  userId,
   setActiveKey,
   wordCount,
   setStatus,
   wordTime,
   setWordCount,
   setTotalChars,
-  totalErrors,
-  totalChars,
   setTotalErrors,
   setEndTime,
   startTime,
@@ -31,10 +26,7 @@ const InputText = ({
   numbersInclude,
   punctuationInclude,
   serverWords,
-  setServerWords,
   recomendedMode,
-  WPM,
-  accuracy
 }) => {
   const [inputText, setInputText] = useState([]);
   const [words, setWords] = useState([]);
@@ -50,7 +42,6 @@ const InputText = ({
   const inputRef = useRef();
   const scrollContainer = useRef();
   let charIndex = 0;
- 
 
   useEffect(() => {
     if (caretPosition === 0) {
@@ -117,12 +108,6 @@ const InputText = ({
       setEndTime(new Date());
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
-      
-      if(userId != null ){
-        sendData(incorrectChars, userId, languageTest, wordCount, setServerWords,totalChars,totalErrors, WPM, accuracy);
-     
-      }
-      // ХХЗЗАВАЫВРЬдлвьо эрлопкжрпж ркпоырила
       setTotalChars(charIndex);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

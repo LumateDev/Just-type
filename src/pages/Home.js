@@ -11,7 +11,8 @@ const Home = ({
   setServerWords,
   languageTest,
   setLanguageTest,
-  recomendedMode
+  recomendedMode,
+  useKeyboard,
 }) => {
   const [status, setStatus] = useState("print");
   const [activeKey, setActiveKey] = useState("");
@@ -28,28 +29,16 @@ const Home = ({
   const [incorrectChars, setIncorrectChars] = useState({});
   const [wordComplete, setWordComplete] = useState(0);
 
-  let WPM = 0;
-  let accuracy = 0;
-  const totalTime = (endTime - startTime) / 1000;
-
-  if (totalChars > totalErrors)
-    accuracy = ((totalChars - totalErrors) / totalChars) * 100;
-
-  WPM = ((wordComplete / totalTime) * 60).toFixed(2);
-
   // if user not authorized or user game stats === null use default words from component, else use custom personalized words pack
   // eslint-disable-next-line
-
-
 
   return (
     <>
       {status === "print" && (
         <>
           <InputText
-            userId={userId}
-            wordCount={wordCount}
             setActiveKey={setActiveKey}
+            wordCount={wordCount}
             status={status}
             setStatus={setStatus}
             setTotalChars={setTotalChars}
@@ -69,12 +58,7 @@ const Home = ({
             setWordComplete={setWordComplete}
             setWordCount={setWordCount}
             serverWords={serverWords}
-            setServerWords={setServerWords}
-            recomendedMode = {recomendedMode}
-            WPM={WPM}
-            accuracy={accuracy}
-            totalChars={totalChars}
-            totalErrors={totalErrors}
+            recomendedMode={recomendedMode}
           />
 
           <Toolbar
@@ -96,27 +80,26 @@ const Home = ({
             setActiveModeButton={setActiveModeButton}
             serverWords={serverWords}
             setServerWords={setServerWords}
-            recomendedMode = {recomendedMode}
+            recomendedMode={recomendedMode}
           />
-          <Keyboard
-            activeKey={activeKey}
-            status={status}
-            languageTest={languageTest}
-          />
-
-          {/* <div className="itemValue">UserInput : {userInput}</div>
-          <div className="itemValue">incorrectChars : {incorrectChars}</div> */}
+          {useKeyboard && (
+            <Keyboard
+              activeKey={activeKey}
+              status={status}
+              languageTest={languageTest}
+            />
+          )}
         </>
       )}
       {status === "analysis" && (
         <>
           <TestAnalysis
-            wordComplete={wordComplete}
-            wordCount={wordCount}
             startTime={startTime}
-            endTime={endTime}
+            wordCount={wordCount}
             totalChars={totalChars}
             totalErrors={totalErrors}
+            endTime={endTime}
+            wordComplete={wordComplete}
             incorrectChars={incorrectChars}
             activeRestartButton={activeRestartButton}
             setActiveRestartButton={setActiveRestartButton}
@@ -125,9 +108,6 @@ const Home = ({
             userId={userId}
             serverWords={serverWords}
             setServerWords={setServerWords}
-            WPM={WPM}
-            accuracy={accuracy}
-            totalTime={totalTime}
           />
         </>
       )}

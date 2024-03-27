@@ -1,46 +1,64 @@
-import React from 'react'
-import "./generalSettings.css"
+import React from "react";
+import "./generalSettings.css";
 
-import { Switch } from 'antd';
+import { Switch } from "antd";
 
+const GeneralSettings = ({
+  recomendedMode,
+  setRecomendedMode,
+  logged,
+  setUseKeyboard,
+  useKeyboard,
+}) => {
+  const handleChangeRec = () => {
+    setRecomendedMode(!recomendedMode);
+  };
+  const handleChangeKeyabord = () => {
+    setUseKeyboard(!useKeyboard);
+  };
 
-
-const GeneralSettings = ({recomendedMode, setRecomendedMode, logged}) => {
-
-
-    const handleChangeRec = () => {
-        setRecomendedMode(!recomendedMode);
-       
-    }
   return (
     <div className="container">
-        <div className="general-settings-wrapper">
-            <div className="general-title">
-                General Settings
-            </div>
-            <div className="general-settings-item">
-                <label>
+      <div className="general-settings-wrapper">
+        <div className="general-title">Общие настройки</div>
+        <div className="general-settings-item">
+          {logged && (
+            <>
+              <Switch
+                className="switch"
+                defaultChecked={recomendedMode}
+                onChange={handleChangeRec}
+              />
+              <label className="text">
+                Использовать рекомндованные слова для улучшения навыков{" "}
+              </label>
+            </>
+          )}
 
-                {logged && (
-                    <>
-                    <Switch defaultChecked ={recomendedMode} onChange={handleChangeRec} />
-                    <label htmlFor="">Использовать рекомндованные слова для улучшения навыков </label>
-                    </>
-                    
-                )}
-
-                {!logged && (
-                    <>
-                     <Switch disabled={true} defaultChecked = {false} />
-                    Для использования рекомндованных слов необходима авторизация
-                    </> 
-                )}
-                    
-                </label>
-            </div>
+          {!logged && (
+            <>
+              <Switch
+                className="switch"
+                disabled={true}
+                defaultChecked={false}
+              />
+              Для использования рекомндованных слов необходима авторизация
+            </>
+          )}
         </div>
+        <div className="general-settings-item">
+          <>
+            <Switch
+              className="switch"
+              defaultChecked={useKeyboard}
+              onChange={handleChangeKeyabord}
+            />
+            <label className="text">Отображать виртуальную клавиатуру </label>
+          </>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default GeneralSettings
+export default GeneralSettings;
