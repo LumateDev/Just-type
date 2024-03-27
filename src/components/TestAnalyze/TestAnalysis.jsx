@@ -8,26 +8,26 @@ import Keyboard from "../Keyboard/Keyboard";
 const TestAnalysis = ({
   startTime,
   wordCount,
-  endTime,
+
   totalChars,
   totalErrors,
   incorrectChars,
-  wordComplete,
+  
   activeRestartButton,
   setActiveRestartButton,
   setStatus,
   languageTest,
   userId,
   setServerWords,
-  serverWords
+  serverWords,
+  WPM,
+  accuracy,totalTime,
+  endTime,
 }) => {
-  let accuracy = 0;
+  
 
-  if (totalChars > totalErrors)
-    accuracy = ((totalChars - totalErrors) / totalChars) * 100;
-  const totalTime = (endTime - startTime) / 1000;
-  let WPM = ((wordComplete / totalTime) * 60).toFixed(2);
-
+  
+  
   console.log("Total chars: ", totalChars);
   console.log("Total error: ", totalErrors);
   console.log("Total time: ", totalTime);

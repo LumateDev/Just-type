@@ -33,6 +33,8 @@ const InputText = ({
   serverWords,
   setServerWords,
   recomendedMode,
+  WPM,
+  accuracy
 }) => {
   const [inputText, setInputText] = useState([]);
   const [words, setWords] = useState([]);
@@ -115,11 +117,13 @@ const InputText = ({
       setEndTime(new Date());
       setStatus("analysis");
       setWordComplete(getCurrentWordIndex(caretPosition, letters));
-      setTotalChars(charIndex);
+      
       if(userId != null ){
-        sendData(incorrectChars, userId, languageTest, wordCount, setServerWords,totalChars,totalErrors,);
+        sendData(incorrectChars, userId, languageTest, wordCount, setServerWords,totalChars,totalErrors, WPM, accuracy);
      
       }
+      // ХХЗЗАВАЫВРЬдлвьо эрлопкжрпж ркпоырила
+      setTotalChars(charIndex);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caretPosition]);

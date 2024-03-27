@@ -25,12 +25,22 @@ const Home = ({
   const [activeRestartButton, setActiveRestartButton] = useState(0);
   const [numbersInclude, setNumbersInclude] = useState(false);
   const [punctuationInclude, setPunctuationInclude] = useState(false);
+  const [incorrectChars, setIncorrectChars] = useState({});
+  const [wordComplete, setWordComplete] = useState(0);
+
+  let WPM = 0;
+  let accuracy = 0;
+  const totalTime = (endTime - startTime) / 1000;
+
+  if (totalChars > totalErrors)
+    accuracy = ((totalChars - totalErrors) / totalChars) * 100;
+
+  WPM = ((wordComplete / totalTime) * 60).toFixed(2);
 
   // if user not authorized or user game stats === null use default words from component, else use custom personalized words pack
   // eslint-disable-next-line
 
-  const [incorrectChars, setIncorrectChars] = useState({});
-  const [wordComplete, setWordComplete] = useState(0);
+
 
   return (
     <>
@@ -61,6 +71,10 @@ const Home = ({
             serverWords={serverWords}
             setServerWords={setServerWords}
             recomendedMode = {recomendedMode}
+            WPM={WPM}
+            accuracy={accuracy}
+            totalChars={totalChars}
+            totalErrors={totalErrors}
           />
 
           <Toolbar
@@ -111,6 +125,9 @@ const Home = ({
             userId={userId}
             serverWords={serverWords}
             setServerWords={setServerWords}
+            WPM={WPM}
+            accuracy={accuracy}
+            totalTime={totalTime}
           />
         </>
       )}

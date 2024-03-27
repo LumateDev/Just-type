@@ -8,7 +8,7 @@ export const sendErrors = async (
     wordCount,
     setServerWords) => {
 
-    if (languageTest === "english") {
+    if (languageTest === "english" && userId) {
         try {
           const response = await axios.post("http://localhost:8000/api/errors", {
             userId: userId,
@@ -31,6 +31,9 @@ export const sendErrors = async (
             );
           }
         }
+      }
+      else if(!userId){
+        console.log("You are not auth");
       } else {
         alert("Данная функция временно доступна для Пендоского языка, соре");
         console.log("Your language: ", languageTest);

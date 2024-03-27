@@ -1,31 +1,42 @@
 import axios from "axios";
 
-export const sendStats = async (userId,totalChars,totalErrors,) => {
+export const sendStats = async (userId,totalChars,totalErrors,WPM, accuracy) => {
 
     let experience = (totalChars - totalErrors) * 0.1;
-    let bestWPM; // Получить прошлое и сравнить с нынешним
-    let avgWPM; // Получить сумму прошлых и количество тестов, сложить сумму прошлых + текущее и поделить на количество тестов + 1
-    let testCount; // Получить прошлое количество тестов и прибавить один
+    console.log("All chard :" , totalChars);
+    console.log("Err chars: ", totalErrors);
+    
 
 
         try {
+          console.log({
+            user_id: userId,
+            experience: experience,
+            WPM : WPM,
+            accuracy : accuracy,
+          
+            //
+    
+
+          })
             
             const response = await axios.post("http://localhost:8000/api/user/data", {
-              userId: userId,
+              user_id: userId,
               experience: experience,
-              bestWPM : bestWPM,
-              avgWPM : avgWPM,
-              testCount : testCount,
-              // Уровень надо как то повышать тригерами.
+              WPM : WPM,
+              accuracy : accuracy,
+            
+              //
       
 
             });
 
-            console.log("responce successful:", response);
+            console.log("responce successful:123123", response);
     
            
           } catch (error) {
-            console.log(error);
+            console.log("TEST"+error);
+            
         
           }
       
